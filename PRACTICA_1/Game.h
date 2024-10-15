@@ -8,7 +8,7 @@
 
 // Nuestras clases
 #include "Texture.h"
-#include "Dog.h"
+//#include "Dog.h"
 
 using uint = unsigned int;
 
@@ -37,7 +37,7 @@ private:
 	bool seguir;
 
 	// Objetos del juego
-	Dog* perro;
+	//Dog* perro;
 
 public:
 	void run();

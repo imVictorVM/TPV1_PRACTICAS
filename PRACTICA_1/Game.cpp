@@ -47,13 +47,13 @@ Game::Game()
 					  textureSpec[i].numColumns);
 
 	// Crea los objetos del juego
-	perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
+	//perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
 }
 
 Game::~Game()
 {
 	// Elimina los objetos del juego
-	delete perro;
+	//delete perro;
 
 	// Elimina las texturas
 	for (Texture* texture : textures)
@@ -93,7 +93,7 @@ Game::render() const
 
 	// Pinta los objetos del juego
 	textures[BACKGROUND]->render();
-	perro->render();
+	//perro->render();
 
 	SDL_RenderPresent(renderer);
 }
@@ -102,7 +102,7 @@ void
 Game::update()
 {
 	// Actualiza los objetos del juego
-	perro->update();
+	//perro->update();
 }
 
 void
@@ -115,7 +115,7 @@ Game::handleEvents()
 		if (evento.type == SDL_QUIT)
 			seguir = false;
 		else if (evento.type == SDL_KEYDOWN) {
-			perro->handleEvent(evento);
+			//perro->handleEvent(evento);
 		}
 	}
 }
