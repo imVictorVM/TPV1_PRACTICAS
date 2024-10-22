@@ -3,12 +3,20 @@
 
 using namespace std;
 
-TileMap::TileMap(string mapa){
+TileMap::TileMap(const string& mapa){
 	ifstream entrada(mapa);
 	if (!entrada.is_open()) throw new exception("Error leyendo archivo");
-	char c;
-	entrada >> c;
-	entrada.get() + '\n';
+	while (!entrada.eof()) {
+		char cAux = ',';
+		int c = 0;
+		vector<int> aux;
+		while (cAux == ',') {
+			entrada >> c;
+			aux.push_back(c);
+			cAux = entrada.get();
+		}
+		matriz.push_back(aux);
+	}
 }
 
 

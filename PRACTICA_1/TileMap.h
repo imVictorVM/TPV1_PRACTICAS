@@ -11,7 +11,7 @@ class TileMap
 	std::vector<std::vector<int>> matriz;
 
 public:
-	TileMap(std::string mapa);
+	TileMap(const std::string& mapa);
 
 
 	void render() const;
