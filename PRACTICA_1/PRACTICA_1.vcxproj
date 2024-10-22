@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileMap.cpp" />
