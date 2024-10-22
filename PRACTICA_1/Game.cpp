@@ -1,22 +1,22 @@
 #include <string>
 #include <fstream>
-
+#include <sstream>
 #include "Game.h"
 
 using namespace std;
 
-// Formato de la especificaciÃ³n de una textura
+// Formato de la especificación de una textura
 struct TextureSpec
 {
 	const char* name;	// Ruta del archivo
-	uint numColumns;	// NÃºmero de frames por fila
-	uint numRows;		// NÃºmero de frames por columna
+	uint numColumns;	// Número de frames por fila
+	uint numRows;		// Número de frames por columna
 };
 
-// Directorio raÃ­z de los archivos de textura
+// Directorio raíz de los archivos de textura
 const string textureRoot = "../images/";
 
-// EspecificaciÃ³n de las texturas del juego
+// Especificación de las texturas del juego
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"background1.png", 1, 1},
 	{"dog.png", 6, 1},
@@ -71,7 +71,7 @@ Game::run()
 {
 	// Bucle principal del juego
 	while (seguir) {
-		// Marca de tiempo del inicio de la iteraciÃ³n
+		// Marca de tiempo del inicio de la iteración
 		uint32_t inicio = SDL_GetTicks();
 
 		update();       // Actualiza el estado de los objetos del juego
@@ -145,9 +145,17 @@ Game::loadObjectMap() {
 
 		switch (tipo) {
 		case 'M':
-			player = new Player(this, lineStream);
+			//mariano : player = new Player(this, lineStream);
 			break;
-			// uno para cada objeto
+		case 'B':
+			//bloque
+			break;
+		case 'G':
+			//goomba
+			break;
+		case 'K' :
+			//koopa
+			break;
 		}
 	}
 }
