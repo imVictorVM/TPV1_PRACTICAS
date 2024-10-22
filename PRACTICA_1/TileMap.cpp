@@ -50,7 +50,7 @@ TileMap::render() const
 	rect.h = Game::TILE_SIDE;
 
 	// Pintamos los WINDOW_WIDTH + 1 (aunque se salga) x WINDOW_HEIGHT recuadros del mapa
-	for (int i = 0; i < Game::WINDOW_WIDTH + 1; ++i) {
+	for (int i = 0; i < Game::WINDOW_WIDTH + 2; ++i) {
 		for (int j = 0; j < Game::WINDOW_HEIGHT; ++j) {
 			// Índice en el conjunto de patrones de la matriz de índices
 			//int indice = indices[x0 + i][j];
@@ -65,7 +65,7 @@ TileMap::render() const
 
 				// Usa renderFrame para pintar la tesela
 				//background->renderFrame(rect, fy, fx);
-				patrones->renderFrame(rect, fx, fy);
+				patrones->renderFrame(rect, fy, fx);
 			}
 
 		}

@@ -58,8 +58,8 @@ public:
 	Texture* getTexture(TextureName name) const;
 
 	// Constante globales
-	static constexpr uint WIN_WIDTH = 800;
-	static constexpr uint WIN_HEIGHT = 600;
+	static constexpr uint WIN_WIDTH = 600;
+	static constexpr uint WIN_HEIGHT = 500;
 	static constexpr uint FRAME_RATE = 50;
 
 	Game();
