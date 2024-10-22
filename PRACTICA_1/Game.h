@@ -45,6 +45,7 @@ public:
 	void update();
 	void render() const;
 	void handleEvents();
+	void loadObjectMap();
 
 	Texture* getTexture(TextureName name) const;
 
@@ -62,3 +63,5 @@ Game::getTexture(TextureName name) const
 {
 	return textures[name];
 }
+
+

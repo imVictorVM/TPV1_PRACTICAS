@@ -1,4 +1,5 @@
 #include <string>
+#include <fstream>
 
 #include "Game.h"
 
@@ -116,6 +117,37 @@ Game::handleEvents()
 			seguir = false;
 		else if (evento.type == SDL_KEYDOWN) {
 			//perro->handleEvent(evento);
+		}
+	}
+}
+
+void
+Game::loadObjectMap() {
+	const char* DEFAULT_MAP = "world1.txt";
+
+	// Carga el mapa
+	ifstream file;
+	file.open(DEFAULT_MAP);
+
+	// Leemos el mapa línea a línea para evitar acarreo de errores
+	// y permitir extensiones del formato
+	string line;
+	getline(file, line);
+
+	while (!file) {
+		// Usamos un stringstream para leer la línea como si fuera un flujo
+		//stringstream lineStream(line);
+		stringstream lineStream;
+		lineStream << file.rdbuf();
+
+		char tipo;
+		lineStream >> tipo;
+
+		switch (tipo) {
+		case 'M':
+			player = new Player(this, lineStream);
+			break;
+			// uno para cada objeto
 		}
 	}
 }
