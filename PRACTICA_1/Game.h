@@ -9,9 +9,9 @@
 // Nuestras clases
 #include "Texture.h"
 //#include "Dog.h"
+#include "TileMap.h"
 
 using uint = unsigned int;
-
 //
 // Clase que representa el juego y controla todos sus aspectos
 //
@@ -25,8 +25,6 @@ public:
 	// Identificadores de las texturas
 	enum TextureName {
 		BACKGROUND,
-		DOG,
-		HELICOPTER,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
@@ -45,6 +43,7 @@ private:
 
 	// Objetos del juego
 	//Dog* perro;
+	TileMap* tilemap;
 
 public:
 	void run();

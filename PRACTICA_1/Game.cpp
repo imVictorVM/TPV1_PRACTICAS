@@ -4,6 +4,7 @@
 #include "Game.h"
 
 using namespace std;
+class TileMap;
 
 // Formato de la especificación de una textura
 struct TextureSpec
@@ -14,13 +15,11 @@ struct TextureSpec
 };
 
 // Directorio raíz de los archivos de textura
-const string textureRoot = "../images/";
+const string textureRoot = "../assets/imgs/";
 
 // Especificación de las texturas del juego
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
-	TextureSpec{"background1.png", 1, 1},
-	{"dog.png", 6, 1},
-	{"helicopter.png", 5, 1},
+	TextureSpec{"background.png", 7, 9}
 };
 
 Game::Game()
@@ -51,6 +50,7 @@ Game::Game()
 
 	// Crea los objetos del juego
 	//perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
+	tilemap = new TileMap("../assets/maps/world1.csv", this);
 }
 
 Game::~Game()
@@ -93,9 +93,9 @@ void
 Game::render() const
 {
 	SDL_RenderClear(renderer);
-
+	tilemap->render();
 	// Pinta los objetos del juego
-	textures[BACKGROUND]->render();
+	//textures[BACKGROUND]->render();
 	//perro->render();
 
 	SDL_RenderPresent(renderer);

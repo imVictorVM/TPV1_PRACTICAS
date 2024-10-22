@@ -1,12 +1,14 @@
 #include "TileMap.h"
+#include "Game.h"
 #include <fstream>
 
 using namespace std;
 
 TileMap::TileMap(const string& mapa, Game* game) : game(game), patrones(game->getTexture(Game::BACKGROUND)){
+
 	ifstream entrada(mapa);
 	if (!entrada.is_open()) throw new exception("Error leyendo archivo");
-	while (!entrada.eof()) {
+	while (entrada) {
 		char cAux = ',';
 		int c = 0;
 		vector<int> aux;
@@ -52,7 +54,7 @@ TileMap::render() const
 		for (int j = 0; j < Game::WINDOW_HEIGHT; ++j) {
 			// Índice en el conjunto de patrones de la matriz de índices
 			//int indice = indices[x0 + i][j];
-			int indice = matriz[x0 + i][j];
+			int indice = matriz[j][i+x0];
 			if (indice != -1) {
 				// Separa número de fila y de columna
 				int fx = indice % 9;
@@ -63,7 +65,7 @@ TileMap::render() const
 
 				// Usa renderFrame para pintar la tesela
 				//background->renderFrame(rect, fy, fx);
-				patrones->renderFrame(rect, fy, fx);
+				patrones->renderFrame(rect, fx, fy);
 			}
 
 		}

@@ -1,13 +1,14 @@
 #include <iostream>
 
 #include "Game.h"
-
+#include "TileMap.h"
 using namespace std;
 
 int main(int argc, char* argv[])
 {
 	try {
 		Game game;
+		
 		game.run();
 	}
 	catch (const std::string& msg) {

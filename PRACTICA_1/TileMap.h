@@ -3,7 +3,9 @@
 #include <iostream>
 #include "Texture.h"
 #include <vector>
-#include "Game.h"
+//#include "Game.h"
+
+class Game;
 
 class TileMap
 {
