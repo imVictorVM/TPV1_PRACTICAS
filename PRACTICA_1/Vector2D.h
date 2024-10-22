@@ -14,11 +14,11 @@ public:
 
 	Vector2D(T x, T y) : x(x), y(y) {};
 
-	double getX() const {
+	T getX() const {
 		return x;
 	};
 
-	double getY() const {
+	T getY() const {
 		return y;
 	};
 
@@ -43,8 +43,8 @@ public:
 			return r;
 	};
 
-	double operator*(const Vector2D& d) const {
-		return (d.x * this->x) + (d.y * this->y);
+	T operator*(const Vector2D& d) const {
+		return ((d.x * this->x) + (d.y * this->y));
 	};
 
 	friend std::ostream& operator<<(std::ostream& os, const Vector2D& v) {
