@@ -18,6 +18,10 @@ using uint = unsigned int;
 class Game
 {
 public:
+	static constexpr int TILE_SIDE = 32;  // constantes estáticas en Game
+	static constexpr int WINDOW_WIDTH = 18;
+	static constexpr int WINDOW_HEIGHT = 16;
+
 	// Identificadores de las texturas
 	enum TextureName {
 		BACKGROUND,
@@ -27,6 +31,9 @@ public:
 	};
 
 private:
+
+	//mapoffset
+	int mapOffset = 0;
 	// Ventana de la SDL (se destruirá en el destructor)
 	SDL_Window* window = nullptr;
 	// Renderizador de la SDL (para dibujar)
@@ -46,6 +53,8 @@ public:
 	void render() const;
 	void handleEvents();
 	void loadObjectMap();
+
+	int getMapOffset();
 
 	Texture* getTexture(TextureName name) const;
 

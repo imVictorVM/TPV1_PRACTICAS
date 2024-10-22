@@ -40,6 +40,8 @@ Game::Game()
 	if (window == nullptr || renderer == nullptr)
 		throw "Error cargando SDL"s;
 
+	mapOffset = 0;
+
 	// Carga las texturas
 	for (int i = 0; i < NUM_TEXTURES; ++i)
 		textures[i] = new Texture(renderer,
@@ -159,3 +161,7 @@ Game::loadObjectMap() {
 		}
 	}
 }
+
+int Game::getMapOffset() {
+	return mapOffset;
+};
