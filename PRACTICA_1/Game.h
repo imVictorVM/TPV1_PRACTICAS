@@ -10,6 +10,7 @@
 #include "Texture.h"
 //#include "Dog.h"
 #include "TileMap.h"
+#include "Player.h"
 
 using uint = unsigned int;
 //
@@ -25,6 +26,7 @@ public:
 	// Identificadores de las texturas
 	enum TextureName {
 		BACKGROUND,
+		MARIANO,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
@@ -44,6 +46,7 @@ private:
 	// Objetos del juego
 	//Dog* perro;
 	TileMap* tilemap;
+	Player* player;
 
 public:
 	void run();
@@ -54,6 +57,7 @@ public:
 	void loadObjectMap();
 
 	int getMapOffset();
+	void setMapOffset(int playerOffset);
 
 	Texture* getTexture(TextureName name) const;
 

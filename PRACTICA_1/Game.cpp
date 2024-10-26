@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include "Game.h"
+#include "Player.h"
 
 using namespace std;
 class TileMap;
@@ -19,7 +20,8 @@ const string textureRoot = "../assets/imgs/";
 
 // Especificación de las texturas del juego
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
-	TextureSpec{"background.png", 9, 7}
+	TextureSpec{"background.png", 9, 7},
+	TextureSpec{"mario.png", 12, 1},
 };
 
 Game::Game()
@@ -51,6 +53,8 @@ Game::Game()
 	// Crea los objetos del juego
 	//perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
 	tilemap = new TileMap("../assets/maps/world1.csv", this);
+	stringstream ss;
+	player = new Player(this, ss);
 }
 
 Game::~Game()
@@ -94,6 +98,7 @@ Game::render() const
 {
 	SDL_RenderClear(renderer);
 	tilemap->render();
+	tilemap->update();
 	// Pinta los objetos del juego
 	//textures[BACKGROUND]->render();
 	//perro->render();
@@ -106,6 +111,8 @@ Game::update()
 {
 	// Actualiza los objetos del juego
 	//perro->update();
+	render();
+
 }
 
 void
@@ -145,9 +152,11 @@ Game::loadObjectMap() {
 		char tipo;
 		lineStream >> tipo;
 
+		Player Mariano(nullptr, lineStream);
+
 		switch (tipo) {
 		case 'M':
-			//mariano : player = new Player(this, lineStream);
+			Mariano = Player(this, lineStream);
 			break;
 		case 'B':
 			//bloque
@@ -165,3 +174,7 @@ Game::loadObjectMap() {
 int Game::getMapOffset() {
 	return mapOffset;
 };
+
+void Game::setMapOffset(int playerOffset) {
+	mapOffset += playerOffset;
+}
