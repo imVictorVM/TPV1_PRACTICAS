@@ -45,8 +45,8 @@ private:
 
 	// Objetos del juego
 	//Dog* perro;
-	TileMap* tilemap;
-	Player* player;
+	TileMap* tilemap = nullptr;
+	Player* player = nullptr;
 
 public:
 	void run();

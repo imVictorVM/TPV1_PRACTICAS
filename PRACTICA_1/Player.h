@@ -13,6 +13,7 @@ class Player
 {
 protected:
 	Vector2D<int> position;
+	Vector2D<int> direction;
 	Texture* TexturePlayer;
 	Game* GamePlayer;
 	int vidas;
@@ -27,7 +28,7 @@ public:
 
 	void hit();
 
-	void HandleEvent();
+	void HandleEvent(SDL_Event event);
 
 };
 

@@ -37,16 +37,23 @@ Player::Player(Game* game, stringstream& atributes) : position(), TexturePlayer(
 
 void
 Player::render() const {
-	SDL_Rect rect;
-	rect.w = Game::TILE_SIDE;
-	rect.h = Game::TILE_SIDE;
+	SDL_Rect MPosition;
+	MPosition.x = position.getX();
+	MPosition.y = position.getY();
+	MPosition.w = Game::TILE_SIDE;
+	MPosition.h = Game::TILE_SIDE;
 
-	int fy = 0, fx = 0;
-	TexturePlayer->renderFrame(rect, fy, fx);
+	TexturePlayer->renderFrame(MPosition, 0, 2);
 }
 
 void
 Player::update() {
+	Vector2D<int> newPosition = position + direction;
+	//EDITAR
+	//if (newPosition.getX() > -1 && newPosition.getX() < Game::WIN_WIDTH) {
+		if (position.getX() <= Game::WIN_WIDTH / 2) position = newPosition;
+		else GamePlayer->setMapOffset(newPosition.getX() - position.getX());
+	//}
 
 }
 
@@ -55,7 +62,8 @@ Player::hit() {
 
 }
 
-void Player::HandleEvent() {
-
+void Player::HandleEvent(SDL_Event event) {
+	if (event.key.keysym.sym = SDLK_0) direction = Vector2D<int>(1, direction.getY());
+	if (event.key.keysym.sym = SDLK_9) direction = Vector2D<int>(-1, direction.getY());
 }
 

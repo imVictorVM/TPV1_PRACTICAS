@@ -98,7 +98,7 @@ Game::render() const
 {
 	SDL_RenderClear(renderer);
 	tilemap->render();
-	tilemap->update();
+	player->render();
 	// Pinta los objetos del juego
 	//textures[BACKGROUND]->render();
 	//perro->render();
@@ -111,7 +111,8 @@ Game::update()
 {
 	// Actualiza los objetos del juego
 	//perro->update();
-	render();
+	tilemap->update();
+	player->update();
 
 }
 
@@ -126,6 +127,8 @@ Game::handleEvents()
 			seguir = false;
 		else if (evento.type == SDL_KEYDOWN) {
 			//perro->handleEvent(evento);
+			player->HandleEvent(evento);
+
 		}
 	}
 }
