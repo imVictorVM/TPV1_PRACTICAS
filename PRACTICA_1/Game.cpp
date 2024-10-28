@@ -38,6 +38,8 @@ Game::Game()
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+	SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255); //color azul
+
 	if (window == nullptr || renderer == nullptr)
 		throw "Error cargando SDL"s;
 
