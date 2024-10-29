@@ -74,7 +74,7 @@ TileMap::render() const
 
 void 
 TileMap::update() {
-	//game->setMapOffset(1);
+
 }
 
 void

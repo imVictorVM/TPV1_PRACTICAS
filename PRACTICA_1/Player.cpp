@@ -41,9 +41,9 @@ Player::render() const {
 	MPosition.h = Game::TILE_SIDE;
 
 	int frame;
-
-	if (MPosition.x % 2 == 1) frame = 0;
-	else frame = 2;
+	if (position.getX() % 3 == 0) frame = 0;
+	else if (position.getX() % 3 == 1) frame = 2;
+	else frame = 3;
 
 	TexturePlayer->renderFrame(MPosition, 0, frame);
 
@@ -54,10 +54,10 @@ Player::update() {
 
 	Vector2D<int> newPosition = position + direction;
 	
+	if (position.getX() > Game::WINDOW_WIDTH * Game::TILE_SIDE / 2 && direction.getX() > 0) GamePlayer->setMapOffset(Game::TILE_SIDE);
 	position = newPosition;
-	if (position.getX() > Game::WINDOW_WIDTH / 2) GamePlayer->setMapOffset(newPosition.getX() - position.getX());
 
-	hit();
+	if (Collision()) position = Vector2D<int>(position.getX(), 416);
 
 	std::cout << "Position -> X: " << position.getX() << ", Y: " << position.getY() << std::endl;
 }
@@ -65,26 +65,39 @@ Player::update() {
 void
 Player::hit() {
 
-	if (position.getY() > 416) position = Vector2D<int>(position.getX(), 416);
+}
+
+bool
+Player::Collision() {
+	if (position.getY() > 416) return true;
+	else return false;
 }
 
 void Player::HandleEvent(SDL_Event event) {
+	int PreviousPosition = position.getY();
+
 	switch (event.key.keysym.sym) {
 		case SDLK_RIGHT:
-			direction = Vector2D<int>(1 * Game::TILE_SIDE/2, direction.getY());
+			if (event.type == SDL_KEYDOWN) 
+				direction = Vector2D<int>(1 * Game::TILE_SIDE / 2, direction.getY());
+			else if (event.type == SDL_KEYUP) 
+				direction = Vector2D<int>(0, direction.getY());
 			break;
 		case SDLK_LEFT: 
-			direction = Vector2D<int>(-1 * Game::TILE_SIDE/2, direction.getY());
+			if (event.type == SDL_KEYDOWN) 
+				direction = Vector2D<int>(-1 * Game::TILE_SIDE/2, direction.getY());
+			else if (event.type == SDL_KEYUP) 
+				direction = Vector2D<int>(0, direction.getY());
 			break;
 		case SDLK_UP:
-			direction = Vector2D<int>(direction.getX(), -1 * Game::TILE_SIDE/2);
-			break;
-		case SDLK_DOWN:
-			direction = Vector2D<int>(direction.getX(), 1 * Game::TILE_SIDE/2);
+			if (event.type == SDL_KEYDOWN && position.getY() > PreviousPosition - 100)
+				direction = Vector2D<int>(direction.getX(), -1 * Game::TILE_SIDE / 2);
+			else if (event.type == SDL_KEYUP)
+				direction = Vector2D<int>(direction.getX(), -1);
 			break;
 		default:
-			direction = Vector2D<int>(0, 0);
+			direction = Vector2D<int>(direction.getX(), direction.getY());
 			break;
 	}
+	if (event.type == SDL_KEYUP) direction = Vector2D<int>(direction.getX(), Game::TILE_SIDE);
 }
-

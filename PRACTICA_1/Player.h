@@ -26,6 +26,8 @@ public:
 
 	void update();
 
+	bool Collision();
+
 	void hit();
 
 	void HandleEvent(SDL_Event event);
