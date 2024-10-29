@@ -55,8 +55,43 @@ Game::Game()
 	// Crea los objetos del juego
 	//perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
 	tilemap = new TileMap("../assets/maps/world1.csv", this);
-	stringstream ss;
-	player = new Player(this, ss);
+	//stringstream ss;
+	//player = new Player(this,ss);
+	loadObjectMap();
+}
+
+void
+Game::loadObjectMap() {
+	const string DEFAULT_MAP = "../assets/maps/world1.txt";
+
+	// Carga el mapa
+	ifstream file(DEFAULT_MAP);
+
+	if (!file.is_open()) return; //false
+
+	string line;
+
+	while (getline(file, line)) {
+		stringstream lineStream(line);
+		char let;
+		lineStream >> let;
+
+		switch (let) {
+		case 'M':
+			if (player == nullptr) player = new Player(this, lineStream);
+			break;
+		case 'B':
+			//bloque
+			break;
+		case 'G':
+			//goomba
+			break;
+		case 'K':
+			//koopa
+			break;
+		}
+	}
+	file.close();
 }
 
 Game::~Game()
@@ -131,47 +166,6 @@ Game::handleEvents()
 			//perro->handleEvent(evento);
 			player->HandleEvent(evento);
 
-		}
-	}
-}
-
-void
-Game::loadObjectMap() {
-	const char* DEFAULT_MAP = "world1.txt";
-
-	// Carga el mapa
-	ifstream file;
-	file.open(DEFAULT_MAP);
-
-	// Leemos el mapa línea a línea para evitar acarreo de errores
-	// y permitir extensiones del formato
-	string line;
-	getline(file, line);
-
-	while (!file) {
-		// Usamos un stringstream para leer la línea como si fuera un flujo
-		//stringstream lineStream(line);
-		stringstream lineStream;
-		lineStream << file.rdbuf();
-
-		char tipo;
-		lineStream >> tipo;
-
-		Player Mariano(nullptr, lineStream);
-
-		switch (tipo) {
-		case 'M':
-			Mariano = Player(this, lineStream);
-			break;
-		case 'B':
-			//bloque
-			break;
-		case 'G':
-			//goomba
-			break;
-		case 'K' :
-			//koopa
-			break;
 		}
 	}
 }
