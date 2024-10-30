@@ -43,7 +43,7 @@ Player::render() const {
 	int frame;
 	//Si el jugador esta saltando ponemos el frame 6
 	if (!jump) frame = 6;
-	//elegimos el frame de movimiento del jugador en funcion del valor de frameRunner, si esta quieto se descarta por el siguiente condicional
+	//elegimos el frame de movimiento del jugador en funcion del valor de frameRunner, si esta quieto se descarta por la siguiente condicional
 	else {
 		if (frameRunner == 0) frame = 0;
 		else if (frameRunner == 1) frame = 2;
@@ -55,7 +55,7 @@ Player::render() const {
 
 
 	//Si recibe daño ponemos el frame 1
-	//if (hit()) frame = 1;
+	if (hit()) frame = 1;
 
 	//Esto es para comprobar si esta mirando a la izquierda o a la derecha y en funcion de eso girar el render en funcion de donde mire
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
@@ -119,9 +119,10 @@ Player::GroundCollision() {
 		
 }
 
-void
-Player::hit() {
-
+//Mirar player.h
+bool
+Player::hit() const {
+	return false;
 }
 
 void Player::HandleEvent(SDL_Event event) {
