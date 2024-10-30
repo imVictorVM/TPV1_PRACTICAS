@@ -60,7 +60,7 @@ TileMap::render() const
 				int fx = indice % 9;
 				int fy = indice / 9;
 
-				rect.x = -x0 + i * Game::TILE_SIDE;
+				rect.x = -d0 + i * Game::TILE_SIDE;
 				rect.y = j * Game::TILE_SIDE;
 
 				// Usa renderFrame para pintar la tesela
