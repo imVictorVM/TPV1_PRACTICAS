@@ -79,5 +79,6 @@ TileMap::update() {
 
 void
 TileMap::hit() {
-
+	//bool hit = false;
+	//if ()
 }

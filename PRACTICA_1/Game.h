@@ -11,6 +11,7 @@
 //#include "Dog.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Block.h"
 
 using uint = unsigned int;
 //
@@ -27,6 +28,7 @@ public:
 	enum TextureName {
 		BACKGROUND,
 		MARIANO,
+		BLOCK,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
@@ -47,6 +49,8 @@ private:
 	//Dog* perro;
 	TileMap* tilemap = nullptr;
 	Player* player = nullptr;
+	Block* blocks = { nullptr };
+	
 
 public:
 	void run();

@@ -22,6 +22,7 @@ const string textureRoot = "../assets/imgs/";
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"background.png", 9, 7},
 	TextureSpec{"mario.png", 12, 1},
+	TextureSpec{"blocks.png", 6, 1},
 };
 
 Game::Game()
@@ -72,6 +73,7 @@ Game::loadObjectMap() {
 	string line;
 
 	while (getline(file, line)) {
+		
 		stringstream lineStream(line);
 		char let;
 		lineStream >> let;
@@ -82,6 +84,12 @@ Game::loadObjectMap() {
 			break;
 		case 'B':
 			//bloque
+			if (blocks == nullptr) blocks = new Block(this, lineStream);
+			else {
+				contBlocks++;
+				Block* aux[contBlocks] = { nullptr, nullptr };
+				blocks = aux;
+			}
 			break;
 		case 'G':
 			//goomba
