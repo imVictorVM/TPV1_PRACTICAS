@@ -1,12 +1,13 @@
 #pragma once
 #include "Vector2D.h"
 #include "Game.h"
+#include <sstream>
+
+class Game;
 
 class Block
 {
-private:
-	Vector2D<int> position;
-	Texture* TextureBlock;
+public:
 	enum Type
 	{
 		normal,
@@ -18,17 +19,24 @@ private:
 		powerup,
 		coin
 	};
+private:
+	Vector2D<int> position;
+	Texture* TextureBlock;
+	Type type;
+	Action action;
 	Game* game;
-
+	int frameBlock;
+	int previousOffset;
 public:
 
-	Block();
+	Block(Game* game, std::stringstream& atributos);
 
-	void Render() const;
+	void render() const;
 
-	void Update();
+	void update();
 
-	bool hit();
+	bool hit(Vector2D<int> playerPosition);
 
+	SDL_Rect getRect() const;
 };
 

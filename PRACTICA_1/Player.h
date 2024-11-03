@@ -36,5 +36,13 @@ public:
 
 	void HandleEvent(SDL_Event event);
 
+	Vector2D<int> getPosition() const;
+
+	Vector2D<int> getDirection() const;
+
+	bool BlockCollision();
+
+
+
 };
 

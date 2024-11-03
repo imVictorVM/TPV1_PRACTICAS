@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Block.h"
+#include "TileMap.h"
 #include "Game.h"
 #include <fstream>
 #include <iostream>
@@ -85,38 +87,104 @@ Player::update() {
 	} //Si esta entre los dos limites funciona de manera normal
 	else position = newPosition;
 
-	//Si el jugador pisa suelo a cierta altura, su eje Y se mantendrá - CAMBIAR POR COLISION DE BLOQUE
+	//NOTA IMPORTANTE, si se detecta por bloques cambiar lo comentado y descomentado
 	if (GroundCollision()) {
+
+		//Si hay que hacer pruebas usar este codigo para mantener el suelo y comentar lo siguiente
 		position = Vector2D<int>(position.getX(), 416);
+
+		//Si hay que probar la colision de tiles descomentar esto y comentar lo anterior
+		//direction = Vector2D<int>(direction.getX(), 0);
+		//GroundPosition = GroundPosition;
+		//position = Vector2D<int>(position.getX(), GroundPosition);
 	}
-		
-	//Si el jugador esta por debajo del limite de salto y esta en el suelo activamos la capacidad de saltar
-	if (position.getY() >= GroundPosition - 100 && GroundCollision()) jump = true;
+
+	//Si el jugador esta por debajo del limite de salto y esta en el suelo o esta tocando un bloque por encima activamos la capacidad de saltar
+	if (position.getY() >= GroundPosition - 100 && GroundCollision() || BlockCollision()) jump = true;
 	//Si el jugador esta por encima del limite de salto o no esta en el suelo desactivamos la capacidad de saltar
 	else jump = false;
 
+	//Si colisionamos el bloque mantenemos la posicion y activamos saltar (creo que es redundante)
+	if (BlockCollision()) {
+		position = Vector2D<int>(position.getX(), position.getY());
+		jump = true;
+	}
+		
 	//Actualizamos el frame de correr siempre, el render del jugador se encarga de usar esto en caso de movimiento
 	if (frameRunner > 3) frameRunner = 0;
 	frameRunner++;
 
-	//if (position.getX() < Game::TILE_SIDE / 2) leftLimit = true;
-	//else leftLimit = false;
+	//Esto es para perder vidas si se sale del mapa o es golpeado por un enemigo
+	if (hit()) {
 
-	//DEBUG
-	std::cout << "Position -> X: " << position.getX() << ", Y: " << position.getY() << std::endl;
-	std::cout << "GroundCollision: " << GroundCollision() << std::endl;
-	std::cout << "GroundTimer: " << GroundPosition << std::endl;
+	}
+
 }
 
 bool
 Player::GroundCollision() {
-	//Si la posicion es la del suelo guardamos esa posicion por si queremos saltar y retornamos true
+
+	//NOTA IMPORTANTE
+	//Esta es la logica de los tiles, detectamos el tile que esta justo debajo del jugador con GamePlayer->GetTile();
+	//Si el valor del tile es alguno con los que tiene que colisionar, entre ellos el bloque normal del suelo (36), el jugador mantiene su eje Y en el groundPosition
+	//Es necesario modificar el groundCollision y el update del jugador que usa el GroundCollision para probar esta lógica.
+	
+	//ERROR: A la hora de recalcular el groundPosition se clipea el jugador y atraviesa el suelo una vez, haciendo que se pase de los limites de la matriz.
+
+	//Si hay que probar la colision de tiles descomentar esto y comentar lo siguiente
+
+	//int valor = GamePlayer->getTile();
+	//if (valor == 1 || valor == 2 || valor == 3 || valor == 10 || valor == 11 || valor == 12 ||
+	//	valor == 18 || valor == 19 || valor == 20 || valor == 21 || valor == 27 || valor == 28 ||
+	//	valor == 29 || valor == 30 || valor == 36 || valor == 37 || valor == 38 || valor == 39 ||
+	//	valor == 46 || valor == 47 || valor == 48 || valor == 55 || valor == 56 || valor == 57)
+	//{
+	//	GroundPosition = position.getY();
+	//	return true;
+	//}
+	//else return false;
+
+
+	//Si hay que hacer pruebas usar este codigo para mantener el suelo y comentar lo anterior
+
 	if (position.getY() >= 416) {
 		GroundPosition = position.getY();
 		return true;
+	}	
+	return false;
+}
+
+bool
+Player::BlockCollision() {
+	GroundPosition = position.getY();
+	for (Block* block : GamePlayer->getBlocks()) { // Debes tener un método que devuelva todos los bloques
+		SDL_Rect blockRect = block->getRect();
+
+		// Crear el rectángulo del jugador
+		SDL_Rect playerRect;
+		playerRect.x = position.getX();
+		playerRect.y = position.getY();
+		playerRect.w = Game::TILE_SIDE;
+		playerRect.h = Game::TILE_SIDE;
+
+		// Comprobar si hay una intersección
+		if (SDL_HasIntersection(&playerRect, &blockRect)) {
+			// Verificar que el jugador esté aterrizando sobre el bloque
+			if (playerRect.y + playerRect.h <= blockRect.y + blockRect.h && playerRect.y + playerRect.h >= blockRect.y) {
+				GroundPosition = blockRect.y; // El jugador aterriza en el bloque
+				Vector2D<int> newPosition = Vector2D<int>(position.getX(), GroundPosition - playerRect.h);
+				position = newPosition; // Ajustar la posición del jugador a la parte superior del bloque
+				return true;
+			}
+			direction = Vector2D<int>(direction.getX(), 0);
+			return false;
+		}
+
+		if (block->hit(position)) {
+			return true;
+		}
 	}
-	else return false;
-		
+	return false;
 }
 
 //Mirar player.h
@@ -144,7 +212,7 @@ void Player::HandleEvent(SDL_Event event) {
 			if (jump) {
 				direction = Vector2D<int>(direction.getX(), -1 * Game::TILE_SIDE / 2);
 			}
-			else if (event.type == SDL_KEYUP || !jump )
+			else if (event.type == SDL_KEYUP || !jump)
 				direction = Vector2D<int>(direction.getX(), Game::TILE_SIDE);
 			break;
 		default:
@@ -152,4 +220,14 @@ void Player::HandleEvent(SDL_Event event) {
 			break;
 	}
 	if (event.type == SDL_KEYUP) direction = Vector2D<int>(0, Game::TILE_SIDE);
+}
+
+//Obtenemos la posicion para la colision
+Vector2D<int> Player::getPosition() const {
+	return position;
+}
+
+//Obtenemos la direccion para la colision de bloques cuando mario salta desde abajo
+Vector2D<int> Player::getDirection() const {
+	return direction;
 }

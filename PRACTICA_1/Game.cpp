@@ -3,6 +3,7 @@
 #include <sstream>
 #include "Game.h"
 #include "Player.h"
+#include "Block.h"
 
 using namespace std;
 class TileMap;
@@ -83,13 +84,7 @@ Game::loadObjectMap() {
 			if (player == nullptr) player = new Player(this, lineStream);
 			break;
 		case 'B':
-			//bloque
-			if (blocks == nullptr) blocks = new Block(this, lineStream);
-			else {
-				contBlocks++;
-				Block* aux[contBlocks] = { nullptr, nullptr };
-				blocks = aux;
-			}
+			blocks.push_back(new Block(this, lineStream));
 			break;
 		case 'G':
 			//goomba
@@ -106,7 +101,10 @@ Game::~Game()
 {
 	// Elimina los objetos del juego
 	//delete perro;
-
+	for (Block* block : blocks) {
+		delete block;
+	}
+	blocks.clear();
 	// Elimina las texturas
 	for (Texture* texture : textures)
 		delete texture;
@@ -144,6 +142,9 @@ Game::render() const
 	SDL_RenderClear(renderer);
 	tilemap->render();
 	player->render();
+	for (const Block* block : blocks) {
+		block->render();
+	}
 	// Pinta los objetos del juego
 	//textures[BACKGROUND]->render();
 	//perro->render();
@@ -158,7 +159,9 @@ Game::update()
 	//perro->update();
 	tilemap->update();
 	player->update();
-
+	for (Block* block : blocks) {
+		block->update();
+	}
 }
 
 void
@@ -178,10 +181,29 @@ Game::handleEvents()
 	}
 }
 
+//AQUI ESTAN LOS METODOS PUBLICOS ADICIONALES, NECESARIOS PARA LA LOGICA DEL JUEGO PERO NO ESPECIFICADOS EN ENUNCIADO
+//Son necesarios todos, pero podriamos prescindir de alguno para optimizar codigo y no hacerlo público todo
+
 int Game::getMapOffset() {
 	return mapOffset;
 };
 
 void Game::setMapOffset(int playerOffset) {
 	mapOffset += playerOffset;
+}
+
+Vector2D<int> Game::getPlayerPosition() const {
+	return player->getPosition();
+}
+
+std::vector<Block*>& Game::getBlocks() {
+	return blocks;
+}
+
+int Game::getTile() {
+	return tilemap->tileRect(player->getPosition());
+}
+
+Vector2D<int> Game::getPlayerDirection() const {
+	return player->getDirection();
 }

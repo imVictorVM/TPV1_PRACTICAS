@@ -2,6 +2,7 @@
 
 // Biblioteca estándar de C++
 #include <array>
+#include <vector>
 
 // Biblioteca SDL
 #include <SDL.h>
@@ -11,7 +12,9 @@
 //#include "Dog.h"
 #include "TileMap.h"
 #include "Player.h"
-#include "Block.h"
+//#include "Block.h"
+
+class Block;
 
 using uint = unsigned int;
 //
@@ -49,7 +52,7 @@ private:
 	//Dog* perro;
 	TileMap* tilemap = nullptr;
 	Player* player = nullptr;
-	Block* blocks = { nullptr };
+	std::vector<Block*> blocks;
 	
 
 public:
@@ -59,9 +62,14 @@ public:
 	void render() const;
 	void handleEvents();
 	void loadObjectMap();
-
 	int getMapOffset();
+
+	//AÑADIDOS PERO NO ESPECIFICAOS EN ENUNCIADO
 	void setMapOffset(int playerOffset);
+	Vector2D<int> getPlayerPosition() const;
+	std::vector<Block*>& getBlocks();
+	int getTile();
+	Vector2D<int> getPlayerDirection() const;
 
 	Texture* getTexture(TextureName name) const;
 

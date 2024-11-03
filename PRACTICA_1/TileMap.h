@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <iostream>
 #include "Texture.h"
+#include "Vector2D.h"
 #include <vector>
 //#include "Game.h"
 
@@ -24,5 +25,6 @@ public:
 
 	void hit();
 
+	int tileRect(Vector2D<int> playerPosition);
 };
 
