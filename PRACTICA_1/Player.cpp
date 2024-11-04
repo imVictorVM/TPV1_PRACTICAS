@@ -32,6 +32,7 @@ Player::Player(Game* game, stringstream& atributes) : position(), TexturePlayer(
 	//Pasamos los parametros al constructor del player despues de leerlos
 	position = Vector2D<int>(positionx * Game::TILE_SIDE, positiony * Game::TILE_SIDE);
 	vidas = nvidas;
+	lookingLeft = false;
 }
 
 void
@@ -61,7 +62,10 @@ Player::render() const {
 
 	//Esto es para comprobar si esta mirando a la izquierda o a la derecha y en funcion de eso girar el render en funcion de donde mire
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	if (direction.getX() < 0) {
+	/*if (direction.getX() < 0) {
+		flip = SDL_FLIP_HORIZONTAL;
+	}*/
+	if (lookingLeft) {
 		flip = SDL_FLIP_HORIZONTAL;
 	}
 
@@ -201,12 +205,14 @@ void Player::HandleEvent(SDL_Event event) {
 				direction = Vector2D<int>(1 * Game::TILE_SIDE / 2, direction.getY());
 			else if (event.type == SDL_KEYUP) 
 				direction = Vector2D<int>(0, direction.getY());
+			lookingLeft = false;
 			break;
 		case SDLK_LEFT: 
 			if (!leftLimit)
 				direction = Vector2D<int>(-1 * Game::TILE_SIDE / 2, direction.getY());
 			else if (event.type == SDL_KEYUP || leftLimit) 
 				direction = Vector2D<int>(0, direction.getY());
+			lookingLeft = true;
 			break;
 		case SDLK_UP:
 			if (jump) {

@@ -21,6 +21,8 @@ protected:
 	bool jump; //Sirve para ver si podemos saltar o no
 	int frameRunner; //Sirve como contador para saltar entre los frames 0,2,3
 	bool leftLimit; //Sirve para no avanzar fuera de la pantalla a la izquierda
+	bool lookingLeft; //para ver si está mirando a izquierda o derecha
+	
 public:
 
 	Player(Game* game,std::stringstream& atributos);
