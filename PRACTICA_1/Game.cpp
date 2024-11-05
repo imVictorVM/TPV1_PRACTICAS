@@ -26,6 +26,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"blocks.png", 6, 1},
 	TextureSpec{"goomba.png",3,1},
 	TextureSpec{"koopa.png",4,1},
+	TextureSpec{"mushroom.png",1,1},
 };
 
 Game::Game()
