@@ -5,17 +5,17 @@
 
 class Game;
 
-class Koopa
+class Mushroom
 {
 protected:
 	Vector2D<int> position;
 	Vector2D<int> direction;
-	Texture* koopaTexture;
-	Game* koopaGame;
+	Texture* mushroomTexture;
+	Game* mushroomGame;
 
 public:
 
-	Koopa(Game* game, std::stringstream& atributos);
+	Mushroom(Game* game, int posX, int posY);
 
 	void render() const;
 

@@ -13,6 +13,7 @@ protected:
 	Texture* goombaTexture;
 	Game* goombaGame;
 	int frameRunner;
+	bool frozen;
 
 public:
 

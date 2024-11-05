@@ -13,6 +13,7 @@ protected:
 	Texture* koopaTexture;
 	Game* koopaGame;
 	int frameRunner;
+	bool frozen;
 
 public:
 
