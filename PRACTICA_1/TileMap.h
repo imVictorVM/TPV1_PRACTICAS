@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Texture.h"
 #include "Vector2D.h"
+#include "Collision.h"
 #include <vector>
 //#include "Game.h"
 

@@ -1,5 +1,6 @@
 #include "TileMap.h"
 #include "Game.h"
+#include "Collision.h"
 #include <fstream>
 
 using namespace std;
@@ -77,10 +78,34 @@ TileMap::update() {
 
 }
 
-void
-TileMap::hit() {
+Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
+{
+	vector<vector<int>> matrix; // atributos de TileMap
+	Texture* texture = game->getTexture(Game::BACKGROUND);
+	Collision colision;
 
+	constexpr int OBSTACLE_THRESHOLD = 4; // constante
+
+	// Celda del nivel que contiene la esquina superior izquierda del rectángulo
+	int row0 = rect.y / Game::TILE_SIDE;
+	int col0 = rect.x / Game::TILE_SIDE;
+
+	// Celda del nivel que contiene la esquina inferior derecha del rectángulo
+	int row1 = (rect.y + rect.h) / Game::TILE_SIDE;
+	int col1 = (rect.x + rect.w) / Game::TILE_SIDE;
+
+	for (int row = row0; row <= row1; ++row)
+		for (int col = col0; col <= col1; ++col) {
+			int indice = matriz[row][col];
+
+			if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD)
+				colision.collides = true;
+				return colision;
+		}
+	colision.collides = false;
+	return colision;
 }
+
 
 //Devuelve el bloque que esta justo debajo del suelo para el jugador
 //IMPORTANTE: El calculo del tile funciona perfectamente, este metodo no deberia editarse para arreglar las colisiones.

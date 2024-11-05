@@ -43,7 +43,7 @@ public:
 
 	bool BlockCollision();
 
-
+	SDL_Rect getRect() const;
 
 };
 

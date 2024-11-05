@@ -191,24 +191,43 @@ Game::handleEvents()
 
 Collision
 Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
+	//fromPlayer se encargara de comprobar si viene de arriba o de abajo
+	//rect es el rectangulo de la interseccion provocada entre dos objetos
+	//
+	//Collision colision;
+	//colision.collides = false;
+	//colision.damages = false;
+	//SDL_Rect playerRect = player->getRect();
+	//
+	////Accedemos a todos los tiles del mapa y comparamos
+	//colision.collides = tilemap->hit(rect, fromPlayer);
+	//for (Block* block : blocks) {
+	//	colision.collides = block->hit(rect, fromPlayer);
+	//}
+	//
+	//return colision;
+
 	Collision colision;
-	colision.collides = false;
-	colision.damages = false;
-
-	while (!colision.collides && !colision.damages) {
-		colision.collides = tilemap->hit(rect,fromPlayer);
-		colision.collides = player->hit(rect,fromPlayer);
-		for (Block* block : blocks) {
-			colision.collides = block->hit(rect,fromPlayer);
-		}
-	}
-
 	return colision;
 }
 
 Collision
 Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
+	//fromPlayer se encargara de comprobar si viene de arriba o de abajo
+	//rect es el rectangulo de la interseccion provocada entre dos objetos
 
+	Collision colision;
+	colision.collides = false;
+	colision.damages = false;
+	SDL_Rect playerRect = player->getRect();
+
+	//Accedemos a todos los tiles del mapa y comparamos
+	colision = tilemap->hit(rect, fromPlayer);
+	for (Block* block : blocks) {
+		colision = block->hit(rect, fromPlayer);
+	}
+
+	return colision;
 }
 
 Collision

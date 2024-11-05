@@ -59,7 +59,10 @@ Player::render() const {
 
 
 	//Si recibe daño ponemos el frame 1
-	if (hit()) frame = 1;
+	SDL_Rect rect;
+	bool fromPlayer = false;
+	Collision colision = hit(rect,fromPlayer);
+	if (hit(rect,fromPlayer)) frame = 1;
 
 	//Esto es para comprobar si esta mirando a la izquierda o a la derecha y en funcion de eso girar el render en funcion de donde mire
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
@@ -121,7 +124,7 @@ Player::update() {
 
 	//Esto es para perder vidas si se sale del mapa o es golpeado por un enemigo
 	if (hit()) {
-
+		vidas--;
 	}
 
 }
@@ -194,7 +197,7 @@ Player::BlockCollision() {
 
 //Mirar player.h
 Collision hit(const SDL_Rect& rect, bool fromPlayer) {
-	GamePlayer->CheckCollisions();
+	return GamePlayer->CheckCollisions(rect,fromPlayer);
 }
 
 void Player::HandleEvent(SDL_Event event) {
@@ -236,4 +239,14 @@ Vector2D<int> Player::getPosition() const {
 //Obtenemos la direccion para la colision de bloques cuando mario salta desde abajo
 Vector2D<int> Player::getDirection() const {
 	return direction;
+}
+
+//Recordemos que el rect del jugador tiene el origen distinto al de los tiles para colisionar con el entorno, por eso puede atravesarlos
+SDL_Rect Player::getRect() const {
+	SDL_Rect playerRect;
+	playerRect.x = position.getX();
+	playerRect.y = position.getY();
+	playerRect.w = Game::TILE_SIDE;
+	playerRect.h = Game::TILE_SIDE;
+	return playerRect;
 }

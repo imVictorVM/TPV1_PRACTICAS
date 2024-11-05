@@ -100,7 +100,8 @@ Block::update() {
 }
 
 Collision hit(const SDL_Rect& rect, bool fromPlayer) {
-
+	Collision colision;
+	return colision;
 }
 
 bool
