@@ -32,6 +32,8 @@ public:
 		BACKGROUND,
 		MARIANO,
 		BLOCK,
+		GOOMBA,
+		KOOPA,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
