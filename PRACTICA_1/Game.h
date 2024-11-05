@@ -13,6 +13,7 @@
 #include "TileMap.h"
 #include "Player.h"
 //#include "Block.h"
+#include "Collision.h"
 
 class Block;
 
@@ -66,6 +67,9 @@ public:
 	void handleEvents();
 	void loadObjectMap();
 	int getMapOffset();
+	Collision checkCollision(const SDL_Rect& rect, bool fromPlayer);
+	Collision checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer);
+	Collision checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer);
 
 	//AÑADIDOS PERO NO ESPECIFICAOS EN ENUNCIADO
 	void setMapOffset(int playerOffset);

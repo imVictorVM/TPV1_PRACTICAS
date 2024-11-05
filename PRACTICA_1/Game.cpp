@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Block.h"
+#include "Collision.h"
 
 using namespace std;
 class TileMap;
@@ -167,6 +168,10 @@ Game::update()
 	}
 }
 
+int Game::getMapOffset() {
+	return mapOffset;
+};
+
 void
 Game::handleEvents()
 {
@@ -184,12 +189,35 @@ Game::handleEvents()
 	}
 }
 
+Collision
+Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
+	Collision colision;
+	colision.collides = false;
+	colision.damages = false;
+
+	while (!colision.collides && !colision.damages) {
+		colision.collides = tilemap->hit(rect,fromPlayer);
+		colision.collides = player->hit(rect,fromPlayer);
+		for (Block* block : blocks) {
+			colision.collides = block->hit(rect,fromPlayer);
+		}
+	}
+
+	return colision;
+}
+
+Collision
+Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
+
+}
+
+Collision
+Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
+
+}
+
 //AQUI ESTAN LOS METODOS PUBLICOS ADICIONALES, NECESARIOS PARA LA LOGICA DEL JUEGO PERO NO ESPECIFICADOS EN ENUNCIADO
 //Son necesarios todos, pero podriamos prescindir de alguno para optimizar codigo y no hacerlo público todo
-
-int Game::getMapOffset() {
-	return mapOffset;
-};
 
 void Game::setMapOffset(int playerOffset) {
 	mapOffset += playerOffset;
@@ -199,14 +227,17 @@ Vector2D<int> Game::getPlayerPosition() const {
 	return player->getPosition();
 }
 
+//PARA QUITAR
 std::vector<Block*>& Game::getBlocks() {
 	return blocks;
 }
 
+//PARA QUITAR
 int Game::getTile() {
 	return tilemap->tileRect(player->getPosition());
 }
 
+//PARA QUITAR
 Vector2D<int> Game::getPlayerDirection() const {
 	return player->getDirection();
 }

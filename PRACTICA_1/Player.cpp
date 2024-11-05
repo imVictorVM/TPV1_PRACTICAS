@@ -2,6 +2,7 @@
 #include "Block.h"
 #include "TileMap.h"
 #include "Game.h"
+#include "Collision.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -192,9 +193,8 @@ Player::BlockCollision() {
 }
 
 //Mirar player.h
-bool
-Player::hit() const {
-	return false;
+Collision hit(const SDL_Rect& rect, bool fromPlayer) {
+	GamePlayer->CheckCollisions();
 }
 
 void Player::HandleEvent(SDL_Event event) {

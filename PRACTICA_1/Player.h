@@ -33,8 +33,7 @@ public:
 
 	bool GroundCollision();
 
-	//Lo marcamos como const porque sino no se puede usar en el render, no modificara atributos del jugador
-	bool hit() const;
+	Collision hit(const SDL_Rect& rect, bool fromPlayer);
 
 	void HandleEvent(SDL_Event event);
 

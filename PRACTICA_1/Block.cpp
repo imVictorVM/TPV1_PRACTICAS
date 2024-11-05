@@ -99,6 +99,10 @@ Block::update() {
 	if (frameBlock > 8) frameBlock = 0;
 }
 
+Collision hit(const SDL_Rect& rect, bool fromPlayer) {
+
+}
+
 bool
 Block::hit(Vector2D<int> playerPosition) {
 

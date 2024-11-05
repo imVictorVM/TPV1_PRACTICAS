@@ -23,7 +23,7 @@ public:
 
 	void update();
 
-	void hit();
+	Collision hit(const SDL_Rect& rect, bool fromPlayer);
 
 	int tileRect(Vector2D<int> playerPosition);
 };
