@@ -53,3 +53,8 @@ Koopa::update() {
 		frameRunner++;
 	}
 }
+
+Collision
+hit(const SDL_Rect rect, bool fromPlayer) {
+
+}

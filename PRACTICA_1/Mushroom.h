@@ -2,6 +2,7 @@
 
 #include "Vector2D.h"
 #include "Texture.h"
+#include "Collision.h"
 
 class Game;
 
@@ -21,5 +22,6 @@ public:
 
 	void update();
 
-	bool hit() const;
+	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+
 };

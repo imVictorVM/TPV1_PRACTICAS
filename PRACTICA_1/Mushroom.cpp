@@ -23,3 +23,8 @@ Mushroom::render() const {
 		mushroomTexture->renderFrame(MushPosition, 0, 0);
 	
 }
+
+Collision
+hit(const SDL_Rect rect, bool fromPlayer) {
+
+}
