@@ -3,10 +3,11 @@
 
 using namespace std;
 
-Mushroom::Mushroom(Game* game, int posX, int posY) : position(), mushroomTexture(game->getTexture(Game::MUSHROOM)), mushroomGame(game)
+Mushroom::Mushroom(Game* game, int posX, int posY) : position(), direction(), mushroomTexture(game->getTexture(Game::MUSHROOM)), mushroomGame(game)
 {
 	//posicion de la seta
 	position = Vector2D<int>(posX * Game::TILE_SIDE, posY * Game::TILE_SIDE);
+	direction = Vector2D<int>(1 * Game::TILE_SIDE, 0 * Game::TILE_SIDE);
 }
 
 void
@@ -23,6 +24,16 @@ Mushroom::render() const {
 		mushroomTexture->renderFrame(MushPosition, 0, 0);
 	
 }
+
+
+void
+Mushroom::update() {
+
+	Vector2D<int> newPosition = position + direction;
+
+	position = newPosition;
+}
+
 
 Collision
 hit(const SDL_Rect rect, bool fromPlayer) {
