@@ -4,6 +4,8 @@
 #include "Game.h"
 #include "Player.h"
 #include "Block.h"
+#include "Goomba.h"
+#include "Koopa.h"
 #include "Collision.h"
 
 using namespace std;
@@ -91,10 +93,10 @@ Game::loadObjectMap() {
 			blocks.push_back(new Block(this, lineStream));
 			break;
 		case 'G':
-			//goomba
+			goombas.push_back(new Goomba(this, lineStream));
 			break;
 		case 'K':
-			//koopa
+			koopas.push_back(new Koopa(this, lineStream));
 			break;
 		}
 	}
@@ -109,6 +111,14 @@ Game::~Game()
 		delete block;
 	}
 	blocks.clear();
+	for (Goomba* goomba : goombas) {
+		delete goomba;
+	}
+	goombas.clear();
+	for (Koopa* koopa : koopas) {
+		delete koopa;
+	}
+	koopas.clear();
 	// Elimina las texturas
 	for (Texture* texture : textures)
 		delete texture;
@@ -149,6 +159,12 @@ Game::render() const
 	for (const Block* block : blocks) {
 		block->render();
 	}
+	for (const Goomba* goomba : goombas) {
+		goomba->render();
+	}
+	for (const Koopa* koopa : koopas) {
+		koopa->render();
+	}
 	// Pinta los objetos del juego
 	//textures[BACKGROUND]->render();
 	//perro->render();
@@ -165,6 +181,12 @@ Game::update()
 	player->update();
 	for (Block* block : blocks) {
 		block->update();
+	}
+	for (Goomba* goomba : goombas) {
+		goomba->update();
+	}
+	for (Koopa* koopa : koopas) {
+		koopa->update();
 	}
 }
 

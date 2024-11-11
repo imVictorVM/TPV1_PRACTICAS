@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(game->getTexture(Game::GOOMBA)), goombaGame(game) , frameRunner(0), frozen(true)
+Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(game->getTexture(Game::GOOMBA)), goombaGame(game) , frame(0), frameRunner(0), frozen(true)
 {
 	string line;
 
@@ -17,12 +17,15 @@ Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(
 
 	position = Vector2D<int>(posX * Game::TILE_SIDE, posY * Game::TILE_SIDE);
 	
-
+	
 }
 
 void
 Goomba::render() const {
-	if (!frozen) {
+
+
+
+	if (frozen) {
 		//posición del goomba
 		SDL_Rect GPosition;
 		GPosition.x = position.getX();
@@ -30,31 +33,44 @@ Goomba::render() const {
 		GPosition.w = Game::TILE_SIDE;
 		GPosition.h = Game::TILE_SIDE;
 
-		int frame = 0;
-		//movimiento del goomba
-		if (frameRunner == 0) frame = 0;
-		if (frameRunner == 1) frame = 1;
 		//muerte del goomba
 		//if(condicion muerte del goomba) frame = 2;
 
 
 		//Renderizamos con los parametros actualizados
 		goombaTexture->renderFrame(GPosition, 0, frame);
+
+		
+		cout << " goomba existe: ";
+		cout << GPosition.x;
+		cout << " ";
+		cout << GPosition.y;
+		cout << " ";
+		cout << GPosition.w;
+		cout << " ";
+		cout << GPosition.h;
+		cout << " ";
+		cout << frame;
 	}
 }
 
 
 void
 Goomba::update() {
+	
 
+	if (frozen) {
 
-	if (!frozen) {
+		if (frameRunner == 0) frame = 0;
+		if (frameRunner == 1) frame = 1;
+
 		if (frameRunner > 1) frameRunner = 0;
-		frameRunner++;
+		else frameRunner++;
+
 	}
 }
 
-Collision
-hit(const SDL_Rect rect, bool fromPlayer) {
-
-}
+//Collision
+//hit(const SDL_Rect rect, bool fromPlayer) {
+//
+//}

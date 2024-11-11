@@ -13,6 +13,7 @@ protected:
 	Vector2D<int> direction;
 	Texture* goombaTexture;
 	Game* goombaGame;
+	int frame;
 	int frameRunner;
 	bool frozen;
 

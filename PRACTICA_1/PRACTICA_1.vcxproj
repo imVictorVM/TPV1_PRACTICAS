@@ -133,7 +133,10 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -145,6 +148,9 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="gameList.h" />
+    <ClInclude Include="Goomba.h" />
+    <ClInclude Include="Koopa.h" />
+    <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TileMap.h" />

@@ -48,13 +48,14 @@ Koopa::render() const {
 void
 Koopa::update() {
 
+
 	if (!frozen) {
 		if (frameRunner > 3) frameRunner = 0;
 		frameRunner++;
 	}
 }
 
-Collision
-hit(const SDL_Rect rect, bool fromPlayer) {
-
-}
+//Collision
+//hit(const SDL_Rect rect, bool fromPlayer) {
+//
+//}

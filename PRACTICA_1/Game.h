@@ -15,7 +15,10 @@
 //#include "Block.h"
 #include "Collision.h"
 
+
 class Block;
+class Goomba;
+class Koopa;
 
 using uint = unsigned int;
 //
@@ -57,6 +60,8 @@ private:
 	TileMap* tilemap = nullptr;
 	Player* player = nullptr;
 	std::vector<Block*> blocks;
+	std::vector<Goomba*> goombas;
+	std::vector<Koopa*> koopas;
 	
 
 public:
