@@ -16,8 +16,9 @@ Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(
 	lineStream >> posX;
 	lineStream >> posY;
 
-	position = Vector2D<int>(posX * Game::TILE_SIDE, posY * Game::TILE_SIDE);
+	position = Vector2D<int>((posX-1) * Game::TILE_SIDE, (posY-1) * Game::TILE_SIDE);
 	direction = Vector2D<int>(-1, 0);
+	notGround = Vector2D<int>(0, 1);
 	
 }
 
@@ -26,7 +27,7 @@ Goomba::render() const {
 
 
 
-	if (frozen) {
+	if (!frozen) {
 		//posición del goomba
 		SDL_Rect GPosition;
 		GPosition.x = position.getX();
@@ -40,18 +41,6 @@ Goomba::render() const {
 
 		//Renderizamos con los parametros actualizados
 		goombaTexture->renderFrame(GPosition, 0, frame);
-
-		
-		cout << " goomba existe: ";
-		cout << GPosition.x;
-		cout << " ";
-		cout << GPosition.y;
-		cout << " ";
-		cout << GPosition.w;
-		cout << " ";
-		cout << GPosition.h;
-		cout << " ";
-		cout << frame;
 	}
 }
 
@@ -59,10 +48,15 @@ Goomba::render() const {
 void
 Goomba::update() {
 	
-	//position = position + direction;
+	int mapOffset = game->getMapOffset();
+	if (position.getX() > mapOffset - game->WINDOW_WIDTH) frozen = false;
+	
 
-	if (frozen) {
-
+	if (!frozen) {
+		if (!groundCollision()) {
+			position = position + direction + notGround;
+		}
+		position = position + direction;
 		if (frameRunner == 0) frame = 0;
 		if (frameRunner == 1) frame = 1;
 
@@ -90,6 +84,10 @@ Goomba::update() {
 	if (frameBlock > 8) frameBlock = 0;*/
 
 
+}
+bool
+Goomba::groundCollision() {
+	return false;
 }
 
 //Collision

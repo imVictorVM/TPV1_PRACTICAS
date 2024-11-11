@@ -16,8 +16,8 @@ Koopa::Koopa(Game* game, stringstream& atributes) : position(), koopaTexture(gam
 	lineStream >> posX;
 	lineStream >> posY;
 
-	position = Vector2D<int>(posX * Game::TILE_SIDE, posY * Game::TILE_SIDE);
-
+	position = Vector2D<int>((posX-1) * Game::TILE_SIDE, (posY-1)* Game::TILE_SIDE);
+	direction = Vector2D<int>(-1, 0);
 
 }
 
@@ -49,6 +49,8 @@ Koopa::render() const {
 void
 Koopa::update() {
 
+
+
 	//Los goombas se mueven en funcion el offset del mapa
 	int newOffset = game->getMapOffset();
 	int offsetChange = newOffset - previousOffset;
@@ -58,6 +60,7 @@ Koopa::update() {
 	}
 
 	if (frozen) {
+		position = position + direction;
 		if (frameRunner > 3) frameRunner = 0;
 		frameRunner++;
 	}

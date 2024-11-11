@@ -124,6 +124,13 @@ Game::~Game()
 	for (Texture* texture : textures)
 		delete texture;
 
+	if (tilemap != nullptr)
+	{
+		delete tilemap;
+	}
+	if (player != nullptr) {
+		delete player;
+	}
 	// Desactiva la SDL
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -189,6 +196,8 @@ Game::update()
 	for (Koopa* koopa : koopas) {
 		koopa->update();
 	}
+
+
 }
 
 int Game::getMapOffset() {

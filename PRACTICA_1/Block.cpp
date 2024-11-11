@@ -33,7 +33,7 @@ Block::Block(Game* game, stringstream& atributes) : position(), TextureBlock(gam
 	lineStream >> A;
 
 	//Pasamos los parametros al constructor del player despues de leerlos
-	position = Vector2D<int>(positionx * Game::TILE_SIDE, positiony * Game::TILE_SIDE);
+	position = Vector2D<int>((positionx-1) * Game::TILE_SIDE, (positiony-1) * Game::TILE_SIDE);
 	switch (T) {
 		case '?': type = surprise;
 			break;
