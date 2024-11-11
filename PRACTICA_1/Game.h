@@ -67,12 +67,12 @@ public:
 	void handleEvents();
 	void loadObjectMap();
 	int getMapOffset();
-	Collision checkCollision(const SDL_Rect& rect, bool fromPlayer);
 	Collision checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer);
 	Collision checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer);
 
 	//AÑADIDOS PERO NO ESPECIFICAOS EN ENUNCIADO
 	void setMapOffset(int playerOffset);
+	void ResetMapOffset();
 	Vector2D<int> getPlayerPosition() const;
 	std::vector<Block*>& getBlocks();
 	int getTile();

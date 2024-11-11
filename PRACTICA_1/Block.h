@@ -36,7 +36,6 @@ public:
 	void update();
 
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
-	bool hit(Vector2D<int> playerPosition);
 
 	SDL_Rect getRect() const;
 };

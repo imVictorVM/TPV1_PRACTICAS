@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2D.h"
 #include "Texture.h"
+#include "Collision.h"
 #include <iostream>
 #include <SDL.h>
 #include <string>
@@ -22,6 +23,9 @@ protected:
 	int frameRunner; //Sirve como contador para saltar entre los frames 0,2,3
 	bool leftLimit; //Sirve para no avanzar fuera de la pantalla a la izquierda
 	bool lookingLeft; //para ver si está mirando a izquierda o derecha
+	int damageCooldown; //tiempo de cooldown para el daño 
+	int InitialPositionX;
+	int InitialPositionY; 
 	
 public:
 
@@ -38,10 +42,12 @@ public:
 	void HandleEvent(SDL_Event event);
 
 	Vector2D<int> getPosition() const;
+	
+	Vector2D<int> ResetPosition() const;
 
 	Vector2D<int> getDirection() const;
 
-	bool BlockCollision();
+	//bool BlockCollision();
 
 	SDL_Rect getRect() const;
 

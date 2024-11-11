@@ -190,38 +190,38 @@ Game::handleEvents()
 }
 
 Collision
-Game::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
-	//fromPlayer se encargara de comprobar si viene de arriba o de abajo
-	//rect es el rectangulo de la interseccion provocada entre dos objetos
-	//
-	//Collision colision;
-	//colision.collides = false;
-	//colision.damages = false;
-	//SDL_Rect playerRect = player->getRect();
-	//
-	////Accedemos a todos los tiles del mapa y comparamos
-	//colision.collides = tilemap->hit(rect, fromPlayer);
-	//for (Block* block : blocks) {
-	//	colision.collides = block->hit(rect, fromPlayer);
-	//}
-	//
-	//return colision;
-
-	Collision colision;
-	return colision;
-}
-
-Collision
 Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 	//fromPlayer se encargara de comprobar si viene de arriba o de abajo
 	//rect es el rectangulo de la interseccion provocada entre dos objetos
 
+	Collision colision = { false,false,{0,0,0,0} };
+
+	// Primero verificamos colisión con el tilemap
+	colision = tilemap->hit(rect, fromPlayer);
+	if (colision.collides) {
+		std::cout << "Rectángulo del jugador: (" << rect.x << ", " << rect.y << ", " << rect.w << ", " << rect.h << ")\n";
+		std::cout << "Intersección de colisión: (" << colision.intersection.x << ", " << colision.intersection.y << ", "
+			<< colision.intersection.w << ", " << colision.intersection.h << ")\n";
+		return colision;
+	}
+		
+
+	// Luego verificamos colisión con cada bloque
+	//for (Block* block : blocks) {
+		//colision = block->hit(rect, fromPlayer);
+		//if (colision.collides) return colision;
+	//}
+	return colision;
+}
+
+Collision
+Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
 	Collision colision;
 	colision.collides = false;
 	colision.damages = false;
-	SDL_Rect playerRect = player->getRect();
 
-	//Accedemos a todos los tiles del mapa y comparamos
+	SDL_Rect enemyRect = rect;
+
 	colision = tilemap->hit(rect, fromPlayer);
 	for (Block* block : blocks) {
 		colision = block->hit(rect, fromPlayer);
@@ -230,16 +230,15 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 	return colision;
 }
 
-Collision
-Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
-
-}
-
 //AQUI ESTAN LOS METODOS PUBLICOS ADICIONALES, NECESARIOS PARA LA LOGICA DEL JUEGO PERO NO ESPECIFICADOS EN ENUNCIADO
 //Son necesarios todos, pero podriamos prescindir de alguno para optimizar codigo y no hacerlo público todo
 
 void Game::setMapOffset(int playerOffset) {
 	mapOffset += playerOffset;
+}
+
+void Game::ResetMapOffset() {
+	mapOffset = 0;
 }
 
 Vector2D<int> Game::getPlayerPosition() const {
