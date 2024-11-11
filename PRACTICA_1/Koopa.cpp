@@ -1,9 +1,10 @@
+#include "checkML.h"
 #include "Koopa.h"
 #include "Game.h"
 
 using namespace std;
 
-Koopa::Koopa(Game* game, stringstream& atributes) : position(), koopaTexture(game->getTexture(Game::KOOPA)), koopaGame(game), frameRunner(0), frozen(true)
+Koopa::Koopa(Game* game, stringstream& atributes) : position(), koopaTexture(game->getTexture(Game::KOOPA)), game(game), frameRunner(0), frozen(true), previousOffset(0)
 {
 	string line;
 
@@ -23,7 +24,7 @@ Koopa::Koopa(Game* game, stringstream& atributes) : position(), koopaTexture(gam
 void
 Koopa::render() const {
 
-	if (!frozen) {
+	if (frozen) {
 		//posición del koopa
 		SDL_Rect KPosition;
 		KPosition.x = position.getX();
@@ -48,8 +49,15 @@ Koopa::render() const {
 void
 Koopa::update() {
 
+	//Los goombas se mueven en funcion el offset del mapa
+	int newOffset = game->getMapOffset();
+	int offsetChange = newOffset - previousOffset;
+	if (offsetChange != 0) {
+		position = Vector2D<int>(position.getX() - offsetChange, position.getY());
+		previousOffset = newOffset;
+	}
 
-	if (!frozen) {
+	if (frozen) {
 		if (frameRunner > 3) frameRunner = 0;
 		frameRunner++;
 	}

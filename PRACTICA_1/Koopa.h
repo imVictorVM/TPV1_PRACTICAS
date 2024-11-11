@@ -12,9 +12,10 @@ protected:
 	Vector2D<int> position;
 	Vector2D<int> direction;
 	Texture* koopaTexture;
-	Game* koopaGame;
+	Game* game;
 	int frameRunner;
 	bool frozen;
+	int previousOffset;
 
 public:
 

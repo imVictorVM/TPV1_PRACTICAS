@@ -1,9 +1,10 @@
+#include "checkML.h"
 #include "Goomba.h"
 #include "Game.h"
 
 using namespace std;
 
-Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(game->getTexture(Game::GOOMBA)), goombaGame(game) , frame(0), frameRunner(0), frozen(true)
+Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(game->getTexture(Game::GOOMBA)), game(game) , frame(0), frameRunner(0), previousOffset(0), frozen(true)
 {
 	string line;
 
@@ -16,7 +17,7 @@ Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(
 	lineStream >> posY;
 
 	position = Vector2D<int>(posX * Game::TILE_SIDE, posY * Game::TILE_SIDE);
-	
+	direction = Vector2D<int>(-1, 0);
 	
 }
 
@@ -58,6 +59,7 @@ Goomba::render() const {
 void
 Goomba::update() {
 	
+	//position = position + direction;
 
 	if (frozen) {
 
@@ -68,6 +70,26 @@ Goomba::update() {
 		else frameRunner++;
 
 	}
+
+	//Los goombas se mueven en funcion el offset del mapa
+	int newOffset = game->getMapOffset();
+	int offsetChange = newOffset - previousOffset;
+	if (offsetChange != 0) {
+		position = Vector2D<int>(position.getX() - offsetChange, position.getY());
+		previousOffset = newOffset;
+	}
+
+	// Verifica la colisión con el jugador y actualiza el bloque si es necesario
+	/*Vector2D<int> playerPosition = game->getPlayerPosition();
+	if (game->checkPlayerCollision(getRect(), true).collides) {
+		type = empty;
+	}*/
+
+	//Actualizamos el frame del bloque siempre en caso de ser un bloque sorpresa, hay muchos frameBlocks para que sea lenta la trancision de un sprite a otro
+	/*frameBlock++;
+	if (frameBlock > 8) frameBlock = 0;*/
+
+
 }
 
 //Collision

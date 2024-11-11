@@ -12,10 +12,11 @@ protected:
 	Vector2D<int> position;
 	Vector2D<int> direction;
 	Texture* goombaTexture;
-	Game* goombaGame;
+	Game* game;
 	int frame;
 	int frameRunner;
 	bool frozen;
+	int previousOffset;
 
 public:
 
