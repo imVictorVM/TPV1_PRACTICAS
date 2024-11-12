@@ -79,8 +79,13 @@ Player::render() const {
 }
 
 void Player::update() {
+
+	SDL_Rect MarioRect = getRect();
+	MarioRect.y += direction.getY();
+	MarioRect.x += GamePlayer->getMapOffset();
+
 	// Verifica colisión en todas las direcciones
-	Collision collision = hit(getRect(), true);
+	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
 
 	// Calcula la nueva posición
 	Vector2D<int> newPosition = position + direction;
@@ -94,39 +99,50 @@ void Player::update() {
 
 	if (jump && position.getY() <= groundPosition.getY() - (4 * Game::TILE_SIDE)) {
 		jump = false;
-		direction = Vector2D<int>(0, Game::TILE_SIDE / 2);
+		direction = Vector2D<int>(direction.getX(), Game::TILE_SIDE / 2);
 	}
 
-	//if (collision.collides) {
-	//	// Lógica de ajuste en caso de colisión
-	//	if (collision.intersection.h > 0 && collision.intersection.w > 0) {
-	//		if (direction.getY() > 0 && collision.intersection.y > position.getY()) {
-	//			// Colisión desde abajo (suelo)
-	//			newPosition = Vector2D<int>(position.getX(), position.getY());
-	//			jump = true;
-	//		}
-	//		else if (direction.getY() < 0 && collision.intersection.y < position.getY()) {
-	//			// Colisión desde arriba
-	//			newPosition = Vector2D<int>(position.getX(), position.getY());
-	//			jump = false;
-	//		}
-	//		else if (direction.getX() > 0 && collision.intersection.x > position.getX()) {
-	//			// Colisión desde la izquierda
-	//			newPosition = Vector2D<int>(position.getX(), position.getY());
-	//			jump = false;
-	//		}
-	//		else if (direction.getX() < 0 && collision.intersection.x < position.getX()) {
-	//			// Colisión desde la derecha
-	//			newPosition = Vector2D<int>(position.getX(), position.getY());
-	//			jump = false;
-	//		}
-	//	}
-	//	position = newPosition;
-	//}
-	//else {
-	//	// No hay colisión, actualizar la posición libremente
-		position = newPosition;
-	//}
+	if (collision.collides) {
+		// Lógica de ajuste en caso de colisión
+		//if (direction.getY() > 0 && collision.intersection.y > position.getY()) {
+		//	// Colisión desde abajo (suelo)
+		//	newPosition = Vector2D<int>(newPosition.getX(), newPosition.getY() - collision.intersection.h);
+		//	jump = true;
+		//}
+		//else if (direction.getY() < 0 && collision.intersection.y < position.getY()) {
+		//	// Colisión desde arriba
+		//	newPosition = Vector2D<int>(newPosition.getX(), newPosition.getY() + collision.intersection.h);
+		//	jump = false;
+		//}
+		//position = Vector2D<int>(newPosition.getX(),position.getY());
+	}
+	else {
+		// No hay colisión, actualizar la posición libremente
+		position.setY(newPosition.getY());
+		
+	}
+
+	MarioRect.y = position.getY();
+	MarioRect.x += direction.getX();
+
+	collision = GamePlayer->checkPlayerCollision(MarioRect, true);
+
+	if (collision.collides) {
+		//if (direction.getX() > 0 && collision.intersection.x > position.getX()) {
+		//	// Colisión desde la izquierda
+		//	newPosition = Vector2D<int>(position.getX() - collision.intersection.w, position.getY());
+		//	jump = false;
+		//}
+		//else if (direction.getX() < 0 && collision.intersection.x < position.getX()) {
+		//	// Colisión desde la derecha
+		//	newPosition = Vector2D<int>(position.getX() + collision.intersection.w, position.getY());
+		//	jump = false;
+		//}
+	} 
+	else {
+		position.setX(newPosition.getX());
+	}
+		
 
 	// Desplazamiento del mapa cuando se mueve a la derecha
 	if (position.getX() > Game::WINDOW_WIDTH * Game::TILE_SIDE / 2 && direction.getX() > 0) {
@@ -194,12 +210,12 @@ Player::HandleEvent(SDL_Event event) {
 	if (event.type == SDL_KEYDOWN) {
 		switch (event.key.keysym.sym) {
 		case SDLK_RIGHT:
-			direction = Vector2D<int>(1 * Game::TILE_SIDE / 2, direction.getY());
+			direction = Vector2D<int>(8, direction.getY());
 			lookingLeft = false;
 			break;
 		case SDLK_LEFT:
 			if (!leftLimit) {
-				direction = Vector2D<int>(-1 * Game::TILE_SIDE / 2, direction.getY());
+				direction = Vector2D<int>(-8, direction.getY());
 				lookingLeft = true;
 			}
 			break;
@@ -207,7 +223,7 @@ Player::HandleEvent(SDL_Event event) {
 			if (!jump && GroundCollision()) {
 				jump = true;
 				groundPosition = position;
-				direction = direction + Vector2D<int>(0, -Game::TILE_SIDE / 2);
+				direction = direction + Vector2D<int>(0, -8);
 			}
 			break;
 		}
@@ -250,7 +266,7 @@ SDL_Rect
 Player::getRect() const{
 	SDL_Rect playerRect;
 	playerRect.x = position.getX();
-	playerRect.y = position.getY() + Game::TILE_SIDE;
+	playerRect.y = position.getY();
 	playerRect.w = Game::TILE_SIDE;
 	playerRect.h = Game::TILE_SIDE;
 	return playerRect;

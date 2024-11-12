@@ -22,6 +22,14 @@ public:
 		return y;
 	};
 
+	void setX(T newX) {
+		x = newX;
+	}
+
+	void setY(T newY) {
+		y = newY;
+	}
+
 	Vector2D operator+(const Vector2D& v) const {
 		Vector2D r;
 		r.x = this->x + v.x;

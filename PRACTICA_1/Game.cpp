@@ -21,7 +21,7 @@ struct TextureSpec
 };
 
 // Directorio raíz de los archivos de textura
-const string textureRoot = "../assets/imgs/";
+const string textureRoot = "../assets/images/";
 
 // Especificación de las texturas del juego
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
@@ -239,10 +239,10 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 		
 
 	// Luego verificamos colisión con cada bloque
-	//for (Block* block : blocks) {
-		//colision = block->hit(rect, fromPlayer);
-		//if (colision.collides) return colision;
-	//}
+	for (Block* block : blocks) {
+		colision = block->hit(rect, fromPlayer);
+		if (colision.collides) return colision;
+	}
 	return colision;
 }
 

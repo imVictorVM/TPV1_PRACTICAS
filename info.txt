@@ -1,0 +1,13 @@
+IKER JULIAN MARTINEZ MANRIQUE
+VÍCTOR VALENZUELA MARTÍNEZ
+
+Información:
+Hemos implementado la aparición de objetos, el mapa, Mario pequeño.
+
+Problemas:
+Colisiones respecto a la posición porque dependemos del mapoffset para ello.
+
+Falta:
+Colision con bloques y enemigos.
+Darle gravedad a los enemigos
+SuperMario.

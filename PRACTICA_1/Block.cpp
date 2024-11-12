@@ -150,7 +150,7 @@ Block::update() {
 Collision
 Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 
-	Collision colision;
+	Collision colision = { false,false,{0,0,0,0} };
 
 	// Creamos un rect del bloque para compararlo con el del jugador
 	SDL_Rect blockRect;
