@@ -14,7 +14,7 @@ class Player
 {
 protected:
 	Vector2D<int> position;
-	Vector2D<int> groundPosition;
+	int groundPositionY;
 	Vector2D<int> direction;
 	Texture* TexturePlayer;
 	Game* GamePlayer;
@@ -26,6 +26,7 @@ protected:
 	int damageCooldown; //tiempo de cooldown para el daño 
 	int InitialPositionX;
 	int InitialPositionY; 
+	int velocity;
 	
 public:
 
@@ -34,8 +35,6 @@ public:
 	void render() const;
 
 	void update();
-
-	bool GroundCollision();
 
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
 

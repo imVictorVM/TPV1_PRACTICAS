@@ -276,18 +276,3 @@ void Game::ResetMapOffset() {
 Vector2D<int> Game::getPlayerPosition() const {
 	return player->getPosition();
 }
-
-//PARA QUITAR
-std::vector<Block*>& Game::getBlocks() {
-	return blocks;
-}
-
-//PARA QUITAR
-int Game::getTile() {
-	return tilemap->tileRect(player->getPosition());
-}
-
-//PARA QUITAR
-Vector2D<int> Game::getPlayerDirection() const {
-	return player->getDirection();
-}

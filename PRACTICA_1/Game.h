@@ -79,9 +79,6 @@ public:
 	void setMapOffset(int playerOffset);
 	void ResetMapOffset();
 	Vector2D<int> getPlayerPosition() const;
-	std::vector<Block*>& getBlocks();
-	int getTile();
-	Vector2D<int> getPlayerDirection() const;
 
 	Texture* getTexture(TextureName name) const;
 

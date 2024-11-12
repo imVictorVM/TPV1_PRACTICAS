@@ -12,7 +12,7 @@
 #include <string>
 using namespace std;
 
-Player::Player(Game* game, stringstream& atributes) : position(), TexturePlayer(game->getTexture(Game::MARIANO)), GamePlayer(game), vidas(0), jump(false), frameRunner(0), leftLimit(), damageCooldown(60){
+Player::Player(Game* game, stringstream& atributes) : position(), TexturePlayer(game->getTexture(Game::MARIANO)), GamePlayer(game), vidas(0), jump(false), frameRunner(0), leftLimit(), damageCooldown(60), velocity(8){
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -32,12 +32,12 @@ Player::Player(Game* game, stringstream& atributes) : position(), TexturePlayer(
 	lineStream >> nvidas;
 
 	//Pasamos los parametros al constructor del player despues de leerlos
-	position = Vector2D<int>((positionx-1) * Game::TILE_SIDE, (positiony-1) * Game::TILE_SIDE);
+	position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony - 1) * Game::TILE_SIDE);
 	InitialPositionX = positionx;
 	InitialPositionY = positiony;
 	vidas = nvidas;
 	lookingLeft = false;
-	groundPosition = Vector2D<int>((positionx - 1) * Game::TILE_SIDE, (positiony - 1) * Game::TILE_SIDE);
+	groundPositionY = (positiony - 1) * Game::TILE_SIDE;
 }
 
 void
@@ -66,9 +66,6 @@ Player::render() const {
 
 	//Esto es para comprobar si esta mirando a la izquierda o a la derecha y en funcion de eso girar el render en funcion de donde mire
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	/*if (direction.getX() < 0) {
-		flip = SDL_FLIP_HORIZONTAL;
-	}*/
 	if (lookingLeft) {
 		flip = SDL_FLIP_HORIZONTAL;
 	}
@@ -87,19 +84,22 @@ void Player::update() {
 	// Verifica colisión en todas las direcciones
 	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
 
-	// Calcula la nueva posición
+	// CALCULO DE LA NUEVA POSICION EN FUNCION DE LA DIRECCION PULSANDO TECLA
 	Vector2D<int> newPosition = position + direction;
 
-	// Verifica si el jugador ha salido por debajo del mapa
-	if (newPosition.getY() >= 510) {
+	// CONTROL EN CASO DE DERROTA
+	if (newPosition.getY() >= 510 || damageCooldown >= 30 && collision.damages) {
 		vidas--;
-		position = ResetPosition();
-		return; // Podrías usar `position = ResetPosition()` si quieres reiniciar la posición
+		position = ResetPosition(); //Reseteamos la posicion de mario
+		GamePlayer->ResetMapOffset(); //Reseteamos el mapoffset
+		return;
 	}
+	damageCooldown++;
 
-	if (jump && position.getY() <= groundPosition.getY() - (4 * Game::TILE_SIDE)) {
+	int jumpMaxDistance = 4 * Game::TILE_SIDE;
+	if (jump && position.getY() <= groundPositionY - jumpMaxDistance) {
 		jump = false;
-		direction = Vector2D<int>(direction.getX(), Game::TILE_SIDE / 2);
+		direction.setY(velocity);
 	}
 
 	if (collision.collides) {
@@ -115,6 +115,14 @@ void Player::update() {
 		//	jump = false;
 		//}
 		//position = Vector2D<int>(newPosition.getX(),position.getY());
+		groundPositionY = position.getY();
+		jump = true;
+		if (collision.intersection.y > position.getX()) {
+			
+		}
+		else if (collision.intersection.y < position.getX()) {
+
+		}
 	}
 	else {
 		// No hay colisión, actualizar la posición libremente
@@ -138,65 +146,31 @@ void Player::update() {
 		//	newPosition = Vector2D<int>(position.getX() + collision.intersection.w, position.getY());
 		//	jump = false;
 		//}
+		if (collision.intersection.x > position.getX()) {
+
+		}
+		else if (collision.intersection.x < position.getX()) {
+
+		}
 	} 
 	else {
 		position.setX(newPosition.getX());
 	}
 		
-
 	// Desplazamiento del mapa cuando se mueve a la derecha
 	if (position.getX() > Game::WINDOW_WIDTH * Game::TILE_SIDE / 2 && direction.getX() > 0) {
-		GamePlayer->setMapOffset(Game::TILE_SIDE / 2);
-		position = Vector2D<int>(Game::WINDOW_WIDTH * Game::TILE_SIDE / 2 + 16, position.getY());
-	}
-	// Restricción de movimiento a la izquierda del borde de la pantalla
-	else if (position.getX() < 0) {
-		position = Vector2D<int>(0, position.getY());
+		GamePlayer->setMapOffset(position.getX() / Game::TILE_SIDE);
+		//position = Vector2D<int>(Game::WINDOW_WIDTH * Game::TILE_SIDE / 2 + 16, position.getY());
 	}
 
-	// Verifica si el jugador está en el suelo
-	/*if (position.getY() >= GroundPosition - 100 && GroundCollision()) {
-		jump = true;
+	// Restricción de movimiento a la izquierda del borde de la pantalla
+	if (position.getX() < 0) {
+		position.setX(0);
 	}
-	else {
-		jump = false;
-	}*/
 
 	// Actualización del frame de animación
 	if (frameRunner > 3) frameRunner = 0;
 	frameRunner++;
-
-	// Control de daño
-	if (damageCooldown >= 30 && collision.damages) {
-		vidas--;
-		damageCooldown = 0;
-	}
-	damageCooldown++;
-}
-
-
-
-bool
-Player::GroundCollision() {
-	bool onGround = false;
-	SDL_Rect marioRect = getRect();
-	marioRect.y += 1; // Aumenta Y para detectar el borde inferior del jugador.
-	
-	// Revisa si hay colisión con el suelo.
-	Collision collision = hit(marioRect, true);
-	/*if (collision.collides) GroundPosition = position.getY();
-	return collision.collides;*/
-	
-	if (collision.collides) {
-		// Ajusta GroundPosition a la altura del tile para que el jugador se alinee al suelo.
-		int tileY = position.getY();
-		//GroundPosition = tileY;
-		//std::cout << "Colisión detectada. GroundPosition: " << GroundPosition << std::endl;
-		return true;
-	}
-	return true;
-	////std::cout << "No se detectó colisión con el suelo." << std::endl;
-	//return false;
 }
 
 Collision 
@@ -210,20 +184,20 @@ Player::HandleEvent(SDL_Event event) {
 	if (event.type == SDL_KEYDOWN) {
 		switch (event.key.keysym.sym) {
 		case SDLK_RIGHT:
-			direction = Vector2D<int>(8, direction.getY());
+			direction.setX(velocity);
 			lookingLeft = false;
 			break;
 		case SDLK_LEFT:
-			if (!leftLimit) {
-				direction = Vector2D<int>(-8, direction.getY());
+			if (!leftLimit) { //Verifica que el jugador no se pase del borde izquierdo de la pantalla
+				direction.setX(-velocity);
 				lookingLeft = true;
 			}
 			break;
-		case SDLK_UP:
-			if (!jump && GroundCollision()) {
+		case SDLK_SPACE:
+			if (!jump) {
 				jump = true;
-				groundPosition = position;
-				direction = direction + Vector2D<int>(0, -8);
+				groundPositionY = position.getY();
+				direction.setY(-velocity);
 			}
 			break;
 		}
@@ -231,12 +205,14 @@ Player::HandleEvent(SDL_Event event) {
 	else if (event.type == SDL_KEYUP) {
 		switch (event.key.keysym.sym) {
 		case SDLK_RIGHT:
-		case SDLK_LEFT:
-			direction = Vector2D<int>(0, direction.getY());
+			direction.setX(0);
 			break;
-		case SDLK_UP:
+		case SDLK_LEFT:
+			direction.setX(0);
+			break;
+		case SDLK_SPACE:
 			if (!jump && direction.getY() < 0) {
-				direction = Vector2D<int>(direction.getX(), Game::TILE_SIDE);
+				direction.setY(velocity);
 			}
 			break;
 		}

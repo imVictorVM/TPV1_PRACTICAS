@@ -169,16 +169,17 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 	// El eje x del jugador < el eje x del bloque + la dimension del bloque 
 	bool isAlignedHorizontally = EntityRect.x + EntityRect.w > blockRect.x && EntityRect.x < blockRect.x + blockRect.w; // Centrado en el eje x
 	
+	//ELIMINAR
 	// Verificamos la direccion del jugador
-	Vector2D<int> direction = game->getPlayerDirection();
-	bool isMovingUp = direction.getY() < 0;  //El jugador esta saltando hacia arriba
+	//Vector2D<int> direction = game->getPlayerDirection();
+	//bool isMovingUp = direction.getY() < 0;  //El jugador esta saltando hacia arriba
 	
 	//Verificamos la distancia
 	int distance = EntityRect.y - blockRect.y + blockRect.h; //Distancia entre el jugador y el bloque
 	int MinDistance = Game::TILE_SIDE * 2 + Game::TILE_SIDE / 2; //Distancia minimo para que la colision se produzca (Calculo a mano)
 	
 	// Usar SDL_HasIntersection para verificar colisión
-	if (isBelow && isAlignedHorizontally && isMovingUp && distance <= MinDistance) colision.collides = true;
+	if (isBelow && isAlignedHorizontally && distance <= MinDistance) colision.collides = true;
 	return colision;
 }
 
