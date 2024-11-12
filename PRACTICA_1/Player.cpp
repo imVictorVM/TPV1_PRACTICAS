@@ -88,6 +88,7 @@ void Player::update() {
 	// Verifica si el jugador ha salido por debajo del mapa
 	if (newPosition.getY() >= 510) {
 		vidas--;
+		position = ResetPosition();
 		return; // Podrías usar `position = ResetPosition()` si quieres reiniciar la posición
 	}
 

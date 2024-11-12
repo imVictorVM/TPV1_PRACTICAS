@@ -49,12 +49,12 @@ void
 Goomba::update() {
 	
 	int mapOffset = game->getMapOffset();
-	if (position.getX() > mapOffset - game->WINDOW_WIDTH) frozen = false;
+	if (position.getX() < mapOffset + game->WINDOW_WIDTH) frozen = false;
 	
 
 	if (!frozen) {
 		if (!groundCollision()) {
-			position = position + direction + notGround;
+			position = position + notGround;
 		}
 		position = position + direction;
 		if (frameRunner == 0) frame = 0;
