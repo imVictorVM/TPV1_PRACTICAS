@@ -251,7 +251,7 @@ Player::getPosition() const {
 
 Vector2D<int>
 Player::ResetPosition() const {
-	Vector2D<int> position(InitialPositionX * Game::TILE_SIDE, InitialPositionY * Game::TILE_SIDE);
+	Vector2D<int> position((InitialPositionX-1) * Game::TILE_SIDE, (InitialPositionY-1) * Game::TILE_SIDE);
 	return position;
 }
 

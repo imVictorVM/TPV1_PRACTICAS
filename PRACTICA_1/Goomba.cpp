@@ -53,10 +53,9 @@ Goomba::update() {
 	
 
 	if (!frozen) {
-		if (!groundCollision()) {
-			position = position + notGround;
-		}
-		position = position + direction;
+		if (!groundCollision()) position = position + notGround;
+		else position = position + direction;
+
 		if (frameRunner == 0) frame = 0;
 		if (frameRunner == 1) frame = 1;
 
