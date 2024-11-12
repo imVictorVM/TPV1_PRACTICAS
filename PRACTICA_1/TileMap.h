@@ -19,13 +19,10 @@ class TileMap
 public:
 	TileMap(const std::string& mapa, Game* game);
 
-
 	void render() const;
 
 	void update();
 
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
-
-	int tileRect(Vector2D<int> playerPosition);
 };
 

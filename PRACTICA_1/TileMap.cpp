@@ -1,3 +1,4 @@
+#include "checkML.h"
 #include "TileMap.h"
 #include "Game.h"
 #include "Collision.h"
@@ -77,6 +78,7 @@ TileMap::render() const
 void 
 TileMap::update() {
 	if (game->getPlayerPosition().getY() >= 448) game->ResetMapOffset();
+	//if (game->getPlayerPosition().getX() > Game::WINDOW_WIDTH / 2 && game->getPlayerDirection().getX() > 0) game->setMapOffset(Game::getMapOffset() +=
 }
 
 Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
@@ -148,23 +150,3 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 //
 //	return false;
 //}
-
-
-//Devuelve el bloque que esta justo debajo del suelo para el jugador
-//IMPORTANTE: El calculo del tile funciona perfectamente, este metodo no deberia editarse para arreglar las colisiones.
-int
-TileMap::tileRect(Vector2D<int> playerPosition) {
-	int valor = -1;
-	int tileX = (playerPosition.getX() + game->getMapOffset()) / Game::TILE_SIDE;
-	int tileY = playerPosition.getY() / Game::TILE_SIDE; // Cambié de 1 + a solo calcularlo así
-
-	// Verificación de límites
-	if (!matriz.empty() && tileY >= 0 && tileY + 1 < matriz.size() && tileX >= 0 && tileX < matriz[tileY].size()) {
-		valor = matriz[tileY + 1][tileX]; //TileY + 1 detecta el bloque esta por debajo del jugador, si es TileY sera en su posicion Y
-	}
-	else {
-		valor = 36; // Valor por defecto
-	}
-
-	return valor;
-}
