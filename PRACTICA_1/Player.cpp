@@ -116,7 +116,7 @@ void Player::update() {
 		//}
 		//position = Vector2D<int>(newPosition.getX(),position.getY());
 		groundPositionY = position.getY();
-		jump = true;
+		jump = false;
 		if (collision.intersection.y > position.getX()) {
 			
 		}
