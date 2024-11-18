@@ -12,7 +12,7 @@
 #include <string>
 using namespace std;
 
-Player::Player(Game* game, stringstream& atributes) : position(), TexturePlayer(game->getTexture(Game::MARIANO)), GamePlayer(game), vidas(0), jump(false), frameRunner(0), leftLimit(), damageCooldown(60), velocity(8){
+Player::Player(Game* game, stringstream& atributes) : position(), windowPosition(), TexturePlayer(game->getTexture(Game::MARIANO)), GamePlayer(game), vidas(0), jump(false), frameRunner(0), leftLimit(), damageCooldown(60), velocity(8) {
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -33,6 +33,7 @@ Player::Player(Game* game, stringstream& atributes) : position(), TexturePlayer(
 
 	//Pasamos los parametros al constructor del player despues de leerlos
 	position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony - 1) * Game::TILE_SIDE);
+	windowPosition = Vector2D<int>((positionx)*Game::TILE_SIDE, (positiony - 1) * Game::TILE_SIDE);
 	InitialPositionX = positionx;
 	InitialPositionY = positiony;
 	vidas = nvidas;
@@ -43,8 +44,8 @@ Player::Player(Game* game, stringstream& atributes) : position(), TexturePlayer(
 void
 Player::render() const {
 	SDL_Rect MPosition;
-	MPosition.x = position.getX();
-	MPosition.y = position.getY();
+	MPosition.x = windowPosition.getX();
+	MPosition.y = windowPosition.getY();
 	MPosition.w = Game::TILE_SIDE;
 	MPosition.h = Game::TILE_SIDE;
 
@@ -77,21 +78,34 @@ Player::render() const {
 
 void Player::update() {
 
+	// CALCULO DE LA NUEVA POSICION EN FUNCION DE LA DIRECCION PULSANDO TECLA
+	Vector2D<int> newPosition = position + direction;
+
 	SDL_Rect MarioRect = getRect();
 	MarioRect.y += direction.getY();
-	MarioRect.x += GamePlayer->getMapOffset();
+	MarioRect.x += direction.getX();
+
+	bool midMap = false;
+	int midMapPositionX = Game::WINDOW_WIDTH * Game::TILE_SIDE / 2;
+
+	// Desplazamiento del mapa cuando se mueve a la derecha
+	if (windowPosition.getX() > midMapPositionX + 16) midMap = true;
+	else midMap = false;
+	
+	if (midMap) {
+		if(direction.getX() > 0) GamePlayer->setMapOffset(position.getX() / Game::TILE_SIDE);
+		windowPosition.setX(midMapPositionX);
+	}
+
 
 	// Verifica colisión en todas las direcciones
 	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
 
-	// CALCULO DE LA NUEVA POSICION EN FUNCION DE LA DIRECCION PULSANDO TECLA
-	Vector2D<int> newPosition = position + direction;
-
 	// CONTROL EN CASO DE DERROTA
-	if (newPosition.getY() >= 510 || damageCooldown >= 30 && collision.damages) {
+	if (position.getY() >= 470 || damageCooldown >= 30 && collision.damages) {
 		vidas--;
-		position = ResetPosition(); //Reseteamos la posicion de mario
-		GamePlayer->ResetMapOffset(); //Reseteamos el mapoffset
+		position = Vector2D<int>(InitialPositionX * Game::TILE_SIDE, (InitialPositionY-1) * Game::TILE_SIDE);
+		windowPosition = Vector2D<int>(InitialPositionX * Game::TILE_SIDE, (InitialPositionY-1) * Game::TILE_SIDE);
 		return;
 	}
 	damageCooldown++;
@@ -127,7 +141,7 @@ void Player::update() {
 	else {
 		// No hay colisión, actualizar la posición libremente
 		position.setY(newPosition.getY());
-		
+		windowPosition.setY(newPosition.getY());
 	}
 
 	MarioRect.y = position.getY();
@@ -155,22 +169,20 @@ void Player::update() {
 	} 
 	else {
 		position.setX(newPosition.getX());
-	}
-		
-	// Desplazamiento del mapa cuando se mueve a la derecha
-	if (position.getX() > Game::WINDOW_WIDTH * Game::TILE_SIDE / 2 && direction.getX() > 0) {
-		GamePlayer->setMapOffset(position.getX() / Game::TILE_SIDE);
-		//position = Vector2D<int>(Game::WINDOW_WIDTH * Game::TILE_SIDE / 2 + 16, position.getY());
+		if (!midMap) windowPosition.setX(position.getX() - GamePlayer->getMapOffset());
 	}
 
 	// Restricción de movimiento a la izquierda del borde de la pantalla
-	if (position.getX() < 0) {
-		position.setX(0);
+	if (windowPosition.getX() < 0) {
+		windowPosition.setX(0);
 	}
 
 	// Actualización del frame de animación
 	if (frameRunner > 3) frameRunner = 0;
 	frameRunner++;
+
+	//cout << "PositionX: " << position.getX() << endl;
+	//cout << "WindowPositionX: " << windowPosition.getX() << endl;
 }
 
 Collision 
@@ -222,12 +234,6 @@ Player::HandleEvent(SDL_Event event) {
 //Obtenemos la posicion para la colision
 Vector2D<int> 
 Player::getPosition() const {
-	return position;
-}
-
-Vector2D<int>
-Player::ResetPosition() const {
-	Vector2D<int> position((InitialPositionX-1) * Game::TILE_SIDE, (InitialPositionY-1) * Game::TILE_SIDE);
 	return position;
 }
 

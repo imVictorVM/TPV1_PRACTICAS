@@ -77,7 +77,7 @@ TileMap::render() const
 
 void 
 TileMap::update() {
-	if (game->getPlayerPosition().getY() >= 448) game->ResetMapOffset();
+	if (game->getPlayerPosition().getY() >= 470) game->ResetMapOffset();
 	//if (game->getPlayerPosition().getX() > Game::WINDOW_WIDTH / 2 && game->getPlayerDirection().getX() > 0) game->setMapOffset(Game::getMapOffset() +=
 }
 
@@ -124,29 +124,3 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 	return colision;
 
 }
-
-//Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
-//{
-//	vector<vector<int>> matrix; // atributos de TileMap
-//	Texture* texture;
-//
-//	constexpr int OBSTACLE_THRESHOLD = 4; // constante
-//
-//	// Celda del nivel que contiene la esquina superior izquierda del rectángulo
-//	int row0 = rect.y / Game::TILE_SIDE;
-//	int col0 = rect.x / Game::TILE_SIDE;
-//
-//	// Celda del nivel que contiene la esquina inferior derecha del rectángulo
-//	int row1 = (rect.y + rect.h - 1) / Game::TILE_SIDE;
-//	int col1 = (rect.x + rect.w - 1) / Game::TILE_SIDE;
-//
-//	for (int row = row0; row <= row1; ++row)
-//		for (int col = col0; col <= col1; ++col) {
-//			int indice = matriz[row][col];
-//
-//			if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD)
-//				return true;
-//		}
-//
-//	return false;
-//}
