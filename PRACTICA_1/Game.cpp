@@ -266,7 +266,7 @@ Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
 //Son necesarios todos, pero podriamos prescindir de alguno para optimizar codigo y no hacerlo público todo
 
 void Game::setMapOffset(int playerOffset) {
-	mapOffset += playerOffset;
+	mapOffset = playerOffset;
 }
 
 void Game::ResetMapOffset() {

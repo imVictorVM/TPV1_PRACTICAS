@@ -88,15 +88,17 @@ void Player::update() {
 	bool midMap = false;
 	int midMapPositionX = Game::WINDOW_WIDTH * Game::TILE_SIDE / 2;
 
-	// Desplazamiento del mapa cuando se mueve a la derecha
+	// FUNCIONAL: Desplazamiento del mapa cuando se mueve a la derecha
 	if (windowPosition.getX() > midMapPositionX) midMap = true;
 	else midMap = false;
 
-	if (midMap && direction.getX()) {
-		GamePlayer->setMapOffset(position.getX() / Game::TILE_SIDE);
-
-		//windowPosition.setX(midMapPositionX);
-
+	// REVISAR
+	if (midMap && direction.getX() > 0) {
+		//GamePlayer->setMapOffset(position.getX() / Game::TILE_SIDE);
+		GamePlayer->setMapOffset(GamePlayer->getMapOffset() + Game::TILE_SIDE);
+		cout << "WindowPositionPrevX: " << windowPosition.getX() << endl;
+		windowPosition.setX(midMapPositionX);
+		cout << "WindowPositionContX: " << windowPosition.getX() << endl;
 	}
 
 	// CAMBIAR: Verifica colisión en todas las direcciones
@@ -174,17 +176,10 @@ void Player::update() {
 	} 
 	else {
 		position.setX(newPosition.getX());
-		
+		//REVISAR
 		if (!midMap) {
-			windowPosition.setX(position.getX() - GamePlayer->getMapOffset() + Game::TILE_SIDE / 2);
+			windowPosition.setX(position.getX() - GamePlayer->getMapOffset());
 		}
-		else {
-			cout << "WindowPositionPrevX: " << windowPosition.getX() << endl;
-			windowPosition.setX(midMapPositionX);
-			cout << "WindowPositionContX: " << windowPosition.getX() << endl;
-		}
-			
-		
 	}
 
 	// FUNCIONAL: MARIO CRUZA EL LIMITE DEL MAPA IZQUIERDO
