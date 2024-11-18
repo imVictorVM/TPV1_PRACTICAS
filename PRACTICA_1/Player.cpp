@@ -89,19 +89,20 @@ void Player::update() {
 	int midMapPositionX = Game::WINDOW_WIDTH * Game::TILE_SIDE / 2;
 
 	// Desplazamiento del mapa cuando se mueve a la derecha
-	if (windowPosition.getX() > midMapPositionX + 16) midMap = true;
+	if (windowPosition.getX() > midMapPositionX) midMap = true;
 	else midMap = false;
-	
-	if (midMap) {
-		if(direction.getX() > 0) GamePlayer->setMapOffset(position.getX() / Game::TILE_SIDE);
-		windowPosition.setX(midMapPositionX);
+
+	if (midMap && direction.getX()) {
+		GamePlayer->setMapOffset(position.getX() / Game::TILE_SIDE);
+
+		//windowPosition.setX(midMapPositionX);
+
 	}
 
-
-	// Verifica colisión en todas las direcciones
+	// CAMBIAR: Verifica colisión en todas las direcciones
 	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
 
-	// CONTROL EN CASO DE DERROTA
+	// FUNCIONAL: CONTROL EN CASO DE DERROTA
 	if (position.getY() >= 470 || damageCooldown >= 30 && collision.damages) {
 		vidas--;
 		position = Vector2D<int>(InitialPositionX * Game::TILE_SIDE, (InitialPositionY-1) * Game::TILE_SIDE);
@@ -110,12 +111,13 @@ void Player::update() {
 	}
 	damageCooldown++;
 
+	//FUNCIONAL: CONTROL DE SALTO
 	int jumpMaxDistance = 4 * Game::TILE_SIDE;
 	if (jump && position.getY() <= groundPositionY - jumpMaxDistance) {
-		jump = false;
 		direction.setY(velocity);
 	}
 
+	// CAMBIAR
 	if (collision.collides) {
 		// Lógica de ajuste en caso de colisión
 		//if (direction.getY() > 0 && collision.intersection.y > position.getY()) {
@@ -131,9 +133,11 @@ void Player::update() {
 		//position = Vector2D<int>(newPosition.getX(),position.getY());
 		groundPositionY = position.getY();
 		jump = false;
+		//ABAJO
 		if (collision.intersection.y > position.getX()) {
 			
 		}
+		//ARRIBA
 		else if (collision.intersection.y < position.getX()) {
 
 		}
@@ -166,18 +170,30 @@ void Player::update() {
 		else if (collision.intersection.x < position.getX()) {
 
 		}
+		
 	} 
 	else {
 		position.setX(newPosition.getX());
-		if (!midMap) windowPosition.setX(position.getX() - GamePlayer->getMapOffset());
+		
+		if (!midMap) {
+			windowPosition.setX(position.getX() - GamePlayer->getMapOffset() + Game::TILE_SIDE / 2);
+		}
+		else {
+			cout << "WindowPositionPrevX: " << windowPosition.getX() << endl;
+			windowPosition.setX(midMapPositionX);
+			cout << "WindowPositionContX: " << windowPosition.getX() << endl;
+		}
+			
+		
 	}
 
-	// Restricción de movimiento a la izquierda del borde de la pantalla
+	// FUNCIONAL: MARIO CRUZA EL LIMITE DEL MAPA IZQUIERDO
 	if (windowPosition.getX() < 0) {
 		windowPosition.setX(0);
+		position.setX(GamePlayer->getMapOffset());
 	}
 
-	// Actualización del frame de animación
+	// FUNCIONAL: CAMBIO DE LA ANIMACION AL CORRER
 	if (frameRunner > 3) frameRunner = 0;
 	frameRunner++;
 
