@@ -14,7 +14,7 @@ class Player
 {
 protected:
 	Vector2D<int> position;
-	Vector2D<int> windowPosition;
+	//Vector2D<int> windowPosition;
 	int groundPositionY;
 	Vector2D<int> direction;
 	Texture* TexturePlayer;
@@ -28,7 +28,6 @@ protected:
 	int InitialPositionX;
 	int InitialPositionY; 
 	int velocity;
-	
 public:
 
 	Player(Game* game,std::stringstream& atributos);

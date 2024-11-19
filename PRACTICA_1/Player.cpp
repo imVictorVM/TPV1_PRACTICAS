@@ -12,7 +12,9 @@
 #include <string>
 using namespace std;
 
-Player::Player(Game* game, stringstream& atributes) : position(), windowPosition(), TexturePlayer(game->getTexture(Game::MARIANO)), GamePlayer(game), vidas(0), jump(false), frameRunner(0), leftLimit(), damageCooldown(60), velocity(8) {
+Player::Player(Game* game, stringstream& atributes) : position(), 
+TexturePlayer(game->getTexture(Game::MARIANO)), GamePlayer(game), vidas(0), 
+jump(false), frameRunner(0), leftLimit(), damageCooldown(60), velocity(8){
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -33,19 +35,19 @@ Player::Player(Game* game, stringstream& atributes) : position(), windowPosition
 
 	//Pasamos los parametros al constructor del player despues de leerlos
 	position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony - 1) * Game::TILE_SIDE);
-	windowPosition = Vector2D<int>((positionx)*Game::TILE_SIDE, (positiony - 1) * Game::TILE_SIDE);
 	InitialPositionX = positionx;
 	InitialPositionY = positiony;
 	vidas = nvidas;
 	lookingLeft = false;
 	groundPositionY = (positiony - 1) * Game::TILE_SIDE;
+	
 }
 
 void
 Player::render() const {
 	SDL_Rect MPosition;
-	MPosition.x = windowPosition.getX();
-	MPosition.y = windowPosition.getY();
+	MPosition.x = position.getX() - GamePlayer->getMapOffset();
+	MPosition.y = position.getY();
 	MPosition.w = Game::TILE_SIDE;
 	MPosition.h = Game::TILE_SIDE;
 
@@ -85,22 +87,6 @@ void Player::update() {
 	MarioRect.y += direction.getY();
 	MarioRect.x += direction.getX();
 
-	bool midMap = false;
-	int midMapPositionX = Game::WINDOW_WIDTH * Game::TILE_SIDE / 2;
-
-	// FUNCIONAL: Desplazamiento del mapa cuando se mueve a la derecha
-	if (windowPosition.getX() > midMapPositionX) midMap = true;
-	else midMap = false;
-
-	// REVISAR
-	if (midMap && direction.getX() > 0) {
-		//GamePlayer->setMapOffset(position.getX() / Game::TILE_SIDE);
-		GamePlayer->setMapOffset(GamePlayer->getMapOffset() + Game::TILE_SIDE);
-		cout << "WindowPositionPrevX: " << windowPosition.getX() << endl;
-		windowPosition.setX(midMapPositionX);
-		cout << "WindowPositionContX: " << windowPosition.getX() << endl;
-	}
-
 	// CAMBIAR: Verifica colisión en todas las direcciones
 	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
 
@@ -108,7 +94,6 @@ void Player::update() {
 	if (position.getY() >= 470 || damageCooldown >= 30 && collision.damages) {
 		vidas--;
 		position = Vector2D<int>(InitialPositionX * Game::TILE_SIDE, (InitialPositionY-1) * Game::TILE_SIDE);
-		windowPosition = Vector2D<int>(InitialPositionX * Game::TILE_SIDE, (InitialPositionY-1) * Game::TILE_SIDE);
 		return;
 	}
 	damageCooldown++;
@@ -119,81 +104,50 @@ void Player::update() {
 		direction.setY(velocity);
 	}
 
-	// CAMBIAR
-	if (collision.collides) {
-		// Lógica de ajuste en caso de colisión
-		//if (direction.getY() > 0 && collision.intersection.y > position.getY()) {
-		//	// Colisión desde abajo (suelo)
-		//	newPosition = Vector2D<int>(newPosition.getX(), newPosition.getY() - collision.intersection.h);
-		//	jump = true;
-		//}
-		//else if (direction.getY() < 0 && collision.intersection.y < position.getY()) {
-		//	// Colisión desde arriba
-		//	newPosition = Vector2D<int>(newPosition.getX(), newPosition.getY() + collision.intersection.h);
-		//	jump = false;
-		//}
-		//position = Vector2D<int>(newPosition.getX(),position.getY());
+	//COLISION VERTICAL
+	if (!collision.collides) position.setY(newPosition.getY());
+	else {
+		//Si hay colision con el suelo activamos la accion de salto CAMBIAR PARA QUE SOLO SEA DESDE ABAJO
 		groundPositionY = position.getY();
 		jump = false;
-		//ABAJO
-		if (collision.intersection.y > position.getX()) {
-			
-		}
-		//ARRIBA
-		else if (collision.intersection.y < position.getX()) {
-
-		}
-	}
-	else {
-		// No hay colisión, actualizar la posición libremente
-		position.setY(newPosition.getY());
-		windowPosition.setY(newPosition.getY());
+		if (collision.intersection.y > position.getX()) { } //ABAJO
+		else if (collision.intersection.y < position.getX()) { } //ARRIBA
 	}
 
+	//RECALCULO DE LA COLISION
 	MarioRect.y = position.getY();
 	MarioRect.x += direction.getX();
 
 	collision = GamePlayer->checkPlayerCollision(MarioRect, true);
 
-	if (collision.collides) {
-		//if (direction.getX() > 0 && collision.intersection.x > position.getX()) {
-		//	// Colisión desde la izquierda
-		//	newPosition = Vector2D<int>(position.getX() - collision.intersection.w, position.getY());
-		//	jump = false;
-		//}
-		//else if (direction.getX() < 0 && collision.intersection.x < position.getX()) {
-		//	// Colisión desde la derecha
-		//	newPosition = Vector2D<int>(position.getX() + collision.intersection.w, position.getY());
-		//	jump = false;
-		//}
-		if (collision.intersection.x > position.getX()) {
-
-		}
-		else if (collision.intersection.x < position.getX()) {
-
-		}
-		
-	} 
+	//COLISION HORIZONTAL
+	if (!collision.collides) position.setX(newPosition.getX());
 	else {
-		position.setX(newPosition.getX());
-		//REVISAR
-		if (!midMap) {
-			windowPosition.setX(position.getX() - GamePlayer->getMapOffset());
-		}
+		if (collision.intersection.x > position.getX()) { }
+		else if (collision.intersection.x < position.getX()) { }
 	}
 
 	// FUNCIONAL: MARIO CRUZA EL LIMITE DEL MAPA IZQUIERDO
-	if (windowPosition.getX() < 0) {
-		windowPosition.setX(0);
+	if (position.getX() < GamePlayer->getMapOffset()) {
 		position.setX(GamePlayer->getMapOffset());
 	}
 
 	// FUNCIONAL: CAMBIO DE LA ANIMACION AL CORRER
 	if (frameRunner > 3) frameRunner = 0;
-	frameRunner++;
+	else frameRunner++;
 
-	//cout << "PositionX: " << position.getX() << endl;
-	//cout << "WindowPositionX: " << windowPosition.getX() << endl;
+	bool midMap = false;
+	int midMapPositionX = (Game::WINDOW_WIDTH * Game::TILE_SIDE / 2) + GamePlayer->getMapOffset();
+
+	// FUNCIONAL: Condicional para mover el mapa a la derecha
+	if (position.getX() > midMapPositionX && direction.getX() > 0) midMap = true;
+	else midMap = false;
+
+	// FUNCIONAL: Desplazamiento del mapa cuando se mueve a la derecha
+	if (midMap) {
+		GamePlayer->setMapOffset(velocity);
+	}
+
 }
 
 Collision 
