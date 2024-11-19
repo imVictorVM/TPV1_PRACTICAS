@@ -230,14 +230,9 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 	// Primero verificamos colisión con el tilemap
 	colision = tilemap->hit(rect, fromPlayer);
-	if (colision.collides) {
-		//std::cout << "Rectángulo del jugador: (" << rect.x << ", " << rect.y << ", " << rect.w << ", " << rect.h << ")\n";
-		//std::cout << "Intersección de colisión: (" << colision.intersection.x << ", " << colision.intersection.y << ", "
-		//	<< colision.intersection.w << ", " << colision.intersection.h << ")\n";
-		return colision;
-	}
+	if (colision.collides) return colision;
+	
 		
-
 	// Luego verificamos colisión con cada bloque
 	for (Block* block : blocks) {
 		colision = block->hit(rect, fromPlayer);

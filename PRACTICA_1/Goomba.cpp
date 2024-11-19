@@ -25,8 +25,6 @@ Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(
 void
 Goomba::render() const {
 
-
-
 	if (!frozen) {
 		//posición del goomba
 		SDL_Rect GPosition;

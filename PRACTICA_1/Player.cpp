@@ -107,11 +107,14 @@ void Player::update() {
 	//COLISION VERTICAL
 	if (!collision.collides) position.setY(newPosition.getY());
 	else {
-		//Si hay colision con el suelo activamos la accion de salto CAMBIAR PARA QUE SOLO SEA DESDE ABAJO
-		groundPositionY = position.getY();
-		jump = false;
-		if (collision.intersection.y > position.getX()) { } //ABAJO
-		else if (collision.intersection.y < position.getX()) { } //ARRIBA
+		if (collision.intersection.y > position.getY()) { 
+			//Si hay colision con el suelo activamos la accion de salto CAMBIAR PARA QUE SOLO SEA DESDE ABAJO
+			groundPositionY = position.getY();
+			jump = false;
+		} //SUELO
+		else if (collision.intersection.y < position.getY()) { 
+			direction.setY(velocity);
+		} //TECHO
 	}
 
 	//RECALCULO DE LA COLISION
@@ -123,8 +126,12 @@ void Player::update() {
 	//COLISION HORIZONTAL
 	if (!collision.collides) position.setX(newPosition.getX());
 	else {
-		if (collision.intersection.x > position.getX()) { }
-		else if (collision.intersection.x < position.getX()) { }
+		if (collision.intersection.x > position.getX()) { 
+			//direction.setY(velocity);
+		}
+		else if (collision.intersection.x < position.getX()) { 
+			//direction.setY(velocity);
+		}
 	}
 
 	// FUNCIONAL: MARIO CRUZA EL LIMITE DEL MAPA IZQUIERDO

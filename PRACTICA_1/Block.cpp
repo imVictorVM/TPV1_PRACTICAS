@@ -90,10 +90,10 @@ Block::update() {
 	}
 
 	// Verifica la colisión con el jugador y actualiza el bloque si es necesario
-	Vector2D<int> playerPosition = game->getPlayerPosition();
-	if (game->checkPlayerCollision(getRect(),true).collides) {
-		type = empty; 
-	}
+	//Vector2D<int> playerPosition = game->getPlayerPosition();
+	//if (game->checkPlayerCollision(getRect(),true).collides) {
+	//	type = empty; 
+	//}
 
 	//Actualizamos el frame del bloque siempre en caso de ser un bloque sorpresa, hay muchos frameBlocks para que sea lenta la trancision de un sprite a otro
 	frameBlock++;
@@ -152,34 +152,23 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 
 	Collision colision = { false,false,{0,0,0,0} };
 	//
-	//// Creamos un rect del bloque para compararlo con el del jugador
-	//SDL_Rect blockRect;
-	//blockRect.x = position.getX();
-	//blockRect.y = position.getY();
-	//blockRect.w = Game::TILE_SIDE;
-	//blockRect.h = Game::TILE_SIDE;
-	//
-	//// Creamos un rect del jugador para compararlo con el del bloque
-	//SDL_Rect EntityRect = rect;
-	//
-	//// Verificar si el jugador está justo debajo del bloque
-	//bool isBelow = EntityRect.y > blockRect.y + blockRect.h;  //El eje y del jugador es mayor que el eje y del bloque // Por debajo en el eje y (Vector y mayor)
-	//
-	//// El eje x del jugador + la dimension x del jugador > el eje x del bloque
-	//// El eje x del jugador < el eje x del bloque + la dimension del bloque 
-	//bool isAlignedHorizontally = EntityRect.x + EntityRect.w > blockRect.x && EntityRect.x < blockRect.x + blockRect.w; // Centrado en el eje x
-	//
-	////ELIMINAR
-	//// Verificamos la direccion del jugador
-	////Vector2D<int> direction = game->getPlayerDirection();
-	////bool isMovingUp = direction.getY() < 0;  //El jugador esta saltando hacia arriba
-	//
-	////Verificamos la distancia
-	//int distance = EntityRect.y - blockRect.y + blockRect.h; //Distancia entre el jugador y el bloque
-	//int MinDistance = Game::TILE_SIDE * 2 + Game::TILE_SIDE / 2; //Distancia minimo para que la colision se produzca (Calculo a mano)
-	//
-	//// Usar SDL_HasIntersection para verificar colisión
-	//if (isBelow && isAlignedHorizontally && distance <= MinDistance) colision.collides = true;
+	// Creamos un rect del bloque para compararlo con el del jugador
+	SDL_Rect blockRect;
+	blockRect.x = position.getX() + game->getMapOffset();
+	blockRect.y = position.getY();
+	blockRect.w = Game::TILE_SIDE;
+	blockRect.h = Game::TILE_SIDE;
+	
+	// Creamos un rect del player tomando de valor el que le llega como argumento
+	SDL_Rect playerRect;
+	playerRect = rect;
+
+	SDL_Rect intersection;
+	if (SDL_IntersectRect(&playerRect, &blockRect, &intersection)) {
+		colision.collides = true;
+		colision.intersection = intersection;
+		return colision;
+	}
 	return colision;
 }
 
