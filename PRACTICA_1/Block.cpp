@@ -85,67 +85,14 @@ Block::update() {
 	int newOffset = game->getMapOffset();
 	int offsetChange = newOffset - previousOffset;
 	if (offsetChange != 0) {
-		position = Vector2D<int>(position.getX() - offsetChange, position.getY());
+		position.setX(position.getX() - offsetChange);
 		previousOffset = newOffset;
 	}
-
-	// Verifica la colisión con el jugador y actualiza el bloque si es necesario
-	//Vector2D<int> playerPosition = game->getPlayerPosition();
-	//if (game->checkPlayerCollision(getRect(),true).collides) {
-	//	type = empty; 
-	//}
 
 	//Actualizamos el frame del bloque siempre en caso de ser un bloque sorpresa, hay muchos frameBlocks para que sea lenta la trancision de un sprite a otro
 	frameBlock++;
 	if (frameBlock > 8) frameBlock = 0;
 }
-
-//bool
-//Player::BlockCollision() {
-//	GroundPosition = position.getY();
-//	for (Block* block : GamePlayer->getBlocks()) { // Debes tener un método que devuelva todos los bloques
-//		SDL_Rect blockRect = block->getRect();
-//
-//		// Crear el rectángulo del jugador
-//		SDL_Rect playerRect;
-//		playerRect.x = position.getX();
-//		playerRect.y = position.getY();
-//		playerRect.w = Game::TILE_SIDE;
-//		playerRect.h = Game::TILE_SIDE;
-//
-//		// Comprobar si hay una intersección
-//		if (SDL_HasIntersection(&playerRect, &blockRect)) {
-//			// Verificar que el jugador esté aterrizando sobre el bloque
-//			if (playerRect.y + playerRect.h <= blockRect.y + blockRect.h && playerRect.y + playerRect.h >= blockRect.y) {
-//				GroundPosition = blockRect.y; // El jugador aterriza en el bloque
-//				Vector2D<int> newPosition = Vector2D<int>(position.getX(), GroundPosition - playerRect.h);
-//				position = newPosition; // Ajustar la posición del jugador a la parte superior del bloque
-//				return true;
-//			}
-//			direction = Vector2D<int>(direction.getX(), 0);
-//			return false;
-//		}
-//
-//		if (block->hit(getRect(), true).collides) {
-//			return true;
-//		}
-//	}
-//	return false;
-//}
-
-//Collision hit(const SDL_Rect& rect, bool fromPlayer) {
-//	
-//	Collision colision;
-//	if (fromPlayer) {
-//		colision.collides = true;
-//		colision.damages = false;
-//	}
-//	else {
-//		colision.collides = false;
-//		colision.damages = false;
-//	}
-//	return colision;
-//}
 
 Collision
 Block::hit(const SDL_Rect& rect, bool fromPlayer) {
@@ -167,6 +114,7 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 	if (SDL_IntersectRect(&playerRect, &blockRect, &intersection)) {
 		colision.collides = true;
 		colision.intersection = intersection;
+		if (colision.intersection.y > position.getY() + Game::TILE_SIDE / 2) type = empty;
 		return colision;
 	}
 	return colision;
