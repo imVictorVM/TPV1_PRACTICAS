@@ -17,9 +17,7 @@ Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(
 	lineStream >> posY;
 
 	position = Vector2D<int>((posX-1) * Game::TILE_SIDE, (posY-1) * Game::TILE_SIDE);
-	direction = Vector2D<int>(-velocity, velocity);
-	notGround = Vector2D<int>(0, velocity);
-	
+	direction = Vector2D<int>(-velocity, 0);
 }
 
 void
@@ -43,8 +41,6 @@ Goomba::render() const {
 
 void
 Goomba::update() {
-	
-	Vector2D<int> newPosition;
 
 	//FUNCIONAL: Los goombas spawnean en su sitio cuando el jugador alcanza a verlos en la pantalla
 	int mapOffset = game->getMapOffset();
@@ -54,7 +50,7 @@ Goomba::update() {
 
 	if (!frozen) {
 		//REVISAR
-		newPosition = position + direction;
+		Vector2D<int> newPosition = position + direction;
 		//if (!groundCollision()) position = position + notGround;
 		//else position = position + direction;
 
@@ -86,8 +82,8 @@ Goomba::update() {
 		}
 
 		//RECALCULO DE LA COLISION
-		GoombaRect.y = position.getY();
 		GoombaRect.x += direction.getX();
+		GoombaRect.y = position.getY();
 
 		collision = game->checkEnemyCollision(GoombaRect, false);
 
@@ -96,11 +92,13 @@ Goomba::update() {
 			position.setX(newPosition.getX());
 		}
 		else {
-			if (collision.intersection.x > position.getX()) {
-				direction.setX(-velocity);
+			if (collision.intersection.x < position.getX()) {
+				direction.setX(-direction.getX());
+				cout << "COLISIONO POR LA DERECHA" << endl;
 			} //MURO A LA IZQUIERDA
-			else if (collision.intersection.x < position.getX()) {
-				direction.setX(velocity);
+			else if (collision.intersection.x > position.getX()) {
+				direction.setX(-direction.getX());
+				cout << "COLISIONO POR LA IZQUIERDA" << endl;
 			} //MURO A LA DERECHA
 		}
 	}
@@ -113,13 +111,8 @@ Goomba::update() {
 		previousOffset = newOffset;
 	}
 
-	cout << "Position: " << position.getX() << endl;
-	cout << "MapOffset: " << mapOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE - Game::TILE_SIDE * 2 << endl;
-}
-
-bool
-Goomba::groundCollision() {
-	return true;
+	//cout << "Position: " << position.getX() << endl;
+	//cout << "MapOffset: " << mapOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE - Game::TILE_SIDE * 2 << endl;
 }
 
 Collision
@@ -130,10 +123,7 @@ Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 
 		// Creamos un rect del bloque para compararlo con el del jugador
 		SDL_Rect GoombaRect;
-		GoombaRect.x = position.getX() + game->getMapOffset();
-		GoombaRect.y = position.getY();
-		GoombaRect.w = Game::TILE_SIDE;
-		GoombaRect.h = Game::TILE_SIDE;
+		GoombaRect = getRect();
 
 		// Creamos un rect del player tomando de valor el que le llega como argumento
 		SDL_Rect playerRect;
@@ -149,15 +139,18 @@ Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 		}
 		return colisionPlayer;
 	}
+	else {
+		return game->checkPlayerCollision(rect, fromPlayer);
+	}
  
 }
 
 SDL_Rect
 Goomba::getRect() const {
-	SDL_Rect playerRect;
-	playerRect.x = position.getX();
-	playerRect.y = position.getY();
-	playerRect.w = Game::TILE_SIDE;
-	playerRect.h = Game::TILE_SIDE;
-	return playerRect;
+	SDL_Rect GoombaRect;
+	GoombaRect.x = position.getX() + game->getMapOffset();
+	GoombaRect.y = position.getY();
+	GoombaRect.w = Game::TILE_SIDE;
+	GoombaRect.h = Game::TILE_SIDE;
+	return GoombaRect;
 }

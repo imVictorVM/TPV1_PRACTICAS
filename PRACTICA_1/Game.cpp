@@ -248,11 +248,8 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 Collision
 Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
-	Collision colision;
-	colision.collides = false;
-	colision.damages = false;
-
-	SDL_Rect enemyRect = rect;
+	
+	Collision colision = { false,false,{0,0,0,0} };
 
 	colision = tilemap->hit(rect, fromPlayer);
 	if (colision.collides) return colision;

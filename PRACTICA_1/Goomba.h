@@ -27,8 +27,6 @@ public:
 
 	void update();
 
-	bool groundCollision();
-
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
 
 	SDL_Rect getRect() const;
