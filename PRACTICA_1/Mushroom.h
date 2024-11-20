@@ -13,6 +13,7 @@ protected:
 	Vector2D<int> direction;
 	Texture* mushroomTexture;
 	Game* mushroomGame;
+	int velocity;
 
 public:
 

@@ -1,6 +1,7 @@
 #include "checkML.h"
 #include "Block.h"
 #include "Game.h"
+#include "Mushroom.h"
 #include "Player.h"
 #include <fstream>
 #include <iostream>
@@ -10,7 +11,7 @@
 #include <string>
 using namespace std;
 
-Block::Block(Game* game, stringstream& atributes) : position(), TextureBlock(game->getTexture(Game::BLOCK)), game(game), frameBlock(0), previousOffset(0) {
+Block::Block(Game* game, stringstream& atributes) : position(), TextureBlock(game->getTexture(Game::BLOCK)), game(game), frameBlock(0), previousOffset(0), object(false) {
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -33,7 +34,7 @@ Block::Block(Game* game, stringstream& atributes) : position(), TextureBlock(gam
 	lineStream >> A;
 
 	//Pasamos los parametros al constructor del player despues de leerlos
-	position = Vector2D<int>((positionx-1) * Game::TILE_SIDE, (positiony-1) * Game::TILE_SIDE);
+	position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony-1) * Game::TILE_SIDE);
 	switch (T) {
 		case '?': type = surprise;
 			break;
@@ -115,7 +116,20 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 		if (SDL_IntersectRect(&playerRect, &blockRect, &intersection)) {
 			colision.collides = true;
 			colision.intersection = intersection;
-			if (colision.intersection.y > position.getY() + Game::TILE_SIDE / 2) type = empty;
+			if (colision.intersection.y > position.getY() + Game::TILE_SIDE / 2) {
+				if (type != empty) {
+					if (action == powerup) {
+						//Logica de la aparición de la seta
+						cout << "Seta" << endl;
+						object = true;
+					}
+					if (action == coin) {
+						//Logica de la aparición de la moneda, es solo para HUD
+						cout << "Moneda" << endl;
+					}
+					type = empty;
+				}
+			}
 			return colision;
 		}
 		return colision;
@@ -131,4 +145,8 @@ SDL_Rect Block::getRect() const {
     blockRect.w = Game::TILE_SIDE;
     blockRect.h = Game::TILE_SIDE;
     return blockRect;
+}
+
+bool Block::ObtainObject() {
+	return object;
 }

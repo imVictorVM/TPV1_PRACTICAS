@@ -7,6 +7,7 @@
 #include "Block.h"
 #include "Goomba.h"
 #include "Koopa.h"
+#include "Mushroom.h"
 #include "Collision.h"
 
 using namespace std;
@@ -120,6 +121,9 @@ Game::~Game()
 		delete koopa;
 	}
 	koopas.clear();
+	if (mushroom != nullptr) {
+		delete mushroom;
+	}
 	// Elimina las texturas
 	for (Texture* texture : textures)
 		delete texture;
@@ -160,7 +164,8 @@ Game::run()
 
 void
 Game::render() const
-{
+
+{	// Pinta los objetos del juego
 	SDL_RenderClear(renderer);
 	tilemap->render();
 	player->render();
@@ -173,7 +178,11 @@ Game::render() const
 	for (const Koopa* koopa : koopas) {
 		koopa->render();
 	}
-	// Pinta los objetos del juego
+	if (mushroom != nullptr) {
+		mushroom->render();
+	}
+		
+
 	//textures[BACKGROUND]->render();
 	//perro->render();
 
@@ -196,8 +205,7 @@ Game::update()
 	for (Koopa* koopa : koopas) {
 		koopa->update();
 	}
-
-
+	if (mushroom != nullptr) mushroom->update();
 }
 
 int Game::getMapOffset() {
@@ -228,6 +236,11 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 	Collision colision = { false,false,{0,0,0,0} };
 
+	if (mushroom != nullptr) {
+			colision = mushroom->hit(rect, fromPlayer);
+			if (colision.collides) return colision;
+	}
+
 	// Primero verificamos colisión con el tilemap
 	colision = tilemap->hit(rect, fromPlayer);
 	if (colision.collides) return colision;
@@ -236,6 +249,12 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 	// Luego verificamos colisión con cada bloque
 	for (Block* block : blocks) {
 		colision = block->hit(rect, fromPlayer);
+		if (block->ObtainObject()) {
+			if (mushroom == nullptr) {
+				mushroom = new Mushroom(this, rect.x, rect.y);
+			}
+		}
+			
 		if (colision.collides) return colision;
 	}
 

@@ -31,6 +31,7 @@ Koopa::render() const {
 		KPosition.y = position.getY() - Game::TILE_SIDE;
 		KPosition.w = Game::TILE_SIDE;
 		KPosition.h = Game::TILE_SIDE * 2; //Tiene dos tiles de altura
+		//IMPORTANTE APLICAR ESTO A MARIO GRANDE CUANDO TENGAMOS LA SETA
 
 		int frame = 0;
 		//movimiento del koopa, usando solo los dos primeros frames

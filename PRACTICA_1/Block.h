@@ -27,6 +27,7 @@ private:
 	Game* game;
 	int frameBlock;
 	int previousOffset;
+	bool object;
 public:
 
 	Block(Game* game, std::stringstream& atributos);
@@ -38,5 +39,7 @@ public:
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
 
 	SDL_Rect getRect() const;
+
+	bool ObtainObject();
 };
 
