@@ -238,6 +238,11 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 		colision = block->hit(rect, fromPlayer);
 		if (colision.collides) return colision;
 	}
+
+	for (Goomba* goomba : goombas) {
+		colision = goomba->hit(rect, fromPlayer);
+		if (colision.collides) return colision;
+	}
 	return colision;
 }
 
@@ -250,8 +255,11 @@ Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
 	SDL_Rect enemyRect = rect;
 
 	colision = tilemap->hit(rect, fromPlayer);
+	if (colision.collides) return colision;
+
 	for (Block* block : blocks) {
 		colision = block->hit(rect, fromPlayer);
+		if (colision.collides) return colision;
 	}
 
 	return colision;

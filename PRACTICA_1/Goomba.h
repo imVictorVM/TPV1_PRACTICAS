@@ -18,7 +18,7 @@ protected:
 	int frameRunner;
 	bool frozen;
 	int previousOffset;
-
+	int velocity;
 public:
 
 	Goomba(Game* game, std::stringstream& atributos);
@@ -30,4 +30,6 @@ public:
 	bool groundCollision();
 
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+
+	SDL_Rect getRect() const;
 };

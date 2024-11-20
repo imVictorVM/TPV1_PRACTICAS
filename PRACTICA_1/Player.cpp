@@ -108,7 +108,6 @@ void Player::update() {
 	if (!collision.collides) position.setY(newPosition.getY());
 	else {
 		if (collision.intersection.y > position.getY()) { 
-			//Si hay colision con el suelo activamos la accion de salto CAMBIAR PARA QUE SOLO SEA DESDE ABAJO
 			groundPositionY = position.getY();
 			jump = false;
 		} //SUELO
@@ -128,10 +127,10 @@ void Player::update() {
 	else {
 		if (collision.intersection.x > position.getX()) { 
 			//direction.setY(velocity);
-		}
+		} //MURO A LA IZQUIERDA
 		else if (collision.intersection.x < position.getX()) { 
 			//direction.setY(velocity);
-		}
+		} // MURO A LA DERECHA
 	}
 
 	// FUNCIONAL: MARIO CRUZA EL LIMITE DEL MAPA IZQUIERDO
@@ -215,7 +214,6 @@ Player::getDirection() const {
 	return direction;
 }
 
-//Recordemos que el rect del jugador tiene el origen distinto al de los tiles para colisionar con el entorno, por eso puede atravesarlos
 SDL_Rect 
 Player::getRect() const{
 	SDL_Rect playerRect;
