@@ -19,6 +19,7 @@ protected:
 	bool frozen;
 	int previousOffset;
 	int velocity;
+	bool ended;
 public:
 
 	Goomba(Game* game, std::stringstream& atributos);

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(game->getTexture(Game::GOOMBA)), game(game) , frame(0), frameRunner(0), previousOffset(0), frozen(true), velocity(2)
+Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(game->getTexture(Game::GOOMBA)), game(game) , frame(0), frameRunner(0), previousOffset(0), frozen(true), velocity(2), ended(false)
 {
 	string line;
 
@@ -16,7 +16,7 @@ Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(
 	lineStream >> posX;
 	lineStream >> posY;
 
-	position = Vector2D<int>((posX-1) * Game::TILE_SIDE, (posY-1) * Game::TILE_SIDE);
+	position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1) * Game::TILE_SIDE);
 	direction = Vector2D<int>(-velocity, 0);
 }
 
@@ -48,7 +48,7 @@ Goomba::update() {
 		frozen = false;
 	}
 
-	if (!frozen) {
+	if (!frozen && !ended) {
 		//REVISAR
 		Vector2D<int> newPosition = position + direction;
 		//if (!groundCollision()) position = position + notGround;
@@ -95,11 +95,16 @@ Goomba::update() {
 			if (collision.intersection.x < position.getX()) {
 				direction.setX(-direction.getX());
 				cout << "COLISIONO POR LA DERECHA" << endl;
-			} //MURO A LA IZQUIERDA
+			} //MURO A LA DERECHA
 			else if (collision.intersection.x > position.getX()) {
 				direction.setX(-direction.getX());
 				cout << "COLISIONO POR LA IZQUIERDA" << endl;
-			} //MURO A LA DERECHA
+			} //MURO A LA IZQUIERDA
+		}
+
+		if (position.getX() < 0 - Game::TILE_SIDE || position.getY() >= 470) {
+			ended = true;
+			cout << "Me he morido por limite de mapa" << endl;
 		}
 	}
 
@@ -110,9 +115,6 @@ Goomba::update() {
 		position.setX(position.getX() - offsetChange);
 		previousOffset = newOffset;
 	}
-
-	//cout << "Position: " << position.getX() << endl;
-	//cout << "MapOffset: " << mapOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE - Game::TILE_SIDE * 2 << endl;
 }
 
 Collision
@@ -134,7 +136,10 @@ Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 			colisionPlayer.collides = false;
 			colisionPlayer.damages = true;
 			colisionPlayer.intersection = intersection;
-			if (colisionPlayer.intersection.y < position.getY() + Game::TILE_SIDE / 2) frame = 2;
+			if (colisionPlayer.intersection.y < position.getY() + Game::TILE_SIDE / 2) {
+				frame = 2;
+				ended = true;
+			}
 			return colisionPlayer;
 		}
 		return colisionPlayer;
