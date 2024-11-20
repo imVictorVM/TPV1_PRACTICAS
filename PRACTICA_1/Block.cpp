@@ -98,23 +98,26 @@ Collision
 Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 
 	Collision colision = { false,false,{0,0,0,0} };
-	//
-	// Creamos un rect del bloque para compararlo con el del jugador
-	SDL_Rect blockRect;
-	blockRect.x = position.getX() + game->getMapOffset();
-	blockRect.y = position.getY();
-	blockRect.w = Game::TILE_SIDE;
-	blockRect.h = Game::TILE_SIDE;
 	
-	// Creamos un rect del player tomando de valor el que le llega como argumento
-	SDL_Rect playerRect;
-	playerRect = rect;
+	if (fromPlayer) {
+		// Creamos un rect del bloque para compararlo con el del jugador
+		SDL_Rect blockRect;
+		blockRect.x = position.getX() + game->getMapOffset();
+		blockRect.y = position.getY();
+		blockRect.w = Game::TILE_SIDE;
+		blockRect.h = Game::TILE_SIDE;
 
-	SDL_Rect intersection;
-	if (SDL_IntersectRect(&playerRect, &blockRect, &intersection)) {
-		colision.collides = true;
-		colision.intersection = intersection;
-		if (colision.intersection.y > position.getY() + Game::TILE_SIDE / 2) type = empty;
+		// Creamos un rect del player tomando de valor el que le llega como argumento
+		SDL_Rect playerRect;
+		playerRect = rect;
+
+		SDL_Rect intersection;
+		if (SDL_IntersectRect(&playerRect, &blockRect, &intersection)) {
+			colision.collides = true;
+			colision.intersection = intersection;
+			if (colision.intersection.y > position.getY() + Game::TILE_SIDE / 2) type = empty;
+			return colision;
+		}
 		return colision;
 	}
 	return colision;

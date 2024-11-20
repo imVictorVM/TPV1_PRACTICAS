@@ -51,8 +51,6 @@ Goomba::update() {
 	if (!frozen && !ended) {
 		//REVISAR
 		Vector2D<int> newPosition = position + direction;
-		//if (!groundCollision()) position = position + notGround;
-		//else position = position + direction;
 
 		//FUNCIONAL: Animacion del goomba para moverse cuando no esta congelado
 		if (frameRunner == 0) frame = 0;
@@ -92,14 +90,12 @@ Goomba::update() {
 			position.setX(newPosition.getX());
 		}
 		else {
-			if (collision.intersection.x < position.getX()) {
+			if (collision.intersection.x > position.getX()) {
 				direction.setX(-direction.getX());
-				cout << "COLISIONO POR LA DERECHA" << endl;
-			} //MURO A LA DERECHA
-			else if (collision.intersection.x > position.getX()) {
-				direction.setX(-direction.getX());
-				cout << "COLISIONO POR LA IZQUIERDA" << endl;
-			} //MURO A LA IZQUIERDA
+			}
+			else if (collision.intersection.x < position.getX()) {
+				direction.setX(-velocity);
+			}
 		}
 
 		if (position.getX() < 0 - Game::TILE_SIDE || position.getY() >= 470) {
