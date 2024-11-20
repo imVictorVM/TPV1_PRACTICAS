@@ -13,9 +13,12 @@ protected:
 	Vector2D<int> direction;
 	Texture* koopaTexture;
 	Game* game;
+	int frame;
 	int frameRunner;
 	bool frozen;
 	int previousOffset;
+	int velocity;
+	bool ended;
 
 public:
 
@@ -26,4 +29,6 @@ public:
 	void update();
 
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+
+	SDL_Rect getRect() const;
 };
