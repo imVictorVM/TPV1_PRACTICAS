@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Koopa::Koopa(Game* game, stringstream& atributes) : position(), koopaTexture(game->getTexture(Game::KOOPA)), game(game), frame(0), frameRunner(0), frozen(true), previousOffset(0), velocity(2), ended(false)
+Koopa::Koopa(Game* game, stringstream& atributes) : position(), koopaTexture(game->getTexture(Game::KOOPA)), game(game), frame(0), frameRunner(0), frozen(true), previousOffset(0), velocity(2), ended(false), velocityGravity(8)
 {
 	string line;
 
@@ -28,9 +28,9 @@ Koopa::render() const {
 		//posición del koopa
 		SDL_Rect KPosition;
 		KPosition.x = position.getX();
-		KPosition.y = position.getY();
+		KPosition.y = position.getY() - Game::TILE_SIDE;
 		KPosition.w = Game::TILE_SIDE;
-		KPosition.h = Game::TILE_SIDE; //Tiene dos tiles de altura
+		KPosition.h = Game::TILE_SIDE * 2; //Tiene dos tiles de altura
 
 		int frame = 0;
 		//movimiento del koopa, usando solo los dos primeros frames
@@ -75,7 +75,7 @@ Koopa::update() {
 
 		//COLISION VERTICAL
 		if (!collision.collides) {
-			direction.setY(velocity);
+			direction.setY(velocityGravity);
 			position.setY(newPosition.getY());
 		}
 		else {
@@ -83,7 +83,7 @@ Koopa::update() {
 				direction.setY(0);
 			} //SUELO
 			else if (collision.intersection.y < position.getY()) {
-				direction.setY(velocity);
+				direction.setY(velocityGravity);
 			} //TECHO
 		}
 

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(game->getTexture(Game::GOOMBA)), game(game) , frame(0), frameRunner(0), previousOffset(0), frozen(true), velocity(2), ended(false)
+Goomba::Goomba(Game* game, stringstream& atributes) : position(), goombaTexture(game->getTexture(Game::GOOMBA)), game(game) , frame(0), frameRunner(0), previousOffset(0), frozen(true), velocity(2), ended(false), velocityGravity(8)
 {
 	string line;
 
@@ -67,7 +67,7 @@ Goomba::update() {
 
 		//COLISION VERTICAL
 		if (!collision.collides) {
-			direction.setY(velocity);
+			direction.setY(velocityGravity);
 			position.setY(newPosition.getY());
 		}
 		else {
@@ -75,7 +75,7 @@ Goomba::update() {
 				direction.setY(0);
 			} //SUELO
 			else if (collision.intersection.y < position.getY()) {
-				direction.setY(velocity);
+				direction.setY(velocityGravity);
 			} //TECHO
 		}
 

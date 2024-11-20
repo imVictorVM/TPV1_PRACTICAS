@@ -20,6 +20,8 @@ protected:
 	int previousOffset;
 	int velocity;
 	bool ended;
+	int velocityGravity;
+
 public:
 
 	Goomba(Game* game, std::stringstream& atributos);
