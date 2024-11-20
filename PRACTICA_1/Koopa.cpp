@@ -66,12 +66,12 @@ Koopa::update() {
 		else frameRunner++;
 		frameRunner++;
 
-		SDL_Rect GoombaRect = getRect();
-		GoombaRect.y += direction.getY();
-		GoombaRect.x += direction.getX();
+		SDL_Rect KoopaRect = getRect();
+		KoopaRect.y += direction.getY();
+		KoopaRect.x += direction.getX();
 
 		// CAMBIAR: Verifica colisión en todas las direcciones
-		Collision collision = game->checkEnemyCollision(GoombaRect, false);
+		Collision collision = game->checkEnemyCollision(KoopaRect, false);
 
 		//COLISION VERTICAL
 		if (!collision.collides) {
@@ -88,10 +88,10 @@ Koopa::update() {
 		}
 
 		//RECALCULO DE LA COLISION
-		GoombaRect.x += direction.getX();
-		GoombaRect.y = position.getY();
+		KoopaRect.x += direction.getX();
+		KoopaRect.y = position.getY();
 
-		collision = game->checkEnemyCollision(GoombaRect, false);
+		collision = game->checkEnemyCollision(KoopaRect, false);
 
 		//COLISION HORIZONTAL
 		if (!collision.collides) {
@@ -138,7 +138,7 @@ Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
 		SDL_Rect intersection;
 		if (SDL_IntersectRect(&playerRect, &GoombaRect, &intersection)) {
 			colisionPlayer.collides = false;
-			colisionPlayer.damages = true;
+			colisionPlayer.damages = false;
 			colisionPlayer.intersection = intersection;
 			if (colisionPlayer.intersection.y < position.getY() + Game::TILE_SIDE / 2) {
 				frame = 2;

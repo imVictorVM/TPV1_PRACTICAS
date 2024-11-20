@@ -243,6 +243,11 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 		colision = goomba->hit(rect, fromPlayer);
 		if (colision.collides) return colision;
 	}
+
+	for (Koopa* koopa : koopas) {
+		colision = koopa->hit(rect, fromPlayer);
+		if (colision.collides) return colision;
+	}
 	return colision;
 }
 

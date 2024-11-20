@@ -130,7 +130,7 @@ Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 		SDL_Rect intersection;
 		if (SDL_IntersectRect(&playerRect, &GoombaRect, &intersection)) {
 			colisionPlayer.collides = false;
-			colisionPlayer.damages = true;
+			colisionPlayer.damages = false;
 			colisionPlayer.intersection = intersection;
 			if (colisionPlayer.intersection.y < position.getY() + Game::TILE_SIDE / 2) {
 				frame = 2;
