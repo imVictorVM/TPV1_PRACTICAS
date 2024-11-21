@@ -119,7 +119,7 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 			colision.intersection = intersection;
 			if (colision.intersection.y > position.getY() + Game::TILE_SIDE / 2) {
 				if (type != empty) {
-					if (action == powerup) {
+					if (action == powerup && !ObtainObject()) {
 						//Logica de la aparición de la seta
 						cout << "Seta" << endl;
 						object = true;

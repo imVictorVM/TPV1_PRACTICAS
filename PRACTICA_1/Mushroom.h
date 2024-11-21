@@ -14,7 +14,9 @@ protected:
 	Texture* mushroomTexture;
 	Game* mushroomGame;
 	int velocity;
-
+	int previousOffset;
+	bool ended;
+	int velocityGravity;
 public:
 
 	Mushroom(Game* game, SDL_Rect rect);
@@ -25,4 +27,5 @@ public:
 
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
 
+	SDL_Rect getRect() const;
 };

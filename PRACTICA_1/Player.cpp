@@ -154,6 +154,9 @@ void Player::update() {
 		GamePlayer->setMapOffset(velocity);
 	}
 
+	cout << "MapOffsetX: " << GamePlayer->getMapOffset() << endl;
+	
+
 }
 
 Collision 

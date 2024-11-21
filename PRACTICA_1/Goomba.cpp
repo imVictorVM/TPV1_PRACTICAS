@@ -94,7 +94,7 @@ Goomba::update() {
 				direction.setX(-direction.getX());
 			}
 			else if (collision.intersection.x < position.getX()) {
-				direction.setX(-velocity);
+				direction.setX(-direction.getX());
 			}
 		}
 
@@ -141,7 +141,7 @@ Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 		return colisionPlayer;
 	}
 	else {
-		return game->checkPlayerCollision(rect, fromPlayer);
+		return game->checkEnemyCollision(rect, fromPlayer);
 	}
  
 }
