@@ -93,6 +93,7 @@ Block::update() {
 	//Actualizamos el frame del bloque siempre en caso de ser un bloque sorpresa, hay muchos frameBlocks para que sea lenta la trancision de un sprite a otro
 	frameBlock++;
 	if (frameBlock > 8) frameBlock = 0;
+
 }
 
 Collision
@@ -149,4 +150,8 @@ SDL_Rect Block::getRect() const {
 
 bool Block::ObtainObject() {
 	return object;
+}
+
+void Block::itemObtained() {
+	object = false;
 }

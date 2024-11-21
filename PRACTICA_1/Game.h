@@ -63,8 +63,9 @@ private:
 	std::vector<Block*> blocks;
 	std::vector<Goomba*> goombas;
 	std::vector<Koopa*> koopas;
-	//std::vector<Mushroom*> mushrooms;
-	Mushroom* mushroom = nullptr;
+	
+	std::vector<Mushroom*> mushrooms;
+	//Mushroom* mushroom = nullptr;
 
 public:
 	void run();

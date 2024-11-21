@@ -17,7 +17,7 @@ protected:
 
 public:
 
-	Mushroom(Game* game, int posX, int posY);
+	Mushroom(Game* game, SDL_Rect rect);
 
 	void render() const;
 

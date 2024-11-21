@@ -41,5 +41,7 @@ public:
 	SDL_Rect getRect() const;
 
 	bool ObtainObject();
+
+	void itemObtained();
 };
 

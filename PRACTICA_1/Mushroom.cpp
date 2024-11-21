@@ -4,10 +4,12 @@
 
 using namespace std;
 
-Mushroom::Mushroom(Game* game, int posX, int posY) : position(), direction(), mushroomTexture(game->getTexture(Game::MUSHROOM)), mushroomGame(game), velocity(2)
+Mushroom::Mushroom(Game* game, SDL_Rect rect) : position(), direction(), mushroomTexture(game->getTexture(Game::MUSHROOM)), mushroomGame(game), velocity(2)
 {
 	//posicion de la seta
-	position = Vector2D<int>(posX, posY - Game::TILE_SIDE);
+	int posX = rect.x;
+	int posY = rect.y - Game::TILE_SIDE;
+	position = Vector2D<int>(posX, posY);
 	direction = Vector2D<int>(velocity, 0);
 }
 
