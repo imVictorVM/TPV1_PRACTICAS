@@ -11,7 +11,6 @@ class Goomba
 protected:
 	Vector2D<int> position;
 	Vector2D<int> direction;
-	Vector2D<int> notGround;
 	Texture* goombaTexture;
 	Game* game;
 	int frame;

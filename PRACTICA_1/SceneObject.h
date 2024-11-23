@@ -7,8 +7,7 @@
 #include "gameList.h"
 #include "Collision.h"
 #include "Texture.h"
-
-using Game;
+#include "Game.h"
 
 class SceneObject : public GameObject {
 protected:
@@ -16,12 +15,23 @@ protected:
 	Vector2D<int> direction;
 	int width;
 	int height;
+	int frame;
+	int frameRunner;
+	bool frozen;
+	int previousOffset;
+	int velocity;
+	bool ended;
+	int velocityGravity;
 	Texture* texture;
 
+	SDL_Rect rect;
+	SDL_Renderer* renderer;
 	GameList<SceneObject>::anchor anchor;
 
 public:
 	SceneObject(Game* g, Vector2D<int> pos, Vector2D<int> dir, Texture *tex);
+
+	~SceneObject();
 
 	virtual Collision hit(SDL_Rect& rect, bool fromPlayer) = 0;
 

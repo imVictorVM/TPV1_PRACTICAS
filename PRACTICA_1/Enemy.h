@@ -5,5 +5,7 @@
 
 class Enemy : public SceneObject {
 public:
+	Enemy();
+	~Enemy();
 	Collision hit(SDL_Rect& rect, bool fromPlayer) override;
 };
