@@ -1,0 +1,9 @@
+#include "GameObject.h"
+
+GameObject::GameObject(Game* g) {
+	game = g;
+}
+
+GameObject::~GameObject() {
+	delete game;
+}
