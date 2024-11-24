@@ -1,11 +1,14 @@
 #pragma once
-#include "Vector2D.h"
-#include "Game.h"
+//#include "Vector2D.h"
+//#include "Game.h"
+
+#include "SceneObject.h"
+#include <vector>
 #include <sstream>
 
 class Game;
 
-class Block
+class Block : public SceneObject
 {
 public:
 	enum Type
@@ -20,24 +23,27 @@ public:
 		coin
 	};
 private:
-	Vector2D<int> position;
-	Texture* TextureBlock;
+	//Vector2D<int> position; position del SceneObject
+	//Texture* texture;
 	Type type;
 	Action action;
-	Game* game;
-	int frameBlock;
-	int previousOffset;
+	//Game* game; //gamePointer del GameObject
+	//int frameBlock; frame del SceneObject
+	//int previousOffset; previousOffset del SceneObject
+	int surpriseCont;
 	bool object;
-	bool ended;
+	//bool ended; ended del SceneObject
 public:
 
 	Block(Game* game, std::stringstream& atributos);
 
-	void render() const;
+	//~Block();
 
-	void update();
+	//void render() const override;
 
-	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+	void update() override;
+
+	Collision hit(const SDL_Rect& rect, bool fromPlayer) override;
 
 	SDL_Rect getRect() const;
 

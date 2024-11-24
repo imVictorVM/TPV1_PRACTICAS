@@ -8,7 +8,7 @@ using namespace std;
 
 TileMap::TileMap(const string& mapa, Game* game) : SceneObject(game) {
 
-	patrones = gamePointer->getTexture(Game::BACKGROUND);
+	texture = gamePointer->getTexture(Game::BACKGROUND);
 	ifstream entrada(mapa);
 	if (!entrada.is_open()) throw new exception("Error leyendo archivo");
 	while (entrada) {
@@ -58,7 +58,7 @@ TileMap::render() const
 
 					// Usa renderFrame para pintar la tesela
 					//background->renderFrame(rect, fy, fx);
-					patrones->renderFrame(rect, fy, fx);
+					texture->renderFrame(rect, fy, fx);
 				}
 			}
 		}
@@ -93,7 +93,7 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 				if (indice == 34 || indice == 43) { //Si el jugador toca el mastil es victoria
 					cout << "VICTORIA" << endl;
 				}
-				if (indice != -1 && indice % patrones->getNumColumns() < OBSTACLE_THRESHOLD) { //Si el jugador toca cualquier bloque de colision lo guardamos
+				if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD) { //Si el jugador toca cualquier bloque de colision lo guardamos
 					SDL_Rect tileRect = {
 						col * Game::TILE_SIDE,
 						row * Game::TILE_SIDE,

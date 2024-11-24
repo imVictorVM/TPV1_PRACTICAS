@@ -8,8 +8,11 @@ SceneObject::SceneObject(Game* g, Vector2D<int> pos, Vector2D<int> dir) : GameOb
 	position = pos;
 	direction = dir;
 	frame = 0;
+	previousOffset = 0;
 	width = Game::TILE_SIDE;
 	height = Game::TILE_SIDE;
+	ended = false;
+
 	//rect = SDL_Rect(pos.getX(), pos.getY(),width,height);
 
 	if (gamePointer->getMapOffset() + Game::WIN_WIDTH > pos.getX()) frozen = false;
@@ -21,16 +24,37 @@ SceneObject::SceneObject(Game* g) : GameObject(g) {
 	position =  Vector2D(0,0);
 	direction = Vector2D(0,0);
 	frame = 0;
+	previousOffset = 0;
 	width = Game::TILE_SIDE;
 	height = Game::TILE_SIDE;
 	//rect = SDL_Rect(pos.getX(), pos.getY(), width, height);
 
 	frozen = false;
+	ended = false;
 	
 }
 
 SceneObject::~SceneObject() {
+	//delete texture;
+	//GameObject::~GameObject();
 }
+
+void
+SceneObject::render() const {
+
+	if (!ended) {
+		SDL_Rect BPosition;
+		BPosition.x = position.getX();
+		BPosition.y = position.getY();
+		BPosition.w = Game::TILE_SIDE;
+		BPosition.h = Game::TILE_SIDE;
+
+		texture->renderFrame(BPosition, 0, frame);
+	}
+
+}
+
+
 
 void SceneObject::setListAnchor(GameList<SceneObject>::anchor&& anchor) {
 	this->anchor = std::move(anchor);

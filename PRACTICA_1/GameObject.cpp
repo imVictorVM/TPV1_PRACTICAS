@@ -5,5 +5,5 @@ GameObject::GameObject(Game* g) {
 }
 
 GameObject::~GameObject() {
-	delete gamePointer;
+	//delete gamePointer;
 }
