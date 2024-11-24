@@ -1,9 +1,9 @@
 #include "GameObject.h"
 
 GameObject::GameObject(Game* g) {
-	game = g;
+	gamePointer = g;
 }
 
 GameObject::~GameObject() {
-	delete game;
+	delete gamePointer;
 }

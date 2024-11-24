@@ -135,6 +135,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="main.cpp" />

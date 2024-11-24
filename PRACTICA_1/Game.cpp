@@ -9,7 +9,8 @@
 #include "Koopa.h"
 #include "Mushroom.h"
 #include "Collision.h"
-
+#include "GameObject.h"
+#include "SceneObject.h"
 using namespace std;
 class TileMap;
 

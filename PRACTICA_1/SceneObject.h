@@ -22,20 +22,18 @@ protected:
 	int velocity;
 	bool ended;
 	int velocityGravity;
-	Texture* texture;
 
 	SDL_Rect rect;
 	SDL_Renderer* renderer;
 	GameList<SceneObject>::anchor anchor;
 
 public:
-	SceneObject(Game* g, Vector2D<int> pos, Vector2D<int> dir, Texture *tex);
-
+	SceneObject(Game* g, Vector2D<int> pos, Vector2D<int> dir);
+	SceneObject(Game* g);
 	~SceneObject();
 
-	virtual Collision hit(SDL_Rect& rect, bool fromPlayer) = 0;
+	virtual Collision hit(const SDL_Rect& rect, bool fromPlayer) = 0;
 
 	void setListAnchor(GameList<SceneObject>::anchor&& anchor);
 
-	void render() const override;
 };

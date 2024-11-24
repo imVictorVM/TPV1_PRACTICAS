@@ -4,7 +4,7 @@ class Game;
 
 class GameObject {
 protected:
-	Game* game;
+	Game* gamePointer;
 public:
 
 	GameObject(Game* g);

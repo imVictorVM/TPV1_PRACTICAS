@@ -6,8 +6,9 @@
 
 using namespace std;
 
-TileMap::TileMap(const string& mapa, Game* game) : game(game), patrones(game->getTexture(Game::BACKGROUND)){
+TileMap::TileMap(const string& mapa, Game* game) : SceneObject(game) {
 
+	patrones = game->getTexture(Game::BACKGROUND);
 	ifstream entrada(mapa);
 	if (!entrada.is_open()) throw new exception("Error leyendo archivo");
 	while (entrada) {
@@ -27,16 +28,6 @@ TileMap::TileMap(const string& mapa, Game* game) : game(game), patrones(game->ge
 void 
 TileMap::render() const
 {
-
-	// atributos de TileMap :
-	// matriz : vector<vector<int>> indices; 
-	// patrones : Texture* background;  
-
-
-	// constantes estáticas en Game:
-	//constexpr int TILE_SIDE = 32;  
-	//constexpr int WINDOW_WIDTH = 18;
-	//constexpr int WINDOW_HEIGHT = 16;
 
 	// atributo de Game
 	int mapOffset = game->getMapOffset();  
