@@ -13,8 +13,8 @@
 using namespace std;
 
 Player::Player(Game* game, stringstream& atributes) : position(), 
-TexturePlayer(game->getTexture(Game::MARIANO)), GamePlayer(game), vidas(0), 
-jump(false), frameRunner(0), leftLimit(), damageCooldown(60), velocity(8){
+TextureMario(game->getTexture(Game::MARIANO)),TextureSuperMario(game->getTexture(Game::SUPERMARIANO)), GamePlayer(game), vidas(0),
+jump(false), frameRunner(0), leftLimit(), damageCooldown(15), velocity(8), SuperMario(false){
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -45,36 +45,65 @@ jump(false), frameRunner(0), leftLimit(), damageCooldown(60), velocity(8){
 
 void
 Player::render() const {
+
 	SDL_Rect MPosition;
-	MPosition.x = position.getX() - GamePlayer->getMapOffset();
-	MPosition.y = position.getY();
-	MPosition.w = Game::TILE_SIDE;
-	MPosition.h = Game::TILE_SIDE;
-
-	int frame = 0;
-	//Si el jugador esta saltando ponemos el frame 6
-	if (jump) frame = 6;
-	else if (damageCooldown < 60) {
-		frame = 1;
+	MPosition = getRect();
+	MPosition.x -= GamePlayer->getMapOffset();
+	if (SuperMario) {
+		MPosition.y -= MPosition.h;
+		MPosition.h *= 2;
 	}
-	//elegimos el frame de movimiento del jugador en funcion del valor de frameRunner, si esta quieto se descarta por la siguiente condicional
+		
+	if (!SuperMario) {
+		int frame = 0;
+		//Si el jugador esta saltando ponemos el frame 6
+		if (jump) frame = 6;
+		//elegimos el frame de movimiento del jugador en funcion del valor de frameRunner, si esta quieto se descarta por la siguiente condicional
+		else {
+			if (frameRunner == 0) frame = 0;
+			else if (frameRunner == 1) frame = 2;
+			else if (frameRunner == 2) frame = 3;
+			else frame = 4;
+		}
+
+		//Si el jugador esta quieto en horizontal y puede saltar ponemos el frame 0
+		if (direction.getX() == 0 && !jump) frame = 0;
+		if (damageCooldown < 15) frame = 1;
+
+		//Esto es para comprobar si esta mirando a la izquierda o a la derecha y en funcion de eso girar el render en funcion de donde mire
+		SDL_RendererFlip flip = SDL_FLIP_NONE;
+		if (lookingLeft) {
+			flip = SDL_FLIP_HORIZONTAL;
+		}
+
+		//Renderizamos con los parametros actualizados
+		TextureMario->renderFrame(MPosition, 0, frame, flip);
+	}
 	else {
-		if (frameRunner == 0) frame = 0;
-		else if (frameRunner == 1) frame = 2;
-		else if (frameRunner == 2) frame = 3;
-		else frame = 4;
-	}
-	//Si el jugador esta quieto en horizontal y puede saltar ponemos el frame 0
-	if (direction.getX() == 0 && !jump) frame = 0;
+		int frame = 0;
 
-	//Esto es para comprobar si esta mirando a la izquierda o a la derecha y en funcion de eso girar el render en funcion de donde mire
-	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	if (lookingLeft) {
-		flip = SDL_FLIP_HORIZONTAL;
-	}
+		if (jump) frame = 6;
+		else if (damageCooldown < 15) {
+			frame = 21;
+		}
+		else {
+			if (frameRunner == 0) frame = 0;
+			else if (frameRunner == 1) frame = 2;
+			else if (frameRunner == 2) frame = 3;
+			else frame = 4;
+		}
 
-	//Renderizamos con los parametros actualizados
-	TexturePlayer->renderFrame(MPosition, 0, frame, flip);
+		//Si el jugador esta quieto en horizontal y puede saltar ponemos el frame 0
+		if (direction.getX() == 0 && !jump) frame = 0;
+
+		//Esto es para comprobar si esta mirando a la izquierda o a la derecha y en funcion de eso girar el render en funcion de donde mire
+		SDL_RendererFlip flip = SDL_FLIP_NONE;
+		if (lookingLeft) {
+			flip = SDL_FLIP_HORIZONTAL;
+		}
+
+		TextureSuperMario->renderFrame(MPosition, 0, frame, flip);
+	}
 
 }
 
@@ -84,19 +113,18 @@ void Player::update() {
 	Vector2D<int> newPosition = position + direction;
 
 	SDL_Rect MarioRect = getRect();
+	if (SuperMario) {
+		//MarioRect.y -= MarioRect.h;
+		//MarioRect.h *= 2;
+		MarioRect.w += 1;
+	}
+	//DUDA: NO SE PUEDE USAR EL MARIO GRANDE EN LAS COLISIONES, SI NO HAGO ESTO NECESITAMOS UN PARAMETRO ADICIONAL EN EL HIT
+
 	MarioRect.y += direction.getY();
 	MarioRect.x += direction.getX();
 
 	// CAMBIAR: Verifica colisión en todas las direcciones
 	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
-
-	// FUNCIONAL: CONTROL EN CASO DE DERROTA
-	if (position.getY() >= 470 || damageCooldown >= 30 && collision.damages) {
-		vidas--;
-		position = Vector2D<int>(InitialPositionX * Game::TILE_SIDE, (InitialPositionY-1) * Game::TILE_SIDE);
-		return;
-	}
-	damageCooldown++;
 
 	//FUNCIONAL: CONTROL DE SALTO
 	int jumpMaxDistance = 4 * Game::TILE_SIDE;
@@ -133,6 +161,26 @@ void Player::update() {
 		} // MURO A LA DERECHA
 	}
 
+	// FUNCIONAL: CONTROL EN CASO DE DAÑO Y DE DERROTA
+	if (position.getY() >= 470 || damageCooldown >= 15 && collision.damages) {
+		if (vidas == 0) cout << "DERROTA" << endl;
+		else {
+			if (!SuperMario) {
+				vidas--;
+				damageCooldown = 0;
+				position = Vector2D<int>(InitialPositionX * Game::TILE_SIDE, (InitialPositionY - 1) * Game::TILE_SIDE);
+				GamePlayer->ResetMapOffset();
+				cout << "Vidas restantes: " << vidas << endl;
+				return;
+			}
+			else {
+				damageCooldown = 0;
+				TransformacionMario();
+			}
+		}
+	}
+	damageCooldown++;
+
 	// FUNCIONAL: MARIO CRUZA EL LIMITE DEL MAPA IZQUIERDO
 	if (position.getX() < GamePlayer->getMapOffset()) {
 		position.setX(GamePlayer->getMapOffset());
@@ -153,9 +201,6 @@ void Player::update() {
 	if (midMap) {
 		GamePlayer->setMapOffset(velocity);
 	}
-
-	cout << "MapOffsetX: " << GamePlayer->getMapOffset() << endl;
-	
 
 }
 
@@ -229,4 +274,16 @@ Player::getRect() const{
 
 int Player::getVidas() const {
 	return vidas;
+}
+
+void Player::TransformacionSuperMario(){
+	SuperMario = true;
+}
+
+void Player::TransformacionMario() {
+	SuperMario = false;
+}
+
+bool Player::IsSuperMario() const {
+	return SuperMario;
 }

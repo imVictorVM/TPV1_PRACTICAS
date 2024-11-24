@@ -17,7 +17,8 @@ protected:
 	//Vector2D<int> windowPosition;
 	int groundPositionY;
 	Vector2D<int> direction;
-	Texture* TexturePlayer;
+	Texture* TextureMario;
+	Texture* TextureSuperMario;
 	Game* GamePlayer;
 	int vidas;
 	bool jump; //Sirve para ver si podemos saltar o no
@@ -28,6 +29,7 @@ protected:
 	int InitialPositionX;
 	int InitialPositionY; 
 	int velocity;
+	bool SuperMario;
 public:
 
 	Player(Game* game,std::stringstream& atributos);
@@ -46,11 +48,14 @@ public:
 
 	Vector2D<int> getDirection() const;
 
-	//bool BlockCollision();
-
 	SDL_Rect getRect() const;
 
 	int getVidas() const;
 
+	void TransformacionSuperMario();
+
+	void TransformacionMario();
+
+	bool IsSuperMario() const;
 };
 

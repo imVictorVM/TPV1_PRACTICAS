@@ -1,4 +1,7 @@
 #pragma once
+#include "GameObject.h"
+#include "SceneObject.h"
+
 #include <SDL.h>
 #include <iostream>
 #include "Texture.h"
@@ -9,7 +12,7 @@
 
 class Game;
 
-class TileMap
+class TileMap : public SceneObject
 {
 	Game* game;
 	Texture* patrones;

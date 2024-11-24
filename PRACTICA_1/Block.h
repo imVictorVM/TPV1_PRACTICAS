@@ -28,6 +28,7 @@ private:
 	int frameBlock;
 	int previousOffset;
 	bool object;
+	bool ended;
 public:
 
 	Block(Game* game, std::stringstream& atributos);
@@ -43,5 +44,7 @@ public:
 	bool ObtainObject();
 
 	void itemObtained();
+
+	bool isAlive() const;
 };
 

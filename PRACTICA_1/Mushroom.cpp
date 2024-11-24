@@ -1,5 +1,6 @@
 #include "checkML.h"
 #include "Mushroom.h"
+#include "Player.h"
 #include "Game.h"
 
 using namespace std;
@@ -105,13 +106,11 @@ Mushroom::hit(const SDL_Rect& rect, bool fromPlayer) {
 		if (SDL_IntersectRect(&playerRect, &MushRect, &intersection)) {
 			colision.collides = true;
 			colision.intersection = intersection;
-			//Logica para hacer que mario sea grande
-			cout << "He colisionado con el jugador" << endl;
+			ended = true;
 			return colision;
 		}
 		return colision;
 	}
-	else return mushroomGame->checkEnemyCollision(rect, fromPlayer);
 	return colision;
 }
 
@@ -123,4 +122,9 @@ Mushroom::getRect() const {
 	MushRect.w = Game::TILE_SIDE;
 	MushRect.h = Game::TILE_SIDE;
 	return MushRect;
+}
+
+bool 
+Mushroom::isAlive() const {
+	return !ended;
 }

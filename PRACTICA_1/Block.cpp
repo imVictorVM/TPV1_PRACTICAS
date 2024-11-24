@@ -11,7 +11,7 @@
 #include <string>
 using namespace std;
 
-Block::Block(Game* game, stringstream& atributes) : position(), TextureBlock(game->getTexture(Game::BLOCK)), game(game), frameBlock(0), previousOffset(0), object(false) {
+Block::Block(Game* game, stringstream& atributes) : position(), TextureBlock(game->getTexture(Game::BLOCK)), action(), game(game), frameBlock(0), previousOffset(0), object(false), ended(false) {
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -56,27 +56,31 @@ Block::Block(Game* game, stringstream& atributes) : position(), TextureBlock(gam
 //Misma logica que el jugador pero adaptado para los bloques en cuanto a los frames dependiendo de su tipo tambien
 void
 Block::render() const {
-	SDL_Rect BPosition;
-	BPosition.x = position.getX();
-	BPosition.y = position.getY();
-	BPosition.w = Game::TILE_SIDE;
-	BPosition.h = Game::TILE_SIDE;
+	
+	if (!ended) {
+		SDL_Rect BPosition;
+		BPosition.x = position.getX();
+		BPosition.y = position.getY();
+		BPosition.w = Game::TILE_SIDE;
+		BPosition.h = Game::TILE_SIDE;
 
-	int frame = 0;
-	if (type == surprise) {
-		if (frameBlock >= 0 && frameBlock < 3) frame = 0;
-		else if (frameBlock >= 3 && frameBlock < 5) frame = 1;
-		else if (frameBlock >= 5 && frameBlock < 7) frame = 2;
-		else frame = 3;
-	}
-	else if (type == normal) {
-		frame = 5;
-	}
-	else if (type == empty) {
-		frame = 4;
+		int frame = 0;
+		if (type == surprise) {
+			if (frameBlock >= 0 && frameBlock < 3) frame = 0;
+			else if (frameBlock >= 3 && frameBlock < 5) frame = 1;
+			else if (frameBlock >= 5 && frameBlock < 7) frame = 2;
+			else frame = 3;
+		}
+		else if (type == normal) {
+			frame = 5;
+		}
+		else if (type == empty) {
+			frame = 4;
+		}
+
+		TextureBlock->renderFrame(BPosition, 0, frame);
 	}
 
-	TextureBlock->renderFrame(BPosition, 0, frame);
 }
 
 void
@@ -101,37 +105,41 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 
 	Collision colision = { false,false,{0,0,0,0} };
 	
-	if (fromPlayer) {
-		// Creamos un rect del bloque para compararlo con el del jugador
-		SDL_Rect blockRect;
-		blockRect.x = position.getX() + game->getMapOffset();
-		blockRect.y = position.getY();
-		blockRect.w = Game::TILE_SIDE;
-		blockRect.h = Game::TILE_SIDE;
+	// Creamos un rect del bloque para compararlo con el del jugador
+	SDL_Rect blockRect;
+	blockRect.x = position.getX() + game->getMapOffset();
+	blockRect.y = position.getY();
+	blockRect.w = Game::TILE_SIDE;
+	blockRect.h = Game::TILE_SIDE;
 
-		// Creamos un rect del player tomando de valor el que le llega como argumento
-		SDL_Rect playerRect;
-		playerRect = rect;
+	// Creamos un rect del player tomando de valor el que le llega como argumento
+	SDL_Rect playerRect;
+	playerRect = rect;
 
-		SDL_Rect intersection;
-		if (SDL_IntersectRect(&playerRect, &blockRect, &intersection)) {
-			colision.collides = true;
-			colision.intersection = intersection;
+	SDL_Rect intersection;
+	if (SDL_IntersectRect(&playerRect, &blockRect, &intersection)) {
+		colision.collides = true;
+		colision.intersection = intersection;
+		if (fromPlayer) {
 			if (colision.intersection.y > position.getY() + Game::TILE_SIDE / 2) {
+				
 				if (type != empty) {
-					if (action == powerup && !ObtainObject()) {
-						//Logica de la aparición de la seta
-						cout << "Seta" << endl;
-						object = true;
+					if (type == normal && rect.w > Game::TILE_SIDE) ended = true; //MARIO GRANDE ROMPE BLOQUES
+					else if (type == surprise || type == hidden) {
+						if (action == powerup && !ObtainObject()) {
+							//Logica de la aparición de la seta
+							cout << "Seta" << endl;
+							object = true;
+						}
+						if (action == coin) {
+							//Logica de la aparición de la moneda, es solo para HUD
+							cout << "Moneda" << endl;
+						}
+						type = empty;
 					}
-					if (action == coin) {
-						//Logica de la aparición de la moneda, es solo para HUD
-						cout << "Moneda" << endl;
-					}
-					type = empty;
 				}
+
 			}
-			return colision;
 		}
 		return colision;
 	}
@@ -154,4 +162,8 @@ bool Block::ObtainObject() {
 
 void Block::itemObtained() {
 	object = false;
+}
+
+bool Block::isAlive() const {
+	return !ended;
 }

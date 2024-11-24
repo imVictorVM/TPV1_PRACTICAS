@@ -130,12 +130,15 @@ Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
 		SDL_Rect intersection;
 		if (SDL_IntersectRect(&playerRect, &GoombaRect, &intersection)) {
 			colisionPlayer.collides = false;
-			colisionPlayer.damages = false;
 			colisionPlayer.intersection = intersection;
-			if (colisionPlayer.intersection.y < position.getY() + Game::TILE_SIDE / 2) {
-				frame = 2;
+			if (intersection.w > intersection.h) {
+				frame = 2; //Si da tiempo añadir un contador para que de tiempo a poner el frame de muerte un momento
 				ended = true;
 			}
+			else {
+				colisionPlayer.damages = true;
+			}
+
 			return colisionPlayer;
 		}
 		return colisionPlayer;
@@ -154,4 +157,9 @@ Goomba::getRect() const {
 	GoombaRect.w = Game::TILE_SIDE;
 	GoombaRect.h = Game::TILE_SIDE;
 	return GoombaRect;
+}
+
+bool
+Goomba::isAlive() const {
+	return !ended;
 }

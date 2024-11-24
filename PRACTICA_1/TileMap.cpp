@@ -6,8 +6,9 @@
 
 using namespace std;
 
-TileMap::TileMap(const string& mapa, Game* game) : game(game), patrones(game->getTexture(Game::BACKGROUND)){
+TileMap::TileMap(const string& mapa, Game* game) : SceneObject(game) {
 
+	patrones = game->getTexture(Game::BACKGROUND);
 	ifstream entrada(mapa);
 	if (!entrada.is_open()) throw new exception("Error leyendo archivo");
 	while (entrada) {
@@ -27,17 +28,10 @@ TileMap::TileMap(const string& mapa, Game* game) : game(game), patrones(game->ge
 void 
 TileMap::render() const
 {
+<<<<<<< HEAD
+=======
 
-	// atributos de TileMap :
-	// matriz : vector<vector<int>> indices; 
-	// patrones : Texture* background;  
-
-
-	// constantes estáticas en Game:
-	//constexpr int TILE_SIDE = 32;  
-	//constexpr int WINDOW_WIDTH = 18;
-	//constexpr int WINDOW_HEIGHT = 16;
-
+>>>>>>> 95a2c69cdc5c351fd04bea47a6de9abae823d49c
 	// atributo de Game
 	int mapOffset = game->getMapOffset();  
 
@@ -78,7 +72,6 @@ TileMap::render() const
 void 
 TileMap::update() {
 	if (game->getPlayerPosition().getY() >= 470) game->ResetMapOffset();
-	//if (game->getPlayerPosition().getX() > Game::WINDOW_WIDTH / 2 && game->getPlayerDirection().getX() > 0) game->setMapOffset(Game::getMapOffset() +=
 }
 
 Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
@@ -101,17 +94,18 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 		for (int col = col0; col <= col1; ++col) {
 			if (row >= 0 && row < matrix.size() && col >= 0 && col < matrix[0].size()) {
 				int indice = matrix[row][col];
-				if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD) {
+				if (indice == 34 || indice == 43) { //Si el jugador toca el mastil es victoria
+					cout << "VICTORIA" << endl;
+				}
+				if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD) { //Si el jugador toca cualquier bloque de colision lo guardamos
 					SDL_Rect tileRect = {
 						col * Game::TILE_SIDE,
 						row * Game::TILE_SIDE,
 						Game::TILE_SIDE,
 						Game::TILE_SIDE
 					};
-					//std::cout << "Rectángulo del tile: (" << tileRect.x << ", " << tileRect.y << ", " << tileRect.w << ", " << tileRect.h << ")\n";
 					SDL_Rect intersection;
 					if (SDL_IntersectRect(&rect, &tileRect, &intersection)) {
-						//std::cout << "¡Colisión detectada! Intersección: (" << intersection.x << ", " << intersection.y << ", " << intersection.w << ", " << intersection.h << ")\n";
 						colision.collides = true;
 						colision.intersection = intersection;
 						return colision;

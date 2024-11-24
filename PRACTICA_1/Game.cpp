@@ -9,7 +9,8 @@
 #include "Koopa.h"
 #include "Mushroom.h"
 #include "Collision.h"
-
+#include "GameObject.h"
+#include "SceneObject.h"
 using namespace std;
 class TileMap;
 
@@ -32,6 +33,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"goomba.png",3,1},
 	TextureSpec{"koopa.png",4,1},
 	TextureSpec{"mushroom.png",1,1},
+	TextureSpec{"supermario.png",22,1},
 };
 
 Game::Game()
@@ -108,7 +110,6 @@ Game::loadObjectMap() {
 Game::~Game()
 {
 	// Elimina los objetos del juego
-	//delete perro;
 	for (Block* block : blocks) {
 		delete block;
 	}
@@ -126,11 +127,6 @@ Game::~Game()
 		delete mushroom;
 	}
 	mushrooms.clear();
-
-	/*if (mushroom != nullptr) {
-		delete mushroom;
-	}*/
-
 
 	// Elimina las texturas
 	for (Texture* texture : textures)
@@ -189,13 +185,6 @@ Game::render() const
 	for (const Mushroom* mushroom : mushrooms) {
 		mushroom->render();
 	}
-	/*if (mushroom != nullptr) {
-		mushroom->render();
-	}*/
-		
-
-	//textures[BACKGROUND]->render();
-	//perro->render();
 
 	SDL_RenderPresent(renderer);
 }
@@ -204,22 +193,54 @@ void
 Game::update()
 {
 	// Actualiza los objetos del juego
-	//perro->update();
 	tilemap->update();
 	player->update();
-	for (Block* block : blocks) {
-		block->update();
+
+	//IMPORTANTE SI LO HACEMOS ASI SE PRODUCEN FUGAS DE MEMORIA MEJOR USAR EL OTRO
+	//for (Block* block : blocks) {
+	//	block->update();
+	//	if (!block->isAlive()) delete block;
+	//}
+
+	//Actualiza y elimina bloques
+	for (auto it = blocks.begin(); it != blocks.end();) {
+		(*it)->update();
+		if (!(*it)->isAlive()) {
+			delete* it;
+			it = blocks.erase(it);
+		}
+		else ++it;
 	}
-	for (Goomba* goomba : goombas) {
-		goomba->update();
+	
+	// Actualiza y elimina Goombas
+	for (auto it = goombas.begin(); it != goombas.end();) {
+		(*it)->update();
+		if (!(*it)->isAlive()) {
+			delete* it;
+			it = goombas.erase(it);
+		}
+		else ++it;
 	}
-	for (Koopa* koopa : koopas) {
-		koopa->update();
+
+	// Actualiza y elimina Koopas
+	for (auto it = koopas.begin(); it != koopas.end();) {
+		(*it)->update();
+		if (!(*it)->isAlive()) {
+			delete* it;                      
+			it = koopas.erase(it);            
+		}
+		else ++it;
 	}
-	for (Mushroom* mushroom : mushrooms) {
-		mushroom->update();
+
+	// Actualiza y elimina Mushrooms
+	for (auto it = mushrooms.begin(); it != mushrooms.end();) {
+		(*it)->update();
+		if (!(*it)->isAlive()) {
+			delete* it;                      
+			it = mushrooms.erase(it);        
+		}
+		else ++it;                             
 	}
-	//if (mushroom != nullptr) mushroom->update();
 }
 
 int Game::getMapOffset() {
@@ -250,11 +271,6 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 	Collision colision = { false,false,{0,0,0,0} };
 
-	/*if (mushroom != nullptr) {
-			colision = mushroom->hit(rect, fromPlayer);
-			if (colision.collides) return colision;
-	}*/
-
 	// Primero verificamos colisión con el tilemap
 	colision = tilemap->hit(rect, fromPlayer);
 	if (colision.collides) return colision;
@@ -264,9 +280,6 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 	for (Block* block : blocks) {
 		colision = block->hit(rect, fromPlayer);
 		if (block->ObtainObject()) {
-			/*if (mushroom == nullptr) {
-				mushroom = new Mushroom(this, rect.x, rect.y);
-			}*/
 			mushrooms.push_back(new Mushroom(this, block->getRect()));
 			block->itemObtained();
 		}
@@ -274,15 +287,26 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 		if (colision.collides) return colision;
 	}
 
+	if (!mushrooms.empty()) {
+		for (Mushroom* mushroom : mushrooms) {
+			colision = mushroom->hit(rect, fromPlayer);
+			if (colision.collides) {
+				player->TransformacionSuperMario();
+				return colision;
+			}
+		}
+	}
+
 	for (Goomba* goomba : goombas) {
 		colision = goomba->hit(rect, fromPlayer);
-		if (colision.collides) return colision;
+		if (colision.damages) return colision;
 	}
 
 	for (Koopa* koopa : koopas) {
 		colision = koopa->hit(rect, fromPlayer);
-		if (colision.collides) return colision;
+		if (colision.damages) return colision;
 	}
+
 	return colision;
 }
 
