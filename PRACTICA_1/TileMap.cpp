@@ -28,10 +28,6 @@ TileMap::TileMap(const string& mapa, Game* game) : SceneObject(game) {
 void 
 TileMap::render() const
 {
-<<<<<<< HEAD
-=======
-
->>>>>>> 95a2c69cdc5c351fd04bea47a6de9abae823d49c
 	// atributo de Game
 	int mapOffset = game->getMapOffset();  
 
