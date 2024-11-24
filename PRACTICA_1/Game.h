@@ -20,6 +20,8 @@ class Block;
 class Goomba;
 class Koopa;
 class Mushroom;
+class Lift;
+class Coin;
 
 using uint = unsigned int;
 //
@@ -41,6 +43,8 @@ public:
 		KOOPA,
 		MUSHROOM,
 		SUPERMARIANO,
+		LIFT,
+		COIN,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
@@ -64,6 +68,8 @@ private:
 	std::vector<Block*> blocks;
 	std::vector<Goomba*> goombas;
 	std::vector<Koopa*> koopas;
+	std::vector<Lift*> lifts;
+	std::vector<Coin*> coins;
 	
 	std::vector<Mushroom*> mushrooms;
 	//Mushroom* mushroom = nullptr;

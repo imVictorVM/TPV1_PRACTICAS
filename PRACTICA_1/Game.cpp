@@ -7,6 +7,8 @@
 #include "Block.h"
 #include "Goomba.h"
 #include "Koopa.h"
+#include "Lift.h"
+#include "Coin.h"
 #include "Mushroom.h"
 #include "Collision.h"
 #include "GameObject.h"
@@ -34,6 +36,8 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"koopa.png",4,1},
 	TextureSpec{"mushroom.png",1,1},
 	TextureSpec{"supermario.png",22,1},
+	TextureSpec{"lift.png",1,1},
+	TextureSpec{"coin.png",4,1},
 };
 
 Game::Game()
@@ -102,7 +106,14 @@ Game::loadObjectMap() {
 		case 'K':
 			koopas.push_back(new Koopa(this, lineStream));
 			break;
+		case 'L':
+			lifts.push_back(new Lift(this, lineStream));
+			break;
+		case 'C':
+			coins.push_back(new Coin(this, lineStream));
+			break;
 		}
+
 	}
 	file.close();
 }
@@ -122,6 +133,9 @@ Game::~Game()
 		delete koopa;
 	}
 	koopas.clear();
+	for (Lift* lift : lifts) {
+		delete lift;
+	}
 
 	for (Mushroom* mushroom : mushrooms) {
 		delete mushroom;
@@ -185,6 +199,9 @@ Game::render() const
 	for (const Mushroom* mushroom : mushrooms) {
 		mushroom->render();
 	}
+	for (const Lift* lift : lifts) {
+		lift->render();
+	}
 
 	SDL_RenderPresent(renderer);
 }
@@ -230,6 +247,11 @@ Game::update()
 			it = koopas.erase(it);            
 		}
 		else ++it;
+	}
+
+	// Actualiza lifts
+	for (auto it = lifts.begin(); it != lifts.end(); ++it) {
+		(*it)->update();
 	}
 
 	// Actualiza y elimina Mushrooms
@@ -304,6 +326,11 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 	for (Koopa* koopa : koopas) {
 		colision = koopa->hit(rect, fromPlayer);
+		if (colision.damages) return colision;
+	}
+
+	for (Lift* lift : lifts) {
+		colision = lift->hit(rect, fromPlayer);
 		if (colision.damages) return colision;
 	}
 

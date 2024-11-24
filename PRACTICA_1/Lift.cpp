@@ -1,0 +1,94 @@
+#include "checkML.h"
+#include "Lift.h"
+#include "Game.h"
+#include <fstream>
+#include <vector>
+
+using namespace std;
+
+Lift::Lift(Game* game, std::stringstream& atributes) : SceneObject(game) {
+	string line;
+
+	getline(atributes, line);
+
+	stringstream lineStream(line);
+
+	int posX, posY;
+	lineStream >> posX;
+	lineStream >> posY;
+
+	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY) * Game::TILE_SIDE);
+	direction = Vector2D<int>(-velocity, 0);
+	LiftTexture = gamePointer->getTexture(Game::LIFT);
+}
+
+void
+Lift::render() const {
+
+	if (!frozen) {
+		//posición del koopa
+		SDL_Rect LPosition;
+		LPosition.x = position.getX();
+		LPosition.y = position.getY();
+		LPosition.w = Game::TILE_SIDE;
+		LPosition.h = Game::TILE_SIDE;
+
+		//Renderizamos con los parametros actualizados
+		LiftTexture->renderFrame(LPosition, 0, 0);
+	}
+}
+
+void
+Lift::update() {
+
+	if (!frozen) {
+		direction.setY(velocity);
+		if (position.getY() >= 470) {
+			position.setY(0);
+		}
+	}
+}
+
+Collision
+Lift::hit(const SDL_Rect& rect, bool fromPlayer) {
+
+	Collision colisionPlayer = { false,false,{0,0,0,0} };
+	if (fromPlayer) {
+		// Creamos un rect del bloque para compararlo con el del jugador
+		SDL_Rect KoopaRect;
+		KoopaRect = getRect();
+
+		// Creamos un rect del player tomando de valor el que le llega como argumento
+		SDL_Rect playerRect;
+		playerRect = rect;
+
+		SDL_Rect intersection;
+		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
+			
+			//colisionPlayer.collides = true;
+			//colisionPlayer.intersection = intersection;
+
+			if (intersection.w > intersection.h) { //Vertical
+				colisionPlayer.collides = true;
+			}
+			else { //Horizontal
+				colisionPlayer.collides = true;
+			}
+			return colisionPlayer;
+		}
+		return colisionPlayer;
+	}
+	return colisionPlayer;
+
+}
+
+SDL_Rect
+Lift::getRect() const {
+	SDL_Rect LPosition;
+	LPosition.x = position.getX();
+	LPosition.y = position.getY();
+	LPosition.w = Game::TILE_SIDE;
+	LPosition.h = Game::TILE_SIDE;
+	return LPosition;
+}
+

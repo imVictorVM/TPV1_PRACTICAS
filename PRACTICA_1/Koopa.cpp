@@ -125,19 +125,19 @@ Koopa::update() {
 Collision
 Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
 
-	if (fromPlayer) {
-		Collision colisionPlayer = { false,false,{0,0,0,0} };
+	Collision colisionPlayer = { false,false,{0,0,0,0} };
 
+	if (fromPlayer) {
 		// Creamos un rect del bloque para compararlo con el del jugador
-		SDL_Rect GoombaRect;
-		GoombaRect = getRect();
+		SDL_Rect KoopaRect;
+		KoopaRect = getRect();
 
 		// Creamos un rect del player tomando de valor el que le llega como argumento
 		SDL_Rect playerRect;
 		playerRect = rect;
 
 		SDL_Rect intersection;
-		if (SDL_IntersectRect(&playerRect, &GoombaRect, &intersection)) {
+		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
 			colisionPlayer.collides = false;
 			colisionPlayer.intersection = intersection;
 			if (intersection.w > intersection.h) {
@@ -151,9 +151,10 @@ Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
 		}
 		return colisionPlayer;
 	}
-	else {
-		return game->checkPlayerCollision(rect, fromPlayer);
-	}
+	//else {
+	//	return game->checkPlayerCollision(rect, fromPlayer);
+	//}
+	return colisionPlayer;
 
 }
 

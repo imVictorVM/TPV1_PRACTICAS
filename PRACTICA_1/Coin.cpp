@@ -1,0 +1,89 @@
+#include "Coin.h"
+#include "checkML.h"
+#include "Game.h"
+#include <fstream>
+#include <vector>
+
+using namespace std;
+
+Coin::Coin(Game* game, std::stringstream& atributes) : SceneObject(game) {
+	string line;
+
+	getline(atributes, line);
+
+	stringstream lineStream(line);
+
+	int posX, posY;
+	lineStream >> posX;
+	lineStream >> posY;
+
+	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY)*Game::TILE_SIDE);
+	direction = Vector2D<int>(-velocity, 0);
+	CoinTexture = gamePointer->getTexture(Game::COIN);
+}
+
+void
+Coin::render() const {
+
+	if (!frozen) {
+		//posición del koopa
+		SDL_Rect LPosition;
+		LPosition.x = position.getX();
+		LPosition.y = position.getY();
+		LPosition.w = Game::TILE_SIDE;
+		LPosition.h = Game::TILE_SIDE;
+
+		int frame = 0;
+		if (frameRunner == 0) frame = 0;
+		if (frameRunner == 1) frame = 1;
+		if (frameRunner == 2) frame = 2;
+		if (frameRunner == 3) frame = 3;
+
+		//Renderizamos con los parametros actualizados
+		CoinTexture->renderFrame(LPosition, 0, frame);
+	}
+}
+
+void
+Coin::update() {
+	if (frameRunner > 3) frameRunner = 0;
+	frameRunner++;
+}
+
+Collision
+Coin::hit(const SDL_Rect& rect, bool fromPlayer) {
+
+	Collision colisionPlayer = { false,false,{0,0,0,0} };
+	if (fromPlayer) {
+		// Creamos un rect del bloque para compararlo con el del jugador
+		SDL_Rect KoopaRect;
+		KoopaRect = getRect();
+
+		// Creamos un rect del player tomando de valor el que le llega como argumento
+		SDL_Rect playerRect;
+		playerRect = rect;
+
+		SDL_Rect intersection;
+		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
+			colisionPlayer.collides = true;
+			colisionPlayer.intersection = intersection;
+			ended = true;
+			return colisionPlayer;
+		}
+		return colisionPlayer;
+	}
+	return colisionPlayer;
+
+}
+
+SDL_Rect
+Coin::getRect() const {
+	SDL_Rect CPosition;
+	CPosition.x = position.getX();
+	CPosition.y = position.getY();
+	CPosition.w = Game::TILE_SIDE;
+	CPosition.h = Game::TILE_SIDE;
+	return CPosition;
+}
+
+
