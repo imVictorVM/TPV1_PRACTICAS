@@ -131,7 +131,7 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 			if (colision.intersection.y > position.getY() + Game::TILE_SIDE / 2) {
 				
 				if (type != empty) {
-					if (type == normal && rect.w > Game::TILE_SIDE) ended = true; //MARIO GRANDE ROMPE BLOQUES
+					if (type == normal && rect.h > Game::TILE_SIDE) ended = true; //MARIO GRANDE ROMPE BLOQUES
 					else if (type == surprise || type == hidden) {
 						if (action == powerup && !ObtainObject()) {
 							//Logica de la aparición de la seta

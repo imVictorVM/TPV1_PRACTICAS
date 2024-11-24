@@ -50,10 +50,6 @@ Player::render() const {
 	SDL_Rect MPosition;
 	MPosition = getRect();
 	MPosition.x -= GamePlayer->getMapOffset();
-	if (SuperMario) {
-		MPosition.y -= MPosition.h;
-		MPosition.h *= 2;
-	}
 		
 	if (!SuperMario) {
 		int frame = 0;
@@ -114,12 +110,6 @@ void Player::update() {
 	Vector2D<int> newPosition = position + direction;
 
 	SDL_Rect MarioRect = getRect();
-	if (SuperMario) {
-		//MarioRect.y -= MarioRect.h;
-		//MarioRect.h *= 2;
-		MarioRect.w += 1;
-	}
-	//DUDA: NO SE PUEDE USAR EL MARIO GRANDE EN LAS COLISIONES, SI NO HAGO ESTO NECESITAMOS UN PARAMETRO ADICIONAL EN EL HIT
 
 	MarioRect.y += direction.getY();
 	MarioRect.x += direction.getX();
@@ -268,8 +258,15 @@ Player::getRect() const{
 	SDL_Rect playerRect;
 	playerRect.x = position.getX();
 	playerRect.y = position.getY();
-	playerRect.w = Game::TILE_SIDE;
-	playerRect.h = Game::TILE_SIDE;
+	if (SuperMario) {
+		playerRect.w = TextureMario->getFrameWidth() * 2;
+		playerRect.h = TextureMario->getFrameHeight() * 4;
+	}
+	else {
+		playerRect.w = TextureSuperMario->getFrameWidth() * 2;
+		playerRect.h = TextureSuperMario->getFrameHeight();
+	}
+
 	return playerRect;
 }
 
@@ -278,6 +275,7 @@ int Player::getVidas() const {
 }
 
 void Player::TransformacionSuperMario(){
+	position.setY(position.getY() - Game::TILE_SIDE);
 	SuperMario = true;
 }
 

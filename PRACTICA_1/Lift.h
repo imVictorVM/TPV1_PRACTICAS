@@ -11,7 +11,7 @@ public:
 
 	~Lift();
 
-	void render() const override;
+	//void render() const override;
 
 	void update();
 

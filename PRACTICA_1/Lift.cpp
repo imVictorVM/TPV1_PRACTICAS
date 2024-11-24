@@ -20,6 +20,8 @@ Lift::Lift(Game* game, std::stringstream& atributes) : SceneObject(game) {
 
 	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY) * Game::TILE_SIDE);
 	direction = Vector2D<int>(0, velocity);
+	width = Game::TILE_SIDE * 3;
+	height = Game::TILE_SIDE / 2;
 	texture = gamePointer->getTexture(Game::LIFT);
 
 }
@@ -28,35 +30,37 @@ Lift::~Lift()
 {
 }
 
-void
-Lift::render() const {
-
-	if (!frozen) {
-		//posición del koopa
-		SDL_Rect LPosition;
-		LPosition = getRect();
-
-		//Renderizamos con los parametros actualizados
-		texture->renderFrame(LPosition, 0, 0);
-	}
-}
+//void
+//Lift::render() const {
+//
+//	if (!frozen) {
+//		//posición del koopa
+//		SDL_Rect LPosition;
+//		LPosition = getRect();
+//
+//		//Renderizamos con los parametros actualizados
+//		texture->renderFrame(LPosition, 0, 0);
+//	}
+//}
 
 void
 Lift::update() {
 
+	int newOffset = gamePointer->getMapOffset();
+	int offsetChange = newOffset - previousOffset;
+	if (offsetChange != 0) {
+		position.setX(position.getX() - offsetChange);
+		previousOffset = newOffset;
+	}
+
 	if (!frozen) {
-
-		int newOffset = gamePointer->getMapOffset();
-		int offsetChange = newOffset - previousOffset;
-		if (offsetChange != 0) {
-			position.setX(position.getX() - offsetChange);
-			previousOffset = newOffset;
-		}
-
 		Vector2D<int> newPosition = position + direction;
 		position.setY(newPosition.getY());
-		if (position.getY() <= 0) {
+		if (position.getY() < 0) {
 			position.setY(500);
+		}
+		else if (position.getY() > 500) {
+			position.setY(0);
 		}
 	}
 }

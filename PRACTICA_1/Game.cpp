@@ -54,6 +54,8 @@ Game::Game()
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+	//SDL_RenderSetLogicalSize(renderer, WIN_WIDTH, WIN_HEIGHT);
+
 	if (window == nullptr || renderer == nullptr)
 		throw "Error cargando SDL"s;
 

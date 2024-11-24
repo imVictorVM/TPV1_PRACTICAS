@@ -44,12 +44,12 @@ SceneObject::~SceneObject() {
 void
 SceneObject::render() const {
 
-	if (!ended) {
+	if (!ended && !frozen) {
 		SDL_Rect BPosition;
 		BPosition.x = position.getX();
 		BPosition.y = position.getY();
-		BPosition.w = Game::TILE_SIDE;
-		BPosition.h = Game::TILE_SIDE;
+		BPosition.w = width;
+		BPosition.h = height;
 
 		texture->renderFrame(BPosition, 0, frame);
 	}
