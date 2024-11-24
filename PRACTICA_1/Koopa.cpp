@@ -19,8 +19,10 @@ Koopa::Koopa(Game* game, stringstream& atributes) :Enemy(game)
 
 	texture = gamePointer->getTexture(Game::KOOPA);
 
-	position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-2)* Game::TILE_SIDE);
+	position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY)* Game::TILE_SIDE);
 	direction = Vector2D<int>(-velocity, 0);
+	width = Game::TILE_SIDE * 2;
+	height = Game::TILE_SIDE * 4;
 
 }
 

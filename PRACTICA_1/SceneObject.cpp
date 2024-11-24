@@ -33,7 +33,7 @@ SceneObject::SceneObject(Game* g) : GameObject(g) {
 	height = Game::TILE_SIDE;
 	//rect = SDL_Rect(pos.getX(), pos.getY(), width, height);
 
-	frozen = false;
+	frozen = true;
 	ended = false;
 	
 }

@@ -54,6 +54,7 @@ Block::Block(Game* game, stringstream& atributes) : SceneObject(game)
 		break;
 	}
 
+	frozen = false;
 }
 
 //Misma logica que el jugador pero adaptado para los bloques en cuanto a los frames dependiendo de su tipo tambien
