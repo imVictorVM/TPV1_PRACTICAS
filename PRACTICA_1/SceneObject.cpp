@@ -27,6 +27,8 @@ SceneObject::SceneObject(Game* g) : GameObject(g) {
 	frame = 0;
 	frameRunner = 0;
 	previousOffset = 0;
+	velocity = 2;
+	velocityGravity = 8;
 	width = Game::TILE_SIDE;
 	height = Game::TILE_SIDE;
 	//rect = SDL_Rect(pos.getX(), pos.getY(), width, height);

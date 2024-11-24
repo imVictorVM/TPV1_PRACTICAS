@@ -4,7 +4,8 @@
 
 using namespace std;
 
-Koopa::Koopa(Game* game, stringstream& atributes) : position(), koopaTexture(game->getTexture(Game::KOOPA)), game(game), frame(0), frameRunner(0), frozen(true), previousOffset(0), velocity(2), ended(false), velocityGravity(8)
+Koopa::Koopa(Game* game, stringstream& atributes) :Enemy(game)
+//position(), texture(game->getTexture(Game::KOOPA)), gamePointer(game), frame(0), frameRunner(0), frozen(true), previousOffset(0), velocity(2), ended(false), velocityGravity(8)
 {
 	string line;
 
@@ -16,42 +17,44 @@ Koopa::Koopa(Game* game, stringstream& atributes) : position(), koopaTexture(gam
 	lineStream >> posX;
 	lineStream >> posY;
 
+	texture = gamePointer->getTexture(Game::KOOPA);
+
 	position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-2)* Game::TILE_SIDE);
 	direction = Vector2D<int>(-velocity, 0);
 
 }
 
-void
-Koopa::render() const {
-
-	if (!frozen) {
-		//posición del koopa
-		SDL_Rect KPosition;
-		KPosition.x = position.getX();
-		KPosition.y = position.getY() - Game::TILE_SIDE;
-		KPosition.w = Game::TILE_SIDE;
-		KPosition.h = Game::TILE_SIDE * 2; //Tiene dos tiles de altura
-		//IMPORTANTE APLICAR ESTO A MARIO GRANDE CUANDO TENGAMOS LA SETA
-
-		int frame = 0;
-		//movimiento del koopa, usando solo los dos primeros frames
-		if (frameRunner == 0) frame = 0;
-		if (frameRunner == 1) frame = 0;
-		if (frameRunner == 2) frame = 1;
-		if (frameRunner == 3) frame = 1;
-
-
-		//Renderizamos con los parametros actualizados
-		koopaTexture->renderFrame(KPosition, 0, frame);
-	}
-}
+//void
+//Koopa::render() const {
+//
+//	if (!frozen) {
+//		//posición del koopa
+//		SDL_Rect KPosition;
+//		KPosition.x = position.getX();
+//		KPosition.y = position.getY() - Game::TILE_SIDE;
+//		KPosition.w = Game::TILE_SIDE;
+//		KPosition.h = Game::TILE_SIDE * 2; //Tiene dos tiles de altura
+//		//IMPORTANTE APLICAR ESTO A MARIO GRANDE CUANDO TENGAMOS LA SETA
+//
+//		int frame = 0;
+//		//movimiento del koopa, usando solo los dos primeros frames
+//		if (frameRunner == 0) frame = 0;
+//		if (frameRunner == 1) frame = 0;
+//		if (frameRunner == 2) frame = 1;
+//		if (frameRunner == 3) frame = 1;
+//
+//
+//		//Renderizamos con los parametros actualizados
+//		texture->renderFrame(KPosition, 0, frame);
+//	}
+//}
 
 
 void
 Koopa::update() {
 
 	//FUNCIONAL: Los goombas spawnean en su sitio cuando el jugador alcanza a verlos en la pantalla
-	int mapOffset = game->getMapOffset();
+	int mapOffset = gamePointer->getMapOffset();
 	if (position.getX() < mapOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE) {
 		frozen = false;
 	}
@@ -72,7 +75,7 @@ Koopa::update() {
 		KoopaRect.x += direction.getX();
 
 		// CAMBIAR: Verifica colisión en todas las direcciones
-		Collision collision = game->checkEnemyCollision(KoopaRect, false);
+		Collision collision = gamePointer->checkEnemyCollision(KoopaRect, false);
 
 		//COLISION VERTICAL
 		if (!collision.collides) {
@@ -92,7 +95,7 @@ Koopa::update() {
 		KoopaRect.x += direction.getX();
 		KoopaRect.y = position.getY();
 
-		collision = game->checkEnemyCollision(KoopaRect, false);
+		collision = gamePointer->checkEnemyCollision(KoopaRect, false);
 
 		//COLISION HORIZONTAL
 		if (!collision.collides) {
@@ -114,7 +117,7 @@ Koopa::update() {
 	}
 
 	//FUNCIONAL: Los koopas se mueven en funcion el offset del mapa
-	int newOffset = game->getMapOffset();
+	int newOffset = gamePointer->getMapOffset();
 	int offsetChange = newOffset - previousOffset;
 	if (offsetChange != 0) {
 		position = Vector2D<int>(position.getX() - offsetChange, position.getY());
@@ -122,51 +125,51 @@ Koopa::update() {
 	}
 }
 
-Collision
-Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
+//Collision
+//Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
+//
+//	Collision colisionPlayer = { false,false,{0,0,0,0} };
+//
+//	if (fromPlayer) {
+//		// Creamos un rect del bloque para compararlo con el del jugador
+//		SDL_Rect KoopaRect;
+//		KoopaRect = getRect();
+//
+//		// Creamos un rect del player tomando de valor el que le llega como argumento
+//		SDL_Rect playerRect;
+//		playerRect = rect;
+//
+//		SDL_Rect intersection;
+//		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
+//			colisionPlayer.collides = false;
+//			colisionPlayer.intersection = intersection;
+//			if (intersection.w > intersection.h) {
+//				//frame = 2; Si da tiempo cambiarlo a una imagen de shell
+//				ended = true;
+//			}
+//			else {
+//				colisionPlayer.damages = true;
+//			}
+//			return colisionPlayer;
+//		}
+//		return colisionPlayer;
+//	}
+//	//else {
+//	//	return game->checkPlayerCollision(rect, fromPlayer);
+//	//}
+//	return colisionPlayer;
+//
+//}
 
-	Collision colisionPlayer = { false,false,{0,0,0,0} };
-
-	if (fromPlayer) {
-		// Creamos un rect del bloque para compararlo con el del jugador
-		SDL_Rect KoopaRect;
-		KoopaRect = getRect();
-
-		// Creamos un rect del player tomando de valor el que le llega como argumento
-		SDL_Rect playerRect;
-		playerRect = rect;
-
-		SDL_Rect intersection;
-		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
-			colisionPlayer.collides = false;
-			colisionPlayer.intersection = intersection;
-			if (intersection.w > intersection.h) {
-				//frame = 2; Si da tiempo cambiarlo a una imagen de shell
-				ended = true;
-			}
-			else {
-				colisionPlayer.damages = true;
-			}
-			return colisionPlayer;
-		}
-		return colisionPlayer;
-	}
-	//else {
-	//	return game->checkPlayerCollision(rect, fromPlayer);
-	//}
-	return colisionPlayer;
-
-}
-
-SDL_Rect
-Koopa::getRect() const {
-	SDL_Rect KoopaRect;
-	KoopaRect.x = position.getX() + game->getMapOffset();
-	KoopaRect.y = position.getY();
-	KoopaRect.w = Game::TILE_SIDE;
-	KoopaRect.h = Game::TILE_SIDE;
-	return KoopaRect;
-}
+//SDL_Rect
+//Koopa::getRect() const {
+//	SDL_Rect KoopaRect;
+//	KoopaRect.x = position.getX() + gamePointer->getMapOffset();
+//	KoopaRect.y = position.getY();
+//	KoopaRect.w = Game::TILE_SIDE;
+//	KoopaRect.h = Game::TILE_SIDE;
+//	return KoopaRect;
+//}
 
 bool 
 Koopa::isAlive() const {

@@ -17,7 +17,7 @@ class TileMap : public SceneObject
 public:
 	TileMap(const std::string& mapa, Game* game);
 
-	void render() const;
+	void render() const override;
 
 	void update();
 
