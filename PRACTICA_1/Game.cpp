@@ -54,8 +54,6 @@ Game::Game()
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-	SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255); //color azul
-
 	if (window == nullptr || renderer == nullptr)
 		throw "Error cargando SDL"s;
 
@@ -70,7 +68,7 @@ Game::Game()
 
 	// Crea los objetos del juego
 	//perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
-	tilemap = new TileMap("../assets/maps/world1.csv", this);
+	tilemap = new TileMap("../assets/maps/world2.csv", this);
 	//stringstream ss;
 	//player = new Player(this,ss);
 	loadObjectMap();
@@ -78,7 +76,7 @@ Game::Game()
 
 void
 Game::loadObjectMap() {
-	const string DEFAULT_MAP = "../assets/maps/world1.txt";
+	const string DEFAULT_MAP = "../assets/maps/world2.txt";
 
 	// Carga el mapa
 	ifstream file(DEFAULT_MAP);
@@ -86,6 +84,12 @@ Game::loadObjectMap() {
 	if (!file.is_open()) return; //false
 
 	string line;
+
+	getline(file, line);
+	stringstream color(line);
+	int R = 0, G = 0, B = 0;
+	color >> R >> G >> B;
+	SDL_SetRenderDrawColor(renderer, R, G, B, 255); //Color de fondo leyendo la primera linea
 
 	while (getline(file, line)) {
 		
@@ -136,7 +140,11 @@ Game::~Game()
 	for (Lift* lift : lifts) {
 		delete lift;
 	}
-
+	lifts.clear();
+	for (Coin* coin : coins) {
+		delete coin;
+	}
+	coins.clear();
 	for (Mushroom* mushroom : mushrooms) {
 		delete mushroom;
 	}
@@ -202,6 +210,10 @@ Game::render() const
 	for (const Lift* lift : lifts) {
 		lift->render();
 	}
+	for (const Coin* coin : coins) {
+		coin->render();
+		cout << "ME RENDERIZO" << endl;
+	}
 
 	SDL_RenderPresent(renderer);
 }
@@ -262,6 +274,16 @@ Game::update()
 			it = mushrooms.erase(it);        
 		}
 		else ++it;                             
+	}
+
+	// Actualiza y elimina Mushrooms
+	for (auto it = coins.begin(); it != coins.end();) {
+		(*it)->update();
+		if (!(*it)->isAlive()) {
+			delete* it;
+			it = coins.erase(it);
+		}
+		else ++it;
 	}
 }
 
@@ -331,7 +353,12 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 	for (Lift* lift : lifts) {
 		colision = lift->hit(rect, fromPlayer);
-		if (colision.damages) return colision;
+		if (colision.collides) return colision;
+	}
+
+	for (Coin* coin : coins) {
+		colision = coin->hit(rect, fromPlayer);
+		if (colision.collides) return colision;
 	}
 
 	return colision;

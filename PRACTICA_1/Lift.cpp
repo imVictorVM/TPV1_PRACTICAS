@@ -16,10 +16,15 @@ Lift::Lift(Game* game, std::stringstream& atributes) : SceneObject(game) {
 	int posX, posY;
 	lineStream >> posX;
 	lineStream >> posY;
+	lineStream >> velocity;
 
 	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY) * Game::TILE_SIDE);
-	direction = Vector2D<int>(-velocity, 0);
+	direction = Vector2D<int>(0, velocity);
 	LiftTexture = gamePointer->getTexture(Game::LIFT);
+}
+
+Lift::~Lift()
+{
 }
 
 void
@@ -28,10 +33,7 @@ Lift::render() const {
 	if (!frozen) {
 		//posición del koopa
 		SDL_Rect LPosition;
-		LPosition.x = position.getX();
-		LPosition.y = position.getY();
-		LPosition.w = Game::TILE_SIDE;
-		LPosition.h = Game::TILE_SIDE;
+		LPosition = getRect();
 
 		//Renderizamos con los parametros actualizados
 		LiftTexture->renderFrame(LPosition, 0, 0);
@@ -42,9 +44,10 @@ void
 Lift::update() {
 
 	if (!frozen) {
-		direction.setY(velocity);
-		if (position.getY() >= 470) {
-			position.setY(0);
+		Vector2D<int> newPosition = position + direction;
+		position.setY(newPosition.getY());
+		if (position.getY() <= 0) {
+			position.setY(500);
 		}
 	}
 }
@@ -87,8 +90,8 @@ Lift::getRect() const {
 	SDL_Rect LPosition;
 	LPosition.x = position.getX();
 	LPosition.y = position.getY();
-	LPosition.w = Game::TILE_SIDE;
-	LPosition.h = Game::TILE_SIDE;
+	LPosition.w = Game::TILE_SIDE * 3;
+	LPosition.h = Game::TILE_SIDE / 2;
 	return LPosition;
 }
 

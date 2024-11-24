@@ -18,34 +18,21 @@ Coin::Coin(Game* game, std::stringstream& atributes) : SceneObject(game) {
 	lineStream >> posY;
 
 	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY)*Game::TILE_SIDE);
-	direction = Vector2D<int>(-velocity, 0);
-	CoinTexture = gamePointer->getTexture(Game::COIN);
+	direction = Vector2D<int>(0, 0);
+	texture = gamePointer->getTexture(Game::COIN);
+	frameRunner = 0;
 }
 
-void
-Coin::render() const {
-
-	if (!frozen) {
-		//posición del koopa
-		SDL_Rect LPosition;
-		LPosition.x = position.getX();
-		LPosition.y = position.getY();
-		LPosition.w = Game::TILE_SIDE;
-		LPosition.h = Game::TILE_SIDE;
-
-		int frame = 0;
-		if (frameRunner == 0) frame = 0;
-		if (frameRunner == 1) frame = 1;
-		if (frameRunner == 2) frame = 2;
-		if (frameRunner == 3) frame = 3;
-
-		//Renderizamos con los parametros actualizados
-		CoinTexture->renderFrame(LPosition, 0, frame);
-	}
+Coin::~Coin()
+{
 }
 
 void
 Coin::update() {
+	if (frameRunner == 0 || frameRunner > 3) frame = 0;
+	if (frameRunner == 1) frame = 1;
+	if (frameRunner == 2) frame = 2;
+	if (frameRunner == 3) frame = 3;
 	if (frameRunner > 3) frameRunner = 0;
 	frameRunner++;
 }
@@ -84,6 +71,11 @@ Coin::getRect() const {
 	CPosition.w = Game::TILE_SIDE;
 	CPosition.h = Game::TILE_SIDE;
 	return CPosition;
+}
+
+bool
+Coin::isAlive() const {
+	return !ended;
 }
 
 

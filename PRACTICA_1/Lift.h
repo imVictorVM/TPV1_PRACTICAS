@@ -12,6 +12,8 @@ class Lift : public SceneObject
 public:
 	Lift(Game* game, std::stringstream& atributos);
 
+	~Lift();
+
 	void render() const;
 
 	void update();
