@@ -82,7 +82,7 @@ public:
 	//AÑADIDOS PERO NO ESPECIFICAOS EN ENUNCIADO
 	void setMapOffset(int playerOffset);
 	void ResetMapOffset();
-	Vector2D<int> getPlayerPosition() const;
+	//Vector2D<int> getPlayerPosition() const;
 
 	Texture* getTexture(TextureName name) const;
 

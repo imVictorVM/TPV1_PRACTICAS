@@ -7,7 +7,8 @@
 #include "gameList.h"
 #include "Collision.h"
 #include "Texture.h"
-#include "Game.h"
+
+class Game;
 
 class SceneObject : public GameObject {
 protected:

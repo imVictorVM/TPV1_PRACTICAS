@@ -337,6 +337,6 @@ void Game::ResetMapOffset() {
 	mapOffset = 0;
 }
 
-Vector2D<int> Game::getPlayerPosition() const {
-	return player->getPosition();
-}
+//Vector2D<int> Game::getPlayerPosition() const {
+//	return player->getPosition();
+//}
