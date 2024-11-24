@@ -6,15 +6,12 @@ class Game;
 
 class Lift : public SceneObject
 {
-
-	Texture* LiftTexture;
-
 public:
 	Lift(Game* game, std::stringstream& atributos);
 
 	~Lift();
 
-	void render() const;
+	void render() const override;
 
 	void update();
 

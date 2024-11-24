@@ -68,7 +68,7 @@ Game::Game()
 
 	// Crea los objetos del juego
 	//perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
-	tilemap = new TileMap("../assets/maps/world1.csv", this);
+	tilemap = new TileMap("../assets/maps/world2.csv", this);
 	//stringstream ss;
 	//player = new Player(this,ss);
 	loadObjectMap();
@@ -76,7 +76,7 @@ Game::Game()
 
 void
 Game::loadObjectMap() {
-	const string DEFAULT_MAP = "../assets/maps/world1.txt";
+	const string DEFAULT_MAP = "../assets/maps/world2.txt";
 
 	// Carga el mapa
 	ifstream file(DEFAULT_MAP);

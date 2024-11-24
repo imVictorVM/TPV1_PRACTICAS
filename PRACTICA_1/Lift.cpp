@@ -20,7 +20,8 @@ Lift::Lift(Game* game, std::stringstream& atributes) : SceneObject(game) {
 
 	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY) * Game::TILE_SIDE);
 	direction = Vector2D<int>(0, velocity);
-	LiftTexture = gamePointer->getTexture(Game::LIFT);
+	texture = gamePointer->getTexture(Game::LIFT);
+
 }
 
 Lift::~Lift()
@@ -36,7 +37,7 @@ Lift::render() const {
 		LPosition = getRect();
 
 		//Renderizamos con los parametros actualizados
-		LiftTexture->renderFrame(LPosition, 0, 0);
+		texture->renderFrame(LPosition, 0, 0);
 	}
 }
 
@@ -44,6 +45,14 @@ void
 Lift::update() {
 
 	if (!frozen) {
+
+		int newOffset = gamePointer->getMapOffset();
+		int offsetChange = newOffset - previousOffset;
+		if (offsetChange != 0) {
+			position.setX(position.getX() - offsetChange);
+			previousOffset = newOffset;
+		}
+
 		Vector2D<int> newPosition = position + direction;
 		position.setY(newPosition.getY());
 		if (position.getY() <= 0) {
@@ -68,15 +77,15 @@ Lift::hit(const SDL_Rect& rect, bool fromPlayer) {
 		SDL_Rect intersection;
 		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
 			
-			//colisionPlayer.collides = true;
-			//colisionPlayer.intersection = intersection;
-
-			if (intersection.w > intersection.h) { //Vertical
-				colisionPlayer.collides = true;
-			}
-			else { //Horizontal
-				colisionPlayer.collides = true;
-			}
+			colisionPlayer.collides = true;
+			colisionPlayer.intersection = intersection;
+			cout << "COLISIONO" << endl;
+			//if (intersection.w > intersection.h) { //Vertical
+			//	colisionPlayer.collides = true;
+			//}
+			//else { //Horizontal
+			//	colisionPlayer.collides = true;
+			//}
 			return colisionPlayer;
 		}
 		return colisionPlayer;

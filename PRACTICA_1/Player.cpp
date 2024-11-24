@@ -35,6 +35,7 @@ jump(false), frameRunner(0), leftLimit(), damageCooldown(15), velocity(8), Super
 
 	//Pasamos los parametros al constructor del player despues de leerlos
 	position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony - 1) * Game::TILE_SIDE);
+	direction = Vector2D<int>(0, velocity);
 	InitialPositionX = positionx;
 	InitialPositionY = positiony;
 	vidas = nvidas;

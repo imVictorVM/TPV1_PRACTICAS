@@ -1,6 +1,7 @@
 #include "checkML.h"
 
 #include "SceneObject.h"
+#include "Lift.h"
 #include "Game.h"
 using namespace std;
 

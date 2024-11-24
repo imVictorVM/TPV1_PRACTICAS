@@ -17,7 +17,7 @@ Coin::Coin(Game* game, std::stringstream& atributes) : SceneObject(game) {
 	lineStream >> posX;
 	lineStream >> posY;
 
-	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY)*Game::TILE_SIDE);
+	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY-1)*Game::TILE_SIDE);
 	direction = Vector2D<int>(0, 0);
 	texture = gamePointer->getTexture(Game::COIN);
 	frameRunner = 0;
@@ -29,6 +29,14 @@ Coin::~Coin()
 
 void
 Coin::update() {
+
+	int newOffset = gamePointer->getMapOffset();
+	int offsetChange = newOffset - previousOffset;
+	if (offsetChange != 0) {
+		position.setX(position.getX() - offsetChange);
+		previousOffset = newOffset;
+	}
+
 	if (frameRunner == 0 || frameRunner > 3) frame = 0;
 	if (frameRunner == 1) frame = 1;
 	if (frameRunner == 2) frame = 2;
@@ -66,7 +74,7 @@ Coin::hit(const SDL_Rect& rect, bool fromPlayer) {
 SDL_Rect
 Coin::getRect() const {
 	SDL_Rect CPosition;
-	CPosition.x = position.getX();
+	CPosition.x = position.getX() + gamePointer->getMapOffset();
 	CPosition.y = position.getY();
 	CPosition.w = Game::TILE_SIDE;
 	CPosition.h = Game::TILE_SIDE;
