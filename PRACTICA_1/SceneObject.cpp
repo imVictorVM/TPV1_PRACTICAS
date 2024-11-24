@@ -24,6 +24,7 @@ SceneObject::SceneObject(Game* g) : GameObject(g) {
 	position =  Vector2D(0,0);
 	direction = Vector2D(0,0);
 	frame = 0;
+	frameRunner = 0;
 	previousOffset = 0;
 	width = Game::TILE_SIDE;
 	height = Game::TILE_SIDE;

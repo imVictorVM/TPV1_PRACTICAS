@@ -14,7 +14,6 @@ Block::Block(Game* game, stringstream& atributes) : SceneObject(game)
 	 {
 	texture = game->getTexture(Game::BLOCK); 
 	object = false;
-	surpriseCont = 0;
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -85,11 +84,12 @@ Block::update() {
 		position.setX(position.getX() - offsetChange);
 		previousOffset = newOffset;
 	}
-	cout << surpriseCont;
+
+
 	if (type == surprise) {
-		if (surpriseCont >= 0 && surpriseCont < 3) frame = 0;
-		else if (surpriseCont >= 3 && surpriseCont < 5) frame = 1;
-		else if (surpriseCont >= 5 && surpriseCont < 7) frame = 2;
+		if (frameRunner >= 0 && frameRunner < 3) frame = 0;
+		else if (frameRunner >= 3 && frameRunner < 5) frame = 1;
+		else if (frameRunner >= 5 && frameRunner < 7) frame = 2;
 		else frame = 3;
 	}
 	else if (type == normal) {
@@ -100,8 +100,8 @@ Block::update() {
 	}
 
 	//Actualizamos el frame del bloque siempre en caso de ser un bloque sorpresa, hay muchos frameBlocks para que sea lenta la trancision de un sprite a otro
-	surpriseCont++;
-	if (surpriseCont > 7) surpriseCont = 0;
+	frameRunner++;
+	if (frameRunner > 7) frameRunner = 0;
 
 }
 

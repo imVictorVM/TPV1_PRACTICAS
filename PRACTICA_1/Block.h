@@ -30,7 +30,6 @@ private:
 	//Game* game; //gamePointer del GameObject
 	//int frameBlock; frame del SceneObject
 	//int previousOffset; previousOffset del SceneObject
-	int surpriseCont;
 	bool object;
 	//bool ended; ended del SceneObject
 public:
