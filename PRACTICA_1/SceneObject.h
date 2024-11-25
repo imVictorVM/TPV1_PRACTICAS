@@ -31,7 +31,7 @@ protected:
 	GameList<SceneObject>::anchor anchor;
 
 public:
-	SceneObject(Game* g, Vector2D<int> pos, Vector2D<int> dir);
+
 	SceneObject(Game* g);
 	~SceneObject();
 
