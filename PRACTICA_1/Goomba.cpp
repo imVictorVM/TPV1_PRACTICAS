@@ -4,22 +4,13 @@
 
 using namespace std;
 
-Goomba::Goomba(Game* game, istream& atributes) : Enemy(game)
+Goomba::Goomba(Game* game, istream& atributes) : Enemy(game, atributes)
 	// position(), texture(game->getTexture(Game::GOOMBA)), gamePointer(game) , frame(0), frameRunner(0), previousOffset(0), frozen(true), velocity(2), ended(false), velocityGravity(8)
 {
-	string line;
-
-	getline(atributes, line);
-
-	stringstream lineStream(line);
-
-	int posX, posY;
-	lineStream >> posX;
-	lineStream >> posY;
 
 	texture = gamePointer->getTexture(Game::GOOMBA);
 
-	position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1) * Game::TILE_SIDE);
+	//position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1) * Game::TILE_SIDE);
 	direction = Vector2D<int>(-velocity, 0);
 }
 

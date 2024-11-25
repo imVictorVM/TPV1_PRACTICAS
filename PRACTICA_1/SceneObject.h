@@ -14,6 +14,8 @@ class SceneObject : public GameObject {
 protected:
 	Vector2D<int> position;
 	Vector2D<int> direction;
+	int posX;
+	int posY;
 	int width;
 	int height;
 	int frame;
@@ -32,6 +34,7 @@ protected:
 
 public:
 
+	SceneObject(Game* g, std::istream& atributes);
 	SceneObject(Game* g);
 	~SceneObject();
 

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Lift::Lift(Game* game, istream& atributes) : SceneObject(game) {
+Lift::Lift(Game* game, istream& atributes) : SceneObject(game, atributes) {
 	
 	string line;
 
@@ -14,12 +14,12 @@ Lift::Lift(Game* game, istream& atributes) : SceneObject(game) {
 
 	stringstream lineStream(line);
 
-	int posX, posY;
+	/*int posX, posY;
 	lineStream >> posX;
-	lineStream >> posY;
+	lineStream >> posY;*/
 	lineStream >> velocity;
 
-	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY) * Game::TILE_SIDE);
+	//position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY) * Game::TILE_SIDE);
 	direction = Vector2D<int>(0, velocity);
 	width = Game::TILE_SIDE * 3;
 	height = Game::TILE_SIDE / 2;

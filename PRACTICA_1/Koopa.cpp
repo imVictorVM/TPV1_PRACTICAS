@@ -4,10 +4,10 @@
 
 using namespace std;
 
-Koopa::Koopa(Game* game, istream& atributes) :Enemy(game)
+Koopa::Koopa(Game* game, istream& atributes) :Enemy(game, atributes)
 //position(), texture(game->getTexture(Game::KOOPA)), gamePointer(game), frame(0), frameRunner(0), frozen(true), previousOffset(0), velocity(2), ended(false), velocityGravity(8)
 {
-	string line;
+	/*string line;
 
 	getline(atributes, line);
 
@@ -15,14 +15,14 @@ Koopa::Koopa(Game* game, istream& atributes) :Enemy(game)
 
 	int posX, posY;
 	lineStream >> posX;
-	lineStream >> posY;
+	lineStream >> posY;*/
 
 	texture = gamePointer->getTexture(Game::KOOPA);
-
-	position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1)* Game::TILE_SIDE);
-	direction = Vector2D<int>(-velocity, 0);
 	width = Game::TILE_SIDE * 2;
 	height = Game::TILE_SIDE * 4;
+	//position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1)* Game::TILE_SIDE);
+	direction = Vector2D<int>(-velocity, 0);
+	
 
 }
 

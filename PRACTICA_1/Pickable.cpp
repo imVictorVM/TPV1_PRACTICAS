@@ -8,6 +8,9 @@ Pickable::Pickable(Game* game) : SceneObject(game) {
 
 }
 
+Pickable::Pickable(Game* game, istream& atributes) : SceneObject(game, atributes) {
+
+}
 Collision
 Pickable::hit(const SDL_Rect& rect, bool fromPlayer) {
 

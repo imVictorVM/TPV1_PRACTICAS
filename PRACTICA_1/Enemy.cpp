@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Enemy::Enemy(Game* game) : SceneObject(game) {
+Enemy::Enemy(Game* game, istream& atributes) : SceneObject(game, atributes) {
 
 }
 

@@ -7,8 +7,13 @@
 using namespace std;
 
 
-SceneObject::SceneObject(Game* g) : GameObject(g) {
-	position =  Vector2D(0,0);
+SceneObject::SceneObject(Game* g, istream& atributes) : GameObject(g) {
+	
+	 posX = 0;
+	 posY = 0;
+	atributes >> posX;
+	atributes >> posY;
+	position =  Vector2D(posX * Game::TILE_SIDE ,(posY-1) * Game::TILE_SIDE);
 	direction = Vector2D(0,0);
 	frame = 0;
 	frameRunner = 0;
@@ -22,6 +27,26 @@ SceneObject::SceneObject(Game* g) : GameObject(g) {
 	frozen = true;
 	ended = false;
 	
+}
+
+SceneObject::SceneObject(Game* g) : GameObject(g) {
+
+	posX = 0;
+	posY = 0;
+	position = Vector2D(posX * Game::TILE_SIDE, (posY - 1) * Game::TILE_SIDE);
+	direction = Vector2D(0, 0);
+	frame = 0;
+	frameRunner = 0;
+	previousOffset = 0;
+	velocity = 2;
+	velocityGravity = 8;
+	width = Game::TILE_SIDE;
+	height = Game::TILE_SIDE;
+	//rect = SDL_Rect(position.getX(), position.getY(), width, height);
+
+	frozen = true;
+	ended = false;
+
 }
 
 SceneObject::~SceneObject() {

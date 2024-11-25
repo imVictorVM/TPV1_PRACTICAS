@@ -32,7 +32,7 @@ private:
 	//bool ended; ended del SceneObject
 public:
 
-	Block(Game* game, std::stringstream& atributos);
+	Block(Game* game, std::istream& atributos);
 
 	//~Block();
 
