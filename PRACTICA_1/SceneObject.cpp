@@ -69,6 +69,72 @@ SceneObject::render() const {
 
 }
 
+Collision
+SceneObject::tryToMove(const Vector2D<int>& speed, Collision::Target attack) {
+
+	direction = speed;
+
+	// CALCULO DE LA NUEVA POSICION EN FUNCION DE LA DIRECCION PULSANDO TECLA
+	Vector2D<int> newPosition = position + direction;
+
+	Collision colision = { false, false, {0,0,0,0} };
+
+	if (attack == Collision::Target::PLAYER) colision = gamePointer->checkPlayerCollision(rect, true);
+	else if (attack == Collision::Target::ENEMIES) colision = gamePointer->checkEnemyCollision(rect, false);
+
+	rect.y += direction.getY();
+	rect.x += direction.getX();
+
+	//COLISION VERTICAL
+	if (!colision.collides) position.setY(newPosition.getY());
+	else {
+		//position.setY(colision.intersection.y - rect.h);
+		//Hacer una resta con la diferente entre la altura del rect del bloque y del jugador atravesado
+		colision.result == 2; //OBSTACLE
+		position.setY(position.getY());
+		cout << "COLISION" << endl;
+		//jump = false;
+		return colision;
+
+		//if (colision.intersection.y > position.getY()) {
+		//	//position.setY(colision.intersection.y - rect.h);
+		//	//Hacer una resta con la diferente entre la altura del rect del bloque y del jugador atravesado
+		//	colision.result == 2; //OBSTACLE
+		//	position.setY(position.getY());
+		//	cout << "COLISION" << endl;
+		//	//jump = false;
+		//	return colision;
+		//} //SUELO
+		//else if (colision.intersection.y < position.getY()) {
+		//	colision.result == 2; //OBSTACLE
+		//	direction.setY(velocity);
+		//	return colision;
+		//} //TECHO
+	}
+
+	//RECALCULO DE LA COLISION
+	rect.y = position.getY();
+	rect.x += direction.getX();
+
+	if (attack == Collision::Target::PLAYER) colision = gamePointer->checkPlayerCollision(rect, true);
+	else if (attack == Collision::Target::ENEMIES) colision = gamePointer->checkEnemyCollision(rect, false);
+
+	//COLISION HORIZONTAL
+	if (!colision.collides) position.setX(newPosition.getX());
+	else {
+		colision.result == 2; //OBSTACLE
+		if (colision.intersection.x > position.getX()) {
+			//direction.setY(velocity);
+			return colision;
+		} //MURO A LA IZQUIERDA
+		else if (colision.intersection.x < position.getX()) {
+			//direction.setY(velocity);
+			return colision;
+		} // MURO A LA DERECHA
+	}
+	return colision;
+}
+
 SDL_Rect
 SceneObject::getRect() const {
 	SDL_Rect rect;

@@ -42,6 +42,10 @@ public:
 
 	virtual Collision hit(const SDL_Rect& rect, bool fromPlayer) = 0;
 
+protected:
+	Collision tryToMove(const Vector2D<int>& speed, Collision::Target attack);
+public:
+
 	SDL_Rect getRect() const;
 
 	bool isAlive() const;
