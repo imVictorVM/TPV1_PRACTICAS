@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SceneObject.h"
+#include "Pickable.h"
 
-class Coin : public SceneObject
+class Coin : public Pickable
 {
 public:
 
@@ -14,10 +14,10 @@ public:
 
 	void update();
 
-	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+	//Collision hit(const SDL_Rect& rect, bool fromPlayer);
 
-	SDL_Rect getRect() const;
+	//SDL_Rect getRect() const;
 
-	bool isAlive() const;
+	//bool isAlive() const;
 };
 

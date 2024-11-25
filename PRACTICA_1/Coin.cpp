@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Coin::Coin(Game* game, std::stringstream& atributes) : SceneObject(game) {
+Coin::Coin(Game* game, std::stringstream& atributes) : Pickable(game) {
 	string line;
 
 	getline(atributes, line);
@@ -21,6 +21,7 @@ Coin::Coin(Game* game, std::stringstream& atributes) : SceneObject(game) {
 	direction = Vector2D<int>(0, 0);
 	texture = gamePointer->getTexture(Game::COIN);
 	frameRunner = 0;
+	frozen = false;
 }
 
 Coin::~Coin()
@@ -45,45 +46,45 @@ Coin::update() {
 	frameRunner++;
 }
 
-Collision
-Coin::hit(const SDL_Rect& rect, bool fromPlayer) {
-
-	Collision colisionPlayer = { false,false,{0,0,0,0} };
-	if (fromPlayer) {
-		// Creamos un rect del bloque para compararlo con el del jugador
-		SDL_Rect KoopaRect;
-		KoopaRect = getRect();
-
-		// Creamos un rect del player tomando de valor el que le llega como argumento
-		SDL_Rect playerRect;
-		playerRect = rect;
-
-		SDL_Rect intersection;
-		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
-			colisionPlayer.collides = true;
-			colisionPlayer.intersection = intersection;
-			ended = true;
-			return colisionPlayer;
-		}
-		return colisionPlayer;
-	}
-	return colisionPlayer;
-
-}
-
-SDL_Rect
-Coin::getRect() const {
-	SDL_Rect CPosition;
-	CPosition.x = position.getX() + gamePointer->getMapOffset();
-	CPosition.y = position.getY();
-	CPosition.w = Game::TILE_SIDE;
-	CPosition.h = Game::TILE_SIDE;
-	return CPosition;
-}
-
-bool
-Coin::isAlive() const {
-	return !ended;
-}
+//Collision
+//Coin::hit(const SDL_Rect& rect, bool fromPlayer) {
+//
+//	Collision colisionPlayer = { false,false,{0,0,0,0} };
+//	if (fromPlayer) {
+//		// Creamos un rect del bloque para compararlo con el del jugador
+//		SDL_Rect KoopaRect;
+//		KoopaRect = getRect();
+//
+//		// Creamos un rect del player tomando de valor el que le llega como argumento
+//		SDL_Rect playerRect;
+//		playerRect = rect;
+//
+//		SDL_Rect intersection;
+//		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
+//			colisionPlayer.collides = true;
+//			colisionPlayer.intersection = intersection;
+//			ended = true;
+//			return colisionPlayer;
+//		}
+//		return colisionPlayer;
+//	}
+//	return colisionPlayer;
+//
+//}
+//
+//SDL_Rect
+//Coin::getRect() const {
+//	SDL_Rect CPosition;
+//	CPosition.x = position.getX() + gamePointer->getMapOffset();
+//	CPosition.y = position.getY();
+//	CPosition.w = Game::TILE_SIDE;
+//	CPosition.h = Game::TILE_SIDE;
+//	return CPosition;
+//}
+//
+//bool
+//Coin::isAlive() const {
+//	return !ended;
+//}
 
 
