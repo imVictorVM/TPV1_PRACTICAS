@@ -41,16 +41,16 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 };
 
 Game::Game()
- : seguir(true)
+	: seguir(true)
 {
 	// Inicializa la SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("First test with SDL",
-	                          SDL_WINDOWPOS_CENTERED,
-	                          SDL_WINDOWPOS_CENTERED,
-	                          WIN_WIDTH,
-	                          WIN_HEIGHT,
-	                          SDL_WINDOW_SHOWN);
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		WIN_WIDTH,
+		WIN_HEIGHT,
+		SDL_WINDOW_SHOWN);
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -64,21 +64,92 @@ Game::Game()
 	// Carga las texturas
 	for (int i = 0; i < NUM_TEXTURES; ++i)
 		textures[i] = new Texture(renderer,
-		                          (textureRoot + textureSpec[i].name).c_str(),
-		                          textureSpec[i].numRows,
-					  textureSpec[i].numColumns);
+			(textureRoot + textureSpec[i].name).c_str(),
+			textureSpec[i].numRows,
+			textureSpec[i].numColumns);
 
 	// Crea los objetos del juego
-	//perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
-	tilemap = new TileMap("../assets/maps/world2.csv", this);
-	//stringstream ss;
-	//player = new Player(this,ss);
-	loadObjectMap();
+	loadNextLevel();
 }
 
 void
-Game::loadObjectMap() {
-	const string DEFAULT_MAP = "../assets/maps/world2.txt";
+Game::clearActualLevel() {
+
+	if (tilemap != nullptr) {
+		delete tilemap;
+		tilemap = nullptr;
+	}
+
+	if (player != nullptr) {
+		delete player;
+		player = nullptr;
+	}
+
+	// OTRAS APLICACIONES DE BORRADO 
+	//for (Block* block : blocks) delete block;
+	//blocks.clear();
+	for (auto it = blocks.begin(); it != blocks.end(); ++it) {
+		delete* it;
+		it = blocks.erase(it);
+	}
+	////for (Goomba* goomba : goombas) delete goomba;
+	////goombas.clear();
+	for (auto it = goombas.begin(); it != goombas.end(); ++it) {
+		delete* it;
+		it = goombas.erase(it);
+	}
+	////for (Koopa* koopa : koopas) delete koopa;
+	////koopas.clear();
+	for (auto it = koopas.begin(); it != koopas.end(); ++it) {
+		delete* it;
+		it = koopas.erase(it);
+	}
+	////for (Lift* lift : lifts) delete lift;
+	////lifts.clear();
+	for (auto it = lifts.begin(); it != lifts.end(); ++it) {
+		delete* it;
+		it = lifts.erase(it);
+	}
+	////for (Coin* coin : coins) delete coin;
+	////coins.clear();
+	for (auto it = coins.begin(); it != coins.end(); ++it) {
+		delete* it;
+		it = coins.erase(it);
+	}
+	////for (Mushroom* mushroom : mushrooms) delete mushroom;
+	////mushrooms.clear();
+	for (auto it = mushrooms.begin(); it != mushrooms.end(); ++it) {
+			delete* it;
+			it = mushrooms.erase(it);
+	}
+
+	// Actualiza el offset del mapa
+	ResetMapOffset();
+}
+
+void
+Game::loadNextLevel() {
+	static int currentLevel = 0;
+
+	vector<pair<string, string>> levels = {
+		{"../assets/maps/world2.csv","../assets/maps/world2.txt"},
+		{"../assets/maps/world1.csv","../assets/maps/world1.txt"},
+	};
+
+	if (currentLevel < levels.size()) {
+		clearActualLevel();
+		loadObjectMap(levels[currentLevel].first, levels[currentLevel].second);
+		currentLevel++;
+	}
+	else seguir = false;
+
+}
+
+void
+Game::loadObjectMap(const string& mapFile, const string& objectFile) {
+
+	tilemap = new TileMap(mapFile, this);
+	const string DEFAULT_MAP = objectFile;
 
 	// Carga el mapa
 	ifstream file(DEFAULT_MAP);
@@ -94,7 +165,7 @@ Game::loadObjectMap() {
 	SDL_SetRenderDrawColor(renderer, R, G, B, 255); //Color de fondo leyendo la primera linea
 
 	while (getline(file, line)) {
-		
+
 		stringstream lineStream(line);
 		char let;
 		lineStream >> let;
@@ -104,18 +175,23 @@ Game::loadObjectMap() {
 			if (player == nullptr) player = new Player(this, lineStream);
 			break;
 		case 'B':
+			gameList.push_back(new Block(this, lineStream));
 			blocks.push_back(new Block(this, lineStream));
 			break;
 		case 'G':
+			gameList.push_back(new Goomba(this, lineStream));
 			goombas.push_back(new Goomba(this, lineStream));
 			break;
 		case 'K':
+			gameList.push_back(new Koopa(this, lineStream));
 			koopas.push_back(new Koopa(this, lineStream));
 			break;
 		case 'L':
+			gameList.push_back(new Lift(this, lineStream));
 			lifts.push_back(new Lift(this, lineStream));
 			break;
 		case 'C':
+			gameList.push_back(new Coin(this, lineStream));
 			coins.push_back(new Coin(this, lineStream));
 			break;
 		}
@@ -127,42 +203,12 @@ Game::loadObjectMap() {
 Game::~Game()
 {
 	// Elimina los objetos del juego
-	for (Block* block : blocks) {
-		delete block;
-	}
-	blocks.clear();
-	for (Goomba* goomba : goombas) {
-		delete goomba;
-	}
-	goombas.clear();
-	for (Koopa* koopa : koopas) {
-		delete koopa;
-	}
-	koopas.clear();
-	for (Lift* lift : lifts) {
-		delete lift;
-	}
-	lifts.clear();
-	for (Coin* coin : coins) {
-		delete coin;
-	}
-	coins.clear();
-	for (Mushroom* mushroom : mushrooms) {
-		delete mushroom;
-	}
-	mushrooms.clear();
+	clearActualLevel();
 
 	// Elimina las texturas
 	for (Texture* texture : textures)
 		delete texture;
 
-	if (tilemap != nullptr)
-	{
-		delete tilemap;
-	}
-	if (player != nullptr) {
-		delete player;
-	}
 	// Desactiva la SDL
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -216,6 +262,10 @@ Game::render() const
 		coin->render();
 	}
 
+	//for (const SceneObject* sceneObj : gameList) {
+	//	sceneObj->render();
+	//}
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -227,26 +277,29 @@ Game::update()
 	player->update();
 
 	//IMPORTANTE SI LO HACEMOS ASI SE PRODUCEN FUGAS DE MEMORIA MEJOR USAR EL OTRO
-	//for (Block* block : blocks) {
-	//	block->update();
-	//	if (!block->isAlive()) delete block;
+	//SI USAMOS LO DE LA ARRAYLIST PODEMOS SIMPLEMENTE UPDATEAR Y LUEGO ELIMINAR EL PROPIO OBJETO EN SU UPDATE SI COLISIONA
+
+	//for (SceneObject* sceneObj : gameList) {
+	//	sceneObj->update();
 	//}
+
+	//Los objetos se borran en su propio update usando la gameList
 
 	//Actualiza y elimina bloques
 	for (auto it = blocks.begin(); it != blocks.end();) {
 		(*it)->update();
 		if (!(*it)->isAlive()) {
-			delete* it;
+			//delete* it;
 			it = blocks.erase(it);
 		}
 		else ++it;
 	}
-	
+
 	// Actualiza y elimina Goombas
 	for (auto it = goombas.begin(); it != goombas.end();) {
 		(*it)->update();
 		if (!(*it)->isAlive()) {
-			delete* it;
+			//delete* it;
 			it = goombas.erase(it);
 		}
 		else ++it;
@@ -256,8 +309,8 @@ Game::update()
 	for (auto it = koopas.begin(); it != koopas.end();) {
 		(*it)->update();
 		if (!(*it)->isAlive()) {
-			delete* it;                      
-			it = koopas.erase(it);            
+			//delete* it;                      
+			it = koopas.erase(it);
 		}
 		else ++it;
 	}
@@ -271,17 +324,17 @@ Game::update()
 	for (auto it = mushrooms.begin(); it != mushrooms.end();) {
 		(*it)->update();
 		if (!(*it)->isAlive()) {
-			delete* it;                      
-			it = mushrooms.erase(it);        
+			//delete* it;                      
+			it = mushrooms.erase(it);
 		}
-		else ++it;                             
+		else ++it;
 	}
 
 	// Actualiza y elimina Mushrooms
 	for (auto it = coins.begin(); it != coins.end();) {
 		(*it)->update();
 		if (!(*it)->isAlive()) {
-			delete* it;
+			//delete* it;
 			it = coins.erase(it);
 		}
 		else ++it;
@@ -319,8 +372,8 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 	// Primero verificamos colisión con el tilemap
 	colision = tilemap->hit(rect, fromPlayer);
 	if (colision.collides) return colision;
-	
-		
+
+
 	// Luego verificamos colisión con cada bloque
 	for (Block* block : blocks) {
 		colision = block->hit(rect, fromPlayer);
@@ -328,7 +381,7 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 			mushrooms.push_back(new Mushroom(this, block->getRect()));
 			block->itemObtained();
 		}
-			
+
 		if (colision.collides) return colision;
 	}
 
@@ -367,7 +420,7 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 Collision
 Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
-	
+
 	Collision colision = { false,false,{0,0,0,0} };
 
 	colision = tilemap->hit(rect, fromPlayer);

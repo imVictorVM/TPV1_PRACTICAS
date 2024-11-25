@@ -4,6 +4,7 @@
 #include "TileMap.h"
 #include "Game.h"
 #include "Collision.h"
+#include "SceneObject.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -116,31 +117,32 @@ void Player::update() {
 
 	// CAMBIAR: Verifica colisión en todas las direcciones
 	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
-
+	
 	//FUNCIONAL: CONTROL DE SALTO
 	int jumpMaxDistance = 4 * Game::TILE_SIDE;
 	if (jump && position.getY() <= groundPositionY - jumpMaxDistance) {
 		direction.setY(velocity);
 	}
-
+	
 	//COLISION VERTICAL
 	if (!collision.collides) position.setY(newPosition.getY());
 	else {
 		if (collision.intersection.y > position.getY()) { 
 			groundPositionY = position.getY();
+			//Hacer una resta con la diferente entre la altura del rect del bloque y del jugador atravesado
 			jump = false;
 		} //SUELO
 		else if (collision.intersection.y < position.getY()) { 
 			direction.setY(velocity);
 		} //TECHO
 	}
-
+	
 	//RECALCULO DE LA COLISION
 	MarioRect.y = position.getY();
 	MarioRect.x += direction.getX();
-
+	
 	collision = GamePlayer->checkPlayerCollision(MarioRect, true);
-
+	
 	//COLISION HORIZONTAL
 	if (!collision.collides) position.setX(newPosition.getX());
 	else {

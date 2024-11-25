@@ -26,13 +26,19 @@ protected:
 
 	Texture* texture;
 
+
 	SDL_Rect rect;
 	SDL_Renderer* renderer;
 	GameList<SceneObject>::anchor anchor;
 
-public:
 
+public:
 	SceneObject(Game* g);
+
+protected:
+	Collision tryToMove(const Vector2D<int>& speed, Collision::Target attack);
+
+public:
 	~SceneObject();
 
 	void render() const override;
