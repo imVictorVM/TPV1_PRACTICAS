@@ -83,7 +83,9 @@ public:
 	void update();
 	void render() const;
 	void handleEvents();
-	void loadObjectMap();
+	void clearActualLevel();
+	void loadNextLevel();
+	void loadObjectMap(const std::string& mapFile, const std::string& objectFile);
 	int getMapOffset();
 	Collision checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer);
 	Collision checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer);

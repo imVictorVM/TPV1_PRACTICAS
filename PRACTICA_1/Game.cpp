@@ -72,15 +72,34 @@ Game::Game()
 
 	// Crea los objetos del juego
 	//perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
-	tilemap = new TileMap("../assets/maps/world2.csv", this);
 	//stringstream ss;
 	//player = new Player(this,ss);
-	loadObjectMap();
+	loadNextLevel();
 }
 
 void
-Game::loadObjectMap() {
-	const string DEFAULT_MAP = "../assets/maps/world2.txt";
+Game::loadNextLevel() {
+	static int currentLevel = 0;
+
+	vector<pair<string, string>> levels = {
+		{"../assets/maps/world1.csv","../assets/maps/world1.txt"},
+		{"../assets/maps/world2.csv","../assets/maps/world2.txt"},
+	};
+
+	if (currentLevel < levels.size()) {
+		clearActualLevel();
+		loadObjectMap(levels[currentLevel].first, levels[currentLevel].second);
+		currentLevel++;
+	}
+	else seguir = false;
+
+}
+
+void
+Game::loadObjectMap(const string& mapFile, const string& objectFile) {
+
+	tilemap = new TileMap(mapFile, this);
+	const string DEFAULT_MAP = objectFile;
 
 	// Carga el mapa
 	ifstream file(DEFAULT_MAP);
@@ -131,37 +150,64 @@ Game::loadObjectMap() {
 	file.close();
 }
 
+void
+Game::clearActualLevel() {
+
+	if (tilemap != nullptr) {
+		delete tilemap;
+		tilemap = nullptr;
+	}
+
+	if (player != nullptr) {
+		delete player;
+		player = nullptr;
+	}
+
+	// OTRAS APLICACIONES DE BORRADO 
+	//for (Block* block : blocks) delete block;
+	//blocks.clear();
+	for (auto it = blocks.begin(); it != blocks.end(); ++it) {
+		delete* it;
+		it = blocks.erase(it);
+	}
+	////for (Goomba* goomba : goombas) delete goomba;
+	////goombas.clear();
+	for (auto it = goombas.begin(); it != goombas.end(); ++it) {
+		delete* it;
+		it = goombas.erase(it);
+	}
+	////for (Koopa* koopa : koopas) delete koopa;
+	////koopas.clear();
+	for (auto it = koopas.begin(); it != koopas.end(); ++it) {
+		delete* it;
+		it = koopas.erase(it);
+	}
+	////for (Lift* lift : lifts) delete lift;
+	////lifts.clear();
+	for (auto it = lifts.begin(); it != lifts.end(); ++it) {
+		delete* it;
+		it = lifts.erase(it);
+	}
+	////for (Coin* coin : coins) delete coin;
+	////coins.clear();
+	for (auto it = coins.begin(); it != coins.end(); ++it) {
+		delete* it;
+		it = coins.erase(it);
+	}
+	////for (Mushroom* mushroom : mushrooms) delete mushroom;
+	////mushrooms.clear();
+	for (auto it = mushrooms.begin(); it != mushrooms.end(); ++it) {
+		delete* it;
+		it = mushrooms.erase(it);
+	}
+
+	// Actualiza el offset del mapa
+	ResetMapOffset();
+}
+
 Game::~Game()
 {
-	// Elimina los objetos del juego
-	for (Block* block : blocks) {
-		delete block;
-	}
-	blocks.clear();
-	for (Goomba* goomba : goombas) {
-		delete goomba;
-	}
-	goombas.clear();
-	for (Koopa* koopa : koopas) {
-		delete koopa;
-	}
-	koopas.clear();
-	for (Lift* lift : lifts) {
-		delete lift;
-	}
-	lifts.clear();
-	for (Coin* coin : coins) {
-		delete coin;
-	}
-	coins.clear();
-	for (Mushroom* mushroom : mushrooms) {
-		delete mushroom;
-	}
-	mushrooms.clear();
-
-	/*for (SceneObject* sceneObj : gameList) {
-		delete sceneObj;
-	}*/
+	clearActualLevel();
 
 	// Elimina las texturas
 	for (Texture* texture : textures)
