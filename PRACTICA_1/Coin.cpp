@@ -1,8 +1,8 @@
 #include "Coin.h"
 #include "checkML.h"
 #include "Game.h"
-#include <fstream>
 #include <vector>
+#include <string>
 
 using namespace std;
 

@@ -1,34 +1,33 @@
 #pragma once
-#include "Vector2D.h"
-#include "Texture.h"
-#include "Collision.h"
-#include <iostream>
-#include <SDL.h>
-#include <string>
+
+#include "SceneObject.h"
+
+
 #include <fstream>
-#include <sstream>
+#include <iostream>
+#include <string>
 
 class Game;
 
-class Player
+class Player : public SceneObject
 {
 protected:
-	Vector2D<int> position;
-	//Vector2D<int> windowPosition;
+
+	//Vector2D<int> position;
 	int groundPositionY;
-	Vector2D<int> direction;
-	Texture* TextureMario;
+	//Vector2D<int> direction;
+	//Texture* TextureMario;
 	Texture* TextureSuperMario;
-	Game* GamePlayer;
+	//Game* GamePlayer;
 	int vidas;
 	bool jump; //Sirve para ver si podemos saltar o no
-	int frameRunner; //Sirve como contador para saltar entre los frames 0,2,3
+	//int frameRunner; //Sirve como contador para saltar entre los frames 0,2,3
 	bool leftLimit; //Sirve para no avanzar fuera de la pantalla a la izquierda
 	bool lookingLeft; //para ver si está mirando a izquierda o derecha
 	int damageCooldown; //tiempo de cooldown para el daño 
 	int InitialPositionX;
 	int InitialPositionY; 
-	int velocity;
+	//int velocity;
 	bool SuperMario;
 public:
 

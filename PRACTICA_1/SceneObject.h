@@ -7,7 +7,9 @@
 #include "gameList.h"
 #include "Collision.h"
 #include "Texture.h"
-
+#include <fstream>
+#include <iostream>
+#include <string>
 class Game;
 
 class SceneObject : public GameObject {
