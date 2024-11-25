@@ -6,7 +6,8 @@
 
 using namespace std;
 
-Lift::Lift(Game* game, std::stringstream& atributes) : SceneObject(game) {
+Lift::Lift(Game* game, istream& atributes) : SceneObject(game) {
+	
 	string line;
 
 	getline(atributes, line);
@@ -104,13 +105,13 @@ Lift::hit(const SDL_Rect& rect, bool fromPlayer) {
 
 }
 
-SDL_Rect
-Lift::getRect() const {
-	SDL_Rect LPosition;
-	LPosition.x = position.getX();
-	LPosition.y = position.getY();
-	LPosition.w = Game::TILE_SIDE * 3;
-	LPosition.h = Game::TILE_SIDE / 2;
-	return LPosition;
-}
+//SDL_Rect
+//Lift::getRect() const {
+//	SDL_Rect LPosition;
+//	LPosition.x = position.getX();
+//	LPosition.y = position.getY();
+//	LPosition.w = Game::TILE_SIDE * 3;
+//	LPosition.h = Game::TILE_SIDE / 2;
+//	return LPosition;
+//}
 

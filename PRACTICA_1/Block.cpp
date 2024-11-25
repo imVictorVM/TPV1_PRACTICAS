@@ -155,14 +155,14 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 }
 
 //Obtenemos el bloque para que el jugador lo compare a la hora de posarse encima
-SDL_Rect Block::getRect() const {
-    SDL_Rect blockRect;
-    blockRect.x = position.getX();
-    blockRect.y = position.getY();
-    blockRect.w = Game::TILE_SIDE;
-    blockRect.h = Game::TILE_SIDE;
-    return blockRect;
-}
+//SDL_Rect Block::getRect() const {
+//    SDL_Rect blockRect;
+//    blockRect.x = position.getX();
+//    blockRect.y = position.getY();
+//    blockRect.w = Game::TILE_SIDE;
+//    blockRect.h = Game::TILE_SIDE;
+//    return blockRect;
+//}
 
 bool Block::ObtainObject() {
 	return object;
@@ -172,6 +172,6 @@ void Block::itemObtained() {
 	object = false;
 }
 
-bool Block::isAlive() const {
-	return !ended;
-}
+//bool Block::isAlive() const {
+//	return !ended;
+//}

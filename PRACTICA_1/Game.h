@@ -16,6 +16,9 @@
 #include "Collision.h"
 
 
+#include "SceneObject.h"
+#include "gameList.h"
+
 class Block;
 class Goomba;
 class Koopa;
@@ -70,9 +73,9 @@ private:
 	std::vector<Koopa*> koopas;
 	std::vector<Lift*> lifts;
 	std::vector<Coin*> coins;
-	
 	std::vector<Mushroom*> mushrooms;
-	//Mushroom* mushroom = nullptr;
+	//GameList<SceneObject> gameList;
+
 
 public:
 	void run();

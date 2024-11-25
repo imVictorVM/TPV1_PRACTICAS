@@ -1,6 +1,5 @@
 #include "checkML.h"
 #include "Mushroom.h"
-#include "Player.h"
 #include "Game.h"
 
 using namespace std;

@@ -1,8 +1,9 @@
 #include "checkML.h"
 
 #include "SceneObject.h"
-#include "Lift.h"
+
 #include "Game.h"
+
 using namespace std;
 
 
@@ -16,7 +17,7 @@ SceneObject::SceneObject(Game* g) : GameObject(g) {
 	velocityGravity = 8;
 	width = Game::TILE_SIDE;
 	height = Game::TILE_SIDE;
-	//rect = SDL_Rect(pos.getX(), pos.getY(), width, height);
+	//rect = SDL_Rect(position.getX(), position.getY(), width, height);
 
 	frozen = true;
 	ended = false;
@@ -43,6 +44,20 @@ SceneObject::render() const {
 
 }
 
+SDL_Rect
+SceneObject::getRect() const {
+	SDL_Rect rect;
+	rect.x = position.getX();
+	rect.y = position.getY();
+	rect.w = width;
+	rect.h = height;
+	return rect;
+}
+
+bool
+SceneObject::isAlive() const {
+	return !ended;
+}
 
 
 void SceneObject::setListAnchor(GameList<SceneObject>::anchor&& anchor) {

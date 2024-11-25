@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Goomba::Goomba(Game* game, stringstream& atributes) : Enemy(game)
+Goomba::Goomba(Game* game, istream& atributes) : Enemy(game)
 	// position(), texture(game->getTexture(Game::GOOMBA)), gamePointer(game) , frame(0), frameRunner(0), previousOffset(0), frozen(true), velocity(2), ended(false), velocityGravity(8)
 {
 	string line;
@@ -162,7 +162,7 @@ Goomba::update() {
 //	return GoombaRect;
 //}
 
-bool
-Goomba::isAlive() const {
-	return !ended;
-}
+//bool
+//Goomba::isAlive() const {
+//	return !ended;
+//}

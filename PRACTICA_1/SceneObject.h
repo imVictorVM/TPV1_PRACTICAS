@@ -39,6 +39,10 @@ public:
 
 	virtual Collision hit(const SDL_Rect& rect, bool fromPlayer) = 0;
 
+	SDL_Rect getRect() const;
+
+	bool isAlive() const;
+
 	void setListAnchor(GameList<SceneObject>::anchor&& anchor);
 
 };

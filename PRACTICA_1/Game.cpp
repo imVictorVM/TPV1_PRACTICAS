@@ -13,6 +13,8 @@
 #include "Collision.h"
 #include "GameObject.h"
 #include "SceneObject.h"
+
+
 using namespace std;
 class TileMap;
 
@@ -104,18 +106,23 @@ Game::loadObjectMap() {
 			if (player == nullptr) player = new Player(this, lineStream);
 			break;
 		case 'B':
+			//gameList.push_back(new Block(this, lineStream));
 			blocks.push_back(new Block(this, lineStream));
 			break;
 		case 'G':
+			//gameList.push_back(new Goomba(this, lineStream));
 			goombas.push_back(new Goomba(this, lineStream));
 			break;
 		case 'K':
+			//gameList.push_back(new Koopa(this, lineStream));
 			koopas.push_back(new Koopa(this, lineStream));
 			break;
 		case 'L':
+			//gameList.push_back(new Lift(this, lineStream));
 			lifts.push_back(new Lift(this, lineStream));
 			break;
 		case 'C':
+			//gameList.push_back(new Coin(this, lineStream));
 			coins.push_back(new Coin(this, lineStream));
 			break;
 		}
@@ -151,6 +158,10 @@ Game::~Game()
 		delete mushroom;
 	}
 	mushrooms.clear();
+
+	/*for (SceneObject* sceneObj : gameList) {
+		delete sceneObj;
+	}*/
 
 	// Elimina las texturas
 	for (Texture* texture : textures)
@@ -216,6 +227,10 @@ Game::render() const
 		coin->render();
 	}
 
+	/*for (const SceneObject* sceneObj : gameList) {
+		sceneObj->render();
+	}*/
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -231,6 +246,10 @@ Game::update()
 	//	block->update();
 	//	if (!block->isAlive()) delete block;
 	//}
+
+	/*for (SceneObject* sceneObj : gameList) {
+		sceneObj->update();
+	}*/
 
 	//Actualiza y elimina bloques
 	for (auto it = blocks.begin(); it != blocks.end();) {
@@ -362,6 +381,11 @@ Game::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 		if (colision.collides) return colision;
 	}
 
+	/*for (SceneObject* sceneObj : gameList) {
+		colision = sceneObj->hit(rect, fromPlayer);
+		if (colision.collides) return colision;
+	}*/
+
 	return colision;
 }
 
@@ -377,6 +401,10 @@ Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
 		colision = block->hit(rect, fromPlayer);
 		if (colision.collides) return colision;
 	}
+	/*for (SceneObject* sceneObj : gameList) {
+		colision = sceneObj->hit(rect, fromPlayer);
+		if (colision.collides) return colision;
+	}*/
 
 	return colision;
 }

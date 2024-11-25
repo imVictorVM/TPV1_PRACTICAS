@@ -26,9 +26,9 @@ protected:
 
 public:
 
-	Koopa(Game* game, std::stringstream& atributos);
+	Koopa(Game* game, std::istream& atributos);
 
-	//void render() const;
+	void render() const override;
 
 	void update();
 
@@ -36,5 +36,5 @@ public:
 
 	//SDL_Rect getRect() const;
 
-	bool isAlive() const;
+	//bool isAlive() const;
 };

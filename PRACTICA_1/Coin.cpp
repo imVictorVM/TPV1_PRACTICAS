@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Coin::Coin(Game* game, std::stringstream& atributes) : Pickable(game) {
+Coin::Coin(Game* game, std::istream& atributes) : Pickable(game) {
 	string line;
 
 	getline(atributes, line);
