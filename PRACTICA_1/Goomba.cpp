@@ -11,7 +11,7 @@ Goomba::Goomba(Game* game, istream& atributes) : Enemy(game, atributes)
 	texture = gamePointer->getTexture(Game::GOOMBA);
 
 	//position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1) * Game::TILE_SIDE);
-	direction = Vector2D<int>(-velocity, 0);
+	//direction = Vector2D<int>(-velocity, 0);
 }
 
 //void

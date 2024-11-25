@@ -21,7 +21,7 @@ Koopa::Koopa(Game* game, istream& atributes) :Enemy(game, atributes)
 	width = Game::TILE_SIDE * 2;
 	height = Game::TILE_SIDE * 4;
 	//position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1)* Game::TILE_SIDE);
-	direction = Vector2D<int>(-velocity, 0);
+	//direction = Vector2D<int>(-velocity, 0);
 	
 
 }
