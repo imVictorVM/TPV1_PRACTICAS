@@ -12,11 +12,9 @@
 #include <string>
 using namespace std;
 
-Player::Player(Game* game, stringstream& atributes) : SceneObject(game)
-	//position(), TextureMario(game->getTexture(Game::MARIANO)),TextureSuperMario(game->getTexture(Game::SUPERMARIANO)), GamePlayer(game), vidas(0),
-	//jump(false), frameRunner(0), leftLimit(), damageCooldown(15), velocity(8), SuperMario(false)
-	
-{
+Player::Player(Game* game, stringstream& atributes) : position(), 
+TextureMario(game->getTexture(Game::MARIANO)),TextureSuperMario(game->getTexture(Game::SUPERMARIANO)), GamePlayer(game), vidas(0),
+jump(false), frameRunner(0), leftLimit(), damageCooldown(15), velocity(8), SuperMario(false){
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -38,17 +36,9 @@ Player::Player(Game* game, stringstream& atributes) : SceneObject(game)
 	//Pasamos los parametros al constructor del player despues de leerlos
 	position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony - 1) * Game::TILE_SIDE);
 	direction = Vector2D<int>(0, velocity);
-
-	texture = gamePointer->getTexture(Game::MARIANO);
-	TextureSuperMario = gamePointer->getTexture(Game::SUPERMARIANO);
-
 	InitialPositionX = positionx;
 	InitialPositionY = positiony;
 	vidas = nvidas;
-	jump = false;
-	damageCooldown = 200;
-	velocity = 8;
-	SuperMario = false;
 	lookingLeft = false;
 	groundPositionY = (positiony - 1) * Game::TILE_SIDE;
 	
@@ -59,7 +49,7 @@ Player::render() const {
 
 	SDL_Rect MPosition;
 	MPosition = getRect();
-	MPosition.x -= gamePointer->getMapOffset();
+	MPosition.x -= GamePlayer->getMapOffset();
 		
 	if (!SuperMario) {
 		int frame = 0;
@@ -84,7 +74,7 @@ Player::render() const {
 		}
 
 		//Renderizamos con los parametros actualizados
-		texture->renderFrame(MPosition, 0, frame, flip);
+		TextureMario->renderFrame(MPosition, 0, frame, flip);
 	}
 	else {
 		int frame = 0;
@@ -125,7 +115,7 @@ void Player::update() {
 	MarioRect.x += direction.getX();
 
 	// CAMBIAR: Verifica colisión en todas las direcciones
-	Collision collision = gamePointer->checkPlayerCollision(MarioRect, true);
+	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
 
 	//FUNCIONAL: CONTROL DE SALTO
 	int jumpMaxDistance = 4 * Game::TILE_SIDE;
@@ -149,7 +139,7 @@ void Player::update() {
 	MarioRect.y = position.getY();
 	MarioRect.x += direction.getX();
 
-	collision = gamePointer->checkPlayerCollision(MarioRect, true);
+	collision = GamePlayer->checkPlayerCollision(MarioRect, true);
 
 	//COLISION HORIZONTAL
 	if (!collision.collides) position.setX(newPosition.getX());
@@ -170,7 +160,7 @@ void Player::update() {
 				vidas--;
 				damageCooldown = 0;
 				position = Vector2D<int>(InitialPositionX * Game::TILE_SIDE, (InitialPositionY - 1) * Game::TILE_SIDE);
-				gamePointer->ResetMapOffset();
+				GamePlayer->ResetMapOffset();
 				cout << "Vidas restantes: " << vidas << endl;
 				return;
 			}
@@ -183,8 +173,8 @@ void Player::update() {
 	damageCooldown++;
 
 	// FUNCIONAL: MARIO CRUZA EL LIMITE DEL MAPA IZQUIERDO
-	if (position.getX() < gamePointer->getMapOffset()) {
-		position.setX(gamePointer->getMapOffset());
+	if (position.getX() < GamePlayer->getMapOffset()) {
+		position.setX(GamePlayer->getMapOffset());
 	}
 
 	// FUNCIONAL: CAMBIO DE LA ANIMACION AL CORRER
@@ -192,7 +182,7 @@ void Player::update() {
 	else frameRunner++;
 
 	bool midMap = false;
-	int midMapPositionX = (Game::WINDOW_WIDTH * Game::TILE_SIDE / 2) + gamePointer->getMapOffset();
+	int midMapPositionX = (Game::WINDOW_WIDTH * Game::TILE_SIDE / 2) + GamePlayer->getMapOffset();
 
 	// FUNCIONAL: Condicional para mover el mapa a la derecha
 	if (position.getX() > midMapPositionX && direction.getX() > 0) midMap = true;
@@ -200,14 +190,14 @@ void Player::update() {
 
 	// FUNCIONAL: Desplazamiento del mapa cuando se mueve a la derecha
 	if (midMap) {
-		gamePointer->setMapOffset(velocity);
+		GamePlayer->setMapOffset(velocity);
 	}
 
 }
 
 Collision 
 Player::hit(const SDL_Rect& rect, bool fromPlayer) {
-	return gamePointer->checkPlayerCollision(rect, fromPlayer);
+	return GamePlayer->checkPlayerCollision(rect, fromPlayer);
 }
 
 void 
@@ -269,8 +259,8 @@ Player::getRect() const{
 	playerRect.x = position.getX();
 	playerRect.y = position.getY();
 	if (SuperMario) {
-		playerRect.w = texture->getFrameWidth() * 2;
-		playerRect.h = texture->getFrameHeight() * 4;
+		playerRect.w = TextureMario->getFrameWidth() * 2;
+		playerRect.h = TextureMario->getFrameHeight() * 4;
 	}
 	else {
 		playerRect.w = TextureSuperMario->getFrameWidth() * 2;
