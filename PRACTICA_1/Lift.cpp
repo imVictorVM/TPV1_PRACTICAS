@@ -76,15 +76,16 @@ Lift::hit(const SDL_Rect& rect, bool fromPlayer) {
 	Collision colisionPlayer = { false,false,{0,0,0,0} };
 	if (fromPlayer) {
 		// Creamos un rect del bloque para compararlo con el del jugador
-		SDL_Rect KoopaRect;
-		KoopaRect = getRect();
+		SDL_Rect LiftRect;
+		LiftRect = getRect();
+		LiftRect.x += gamePointer->getMapOffset();
 
 		// Creamos un rect del player tomando de valor el que le llega como argumento
 		SDL_Rect playerRect;
 		playerRect = rect;
 
 		SDL_Rect intersection;
-		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
+		if (SDL_IntersectRect(&playerRect, &LiftRect, &intersection)) {
 			
 			colisionPlayer.collides = true;
 			colisionPlayer.intersection = intersection;
