@@ -4,10 +4,10 @@
 
 using namespace std;
 
-Koopa::Koopa(Game* game, stringstream& atributes) :Enemy(game)
+Koopa::Koopa(Game* game, istream& atributes) :Enemy(game, atributes)
 //position(), texture(game->getTexture(Game::KOOPA)), gamePointer(game), frame(0), frameRunner(0), frozen(true), previousOffset(0), velocity(2), ended(false), velocityGravity(8)
 {
-	string line;
+	/*string line;
 
 	getline(atributes, line);
 
@@ -15,41 +15,41 @@ Koopa::Koopa(Game* game, stringstream& atributes) :Enemy(game)
 
 	int posX, posY;
 	lineStream >> posX;
-	lineStream >> posY;
+	lineStream >> posY;*/
 
 	texture = gamePointer->getTexture(Game::KOOPA);
-
-	position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY)* Game::TILE_SIDE);
-	direction = Vector2D<int>(-velocity, 0);
 	width = Game::TILE_SIDE * 2;
 	height = Game::TILE_SIDE * 4;
+	//position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1)* Game::TILE_SIDE);
+	//direction = Vector2D<int>(-velocity, 0);
+	
 
 }
 
-//void
-//Koopa::render() const {
-//
-//	if (!frozen) {
-//		//posición del koopa
-//		SDL_Rect KPosition;
-//		KPosition.x = position.getX();
-//		KPosition.y = position.getY() - Game::TILE_SIDE;
-//		KPosition.w = Game::TILE_SIDE;
-//		KPosition.h = Game::TILE_SIDE * 2; //Tiene dos tiles de altura
-//		//IMPORTANTE APLICAR ESTO A MARIO GRANDE CUANDO TENGAMOS LA SETA
-//
-//		int frame = 0;
-//		//movimiento del koopa, usando solo los dos primeros frames
-//		if (frameRunner == 0) frame = 0;
-//		if (frameRunner == 1) frame = 0;
-//		if (frameRunner == 2) frame = 1;
-//		if (frameRunner == 3) frame = 1;
-//
-//
-//		//Renderizamos con los parametros actualizados
-//		texture->renderFrame(KPosition, 0, frame);
-//	}
-//}
+void
+Koopa::render() const {
+
+	if (!frozen) {
+		//posición del koopa
+		SDL_Rect KPosition;
+		KPosition.x = position.getX();
+		KPosition.y = position.getY() - Game::TILE_SIDE;
+		KPosition.w = Game::TILE_SIDE;
+		KPosition.h = Game::TILE_SIDE * 2; //Tiene dos tiles de altura
+		//IMPORTANTE APLICAR ESTO A MARIO GRANDE CUANDO TENGAMOS LA SETA
+
+		int frame = 0;
+		//movimiento del koopa, usando solo los dos primeros frames
+		if (frameRunner == 0) frame = 0;
+		if (frameRunner == 1) frame = 0;
+		if (frameRunner == 2) frame = 1;
+		if (frameRunner == 3) frame = 1;
+
+
+		//Renderizamos con los parametros actualizados
+		texture->renderFrame(KPosition, 0, frame);
+	}
+}
 
 
 void
@@ -173,7 +173,7 @@ Koopa::update() {
 //	return KoopaRect;
 //}
 
-bool 
-Koopa::isAlive() const {
-	return !ended;
-}
+//bool 
+//Koopa::isAlive() const {
+//	return !ended;
+//}

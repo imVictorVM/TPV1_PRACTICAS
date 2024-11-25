@@ -6,19 +6,20 @@
 
 using namespace std;
 
-Lift::Lift(Game* game, std::stringstream& atributes) : SceneObject(game) {
+Lift::Lift(Game* game, istream& atributes) : SceneObject(game, atributes) {
+	
 	string line;
 
 	getline(atributes, line);
 
 	stringstream lineStream(line);
 
-	int posX, posY;
+	/*int posX, posY;
 	lineStream >> posX;
-	lineStream >> posY;
+	lineStream >> posY;*/
 	lineStream >> velocity;
 
-	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY) * Game::TILE_SIDE);
+	//position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY) * Game::TILE_SIDE);
 	direction = Vector2D<int>(0, velocity);
 	width = Game::TILE_SIDE * 3;
 	height = Game::TILE_SIDE / 2;
@@ -104,13 +105,13 @@ Lift::hit(const SDL_Rect& rect, bool fromPlayer) {
 
 }
 
-SDL_Rect
-Lift::getRect() const {
-	SDL_Rect LPosition;
-	LPosition.x = position.getX();
-	LPosition.y = position.getY();
-	LPosition.w = Game::TILE_SIDE * 3;
-	LPosition.h = Game::TILE_SIDE / 2;
-	return LPosition;
-}
+//SDL_Rect
+//Lift::getRect() const {
+//	SDL_Rect LPosition;
+//	LPosition.x = position.getX();
+//	LPosition.y = position.getY();
+//	LPosition.w = Game::TILE_SIDE * 3;
+//	LPosition.h = Game::TILE_SIDE / 2;
+//	return LPosition;
+//}
 

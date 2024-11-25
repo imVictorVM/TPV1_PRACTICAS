@@ -6,8 +6,8 @@
 
 using namespace std;
 
-Coin::Coin(Game* game, std::stringstream& atributes) : Pickable(game) {
-	string line;
+Coin::Coin(Game* game, std::istream& atributes) : Pickable(game, atributes) {
+	/*string line;
 
 	getline(atributes, line);
 
@@ -15,9 +15,9 @@ Coin::Coin(Game* game, std::stringstream& atributes) : Pickable(game) {
 
 	int posX, posY;
 	lineStream >> posX;
-	lineStream >> posY;
+	lineStream >> posY;*/
 
-	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY-1)*Game::TILE_SIDE);
+	//position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY-1)*Game::TILE_SIDE);
 	direction = Vector2D<int>(0, 0);
 	texture = gamePointer->getTexture(Game::COIN);
 

@@ -14,6 +14,8 @@ class SceneObject : public GameObject {
 protected:
 	Vector2D<int> position;
 	Vector2D<int> direction;
+	int posX;
+	int posY;
 	int width;
 	int height;
 	int frame;
@@ -26,24 +28,23 @@ protected:
 
 	Texture* texture;
 
-
 	SDL_Rect rect;
 	SDL_Renderer* renderer;
 	GameList<SceneObject>::anchor anchor;
 
-
 public:
+
+	SceneObject(Game* g, std::istream& atributes);
 	SceneObject(Game* g);
-
-protected:
-	Collision tryToMove(const Vector2D<int>& speed, Collision::Target attack);
-
-public:
 	~SceneObject();
 
 	void render() const override;
 
 	virtual Collision hit(const SDL_Rect& rect, bool fromPlayer) = 0;
+
+	SDL_Rect getRect() const;
+
+	bool isAlive() const;
 
 	void setListAnchor(GameList<SceneObject>::anchor&& anchor);
 

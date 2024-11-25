@@ -7,7 +7,7 @@ class Game;
 class Lift : public SceneObject
 {
 public:
-	Lift(Game* game, std::stringstream& atributos);
+	Lift(Game* game, std::istream& atributos);
 
 	~Lift();
 
@@ -15,8 +15,8 @@ public:
 
 	void update();
 
-	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+	Collision hit(const SDL_Rect& rect, bool fromPlayer) override;
 
-	SDL_Rect getRect() const;
+	//SDL_Rect getRect() const;
 };
 

@@ -9,7 +9,7 @@
 #include <string>
 using namespace std;
 
-Block::Block(Game* game, stringstream& atributes) : SceneObject(game)
+Block::Block(Game* game, istream& atributes) : SceneObject(game, atributes)
 	 //position(), TextureBlock(game->getTexture(Game::BLOCK)), action(), gamePointer(game), frameBlock(0), previousOffset(0), object(false), ended(false)
 	 {
 	texture = game->getTexture(Game::BLOCK); 
@@ -23,11 +23,11 @@ Block::Block(Game* game, stringstream& atributes) : SceneObject(game)
 	stringstream lineStream(line);
 
 	//Aplicamos posicion en x con el primer parametro
-	int positionx;
-	lineStream >> positionx;
-	//Aplicamos posicion en y con el segundo parametro
-	int positiony;
-	lineStream >> positiony;
+	//int positionx;
+	//lineStream >> positionx;
+	////Aplicamos posicion en y con el segundo parametro
+	//int positiony;
+	//lineStream >> positiony;
 	//Aplicamos tipo con el tercer parametro
 	char T;
 	lineStream >> T;
@@ -36,7 +36,7 @@ Block::Block(Game* game, stringstream& atributes) : SceneObject(game)
 	lineStream >> A;
 
 	//Pasamos los parametros al constructor del player despues de leerlos
-	position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony-1) * Game::TILE_SIDE);
+	//position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony-1) * Game::TILE_SIDE);
 	switch (T) {
 		case '?': type = surprise;
 			break;
@@ -155,14 +155,14 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 }
 
 //Obtenemos el bloque para que el jugador lo compare a la hora de posarse encima
-SDL_Rect Block::getRect() const {
-    SDL_Rect blockRect;
-    blockRect.x = position.getX();
-    blockRect.y = position.getY();
-    blockRect.w = Game::TILE_SIDE;
-    blockRect.h = Game::TILE_SIDE;
-    return blockRect;
-}
+//SDL_Rect Block::getRect() const {
+//    SDL_Rect blockRect;
+//    blockRect.x = position.getX();
+//    blockRect.y = position.getY();
+//    blockRect.w = Game::TILE_SIDE;
+//    blockRect.h = Game::TILE_SIDE;
+//    return blockRect;
+//}
 
 bool Block::ObtainObject() {
 	return object;
@@ -172,6 +172,6 @@ void Block::itemObtained() {
 	object = false;
 }
 
-bool Block::isAlive() const {
-	return !ended;
-}
+//bool Block::isAlive() const {
+//	return !ended;
+//}

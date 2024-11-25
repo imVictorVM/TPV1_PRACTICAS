@@ -24,7 +24,7 @@ protected:
 
 public:
 
-	Goomba(Game* game, std::stringstream& atributos);
+	Goomba(Game* game, std::istream& atributos);
 
 	//void render() const;
 
@@ -34,5 +34,5 @@ public:
 
 	//SDL_Rect getRect() const;
 
-	bool isAlive() const;
+	//bool isAlive() const;
 };

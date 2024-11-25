@@ -1,6 +1,4 @@
 #pragma once
-//#include "Vector2D.h"
-//#include "Game.h"
 
 #include "SceneObject.h"
 #include <vector>
@@ -34,7 +32,7 @@ private:
 	//bool ended; ended del SceneObject
 public:
 
-	Block(Game* game, std::stringstream& atributos);
+	Block(Game* game, std::istream& atributos);
 
 	//~Block();
 
@@ -44,12 +42,12 @@ public:
 
 	Collision hit(const SDL_Rect& rect, bool fromPlayer) override;
 
-	SDL_Rect getRect() const;
+	//SDL_Rect getRect() const;
 
 	bool ObtainObject();
 
 	void itemObtained();
 
-	bool isAlive() const;
+	//bool isAlive() const;
 };
 
