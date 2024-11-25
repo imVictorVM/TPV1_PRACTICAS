@@ -20,8 +20,7 @@ Coin::Coin(Game* game, std::stringstream& atributes) : Pickable(game) {
 	position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY-1)*Game::TILE_SIDE);
 	direction = Vector2D<int>(0, 0);
 	texture = gamePointer->getTexture(Game::COIN);
-	frameRunner = 0;
-	frozen = false;
+
 }
 
 Coin::~Coin()
@@ -32,6 +31,11 @@ void
 Coin::update() {
 
 	int newOffset = gamePointer->getMapOffset();
+
+	if (position.getX() < newOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE) {
+		frozen = false;
+	}
+
 	int offsetChange = newOffset - previousOffset;
 	if (offsetChange != 0) {
 		position.setX(position.getX() - offsetChange);

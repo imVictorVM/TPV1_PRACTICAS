@@ -23,6 +23,7 @@ Lift::Lift(Game* game, std::stringstream& atributes) : SceneObject(game) {
 	width = Game::TILE_SIDE * 3;
 	height = Game::TILE_SIDE / 2;
 	texture = gamePointer->getTexture(Game::LIFT);
+	
 
 }
 
@@ -47,6 +48,10 @@ void
 Lift::update() {
 
 	int newOffset = gamePointer->getMapOffset();
+
+	if (position.getX() < newOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE) {
+		frozen = false;
+	}
 	int offsetChange = newOffset - previousOffset;
 	if (offsetChange != 0) {
 		position.setX(position.getX() - offsetChange);
