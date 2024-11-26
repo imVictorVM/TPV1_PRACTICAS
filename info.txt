@@ -5,12 +5,7 @@ Información:
 Hemos implementado las clases GameObject y SceneObject, y todas las clases del juego a excepción de Player heredan de ellas.
 
 Problemas:
-Al intentar usar herencia con el player, el juego no compila, por lo que no hemos podido hacer que Player sea un SceneObject.
-Al intentar hacer el cambio de mapa al terminar el nivel, el juego deja de funcionar, aunque si detecta la condición de victoria, así que tenemos un problema con el cambio de tilemap.
-El método trytomove solo funciona verticalmente, así que no lo hemos implementado y hemos dejado comentado el intento de aplicarlo en el goomba.
-La lista de objetos del game no funciona correctamente, no se llaman bien a los update ni a los render y tampoco destruye correctamente 
-
-Falta:
-Colision con bloques y enemigos.
-Darle gravedad a los enemigos
-SuperMario.
+-Al intentar usar herencia con el player, el juego no compila, por lo que no hemos podido hacer que Player sea un SceneObject.
+-Al intentar hacer el cambio de mapa al terminar el nivel, el juego deja de funcionar, aunque si detecta la condición de victoria, así que tenemos un problema con el cambio de tilemap.
+-El método trytomove solo funciona verticalmente, así que no lo hemos implementado y hemos dejado comentado el intento de aplicarlo en el goomba.
+-La lista de objetos del game no funciona correctamente, no se llaman bien a los update ni a los render y tampoco destruye correctamente los objetos.

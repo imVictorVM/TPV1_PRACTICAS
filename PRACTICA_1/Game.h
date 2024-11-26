@@ -71,6 +71,7 @@ private:
 	std::vector<Lift*> lifts;
 	std::vector<Coin*> coins;
 	std::vector<Mushroom*> mushrooms;
+
 	//GameList<SceneObject> gameList;
 
 

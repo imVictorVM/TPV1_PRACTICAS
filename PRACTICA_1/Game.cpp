@@ -393,7 +393,6 @@ Game::update()
 	/*for (SceneObject* sceneObj : gameList) {
 		sceneObj->update();
 	}*/
-
 }
 
 int Game::getMapOffset() {
