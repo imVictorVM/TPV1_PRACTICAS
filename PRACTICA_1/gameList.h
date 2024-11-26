@@ -133,6 +133,30 @@ public:
 			return *this;
 		}
 
+		/// Desenlaza el objeto de la lista
+		void unlink() {
+			delete pointer;
+			pointer = nullptr;
+		}
+
+		/// Inserta un objeto después de este nodo
+		void insert_after(T* value)
+		{
+			// Comprobamos en depuración que no se insertan valores nulos
+			assert(value != nullptr);
+			assert(pointer != nullptr);
+			value->setListAnchor(anchor(new Node(pointer, value)));
+		}
+
+		/// Inserta un objeto antes de este nodo
+		void insert_before(T* value)
+		{
+			// Comprobamos en depuración que no se insertan valores nulos
+			assert(value != nullptr);
+			assert(pointer != nullptr);
+			value->setListAnchor(anchor(new Node(pointer->prev, value)));
+		}
+
 		/// El destructor del ancla elimina el nodo enlazado
 		~anchor() { if (pointer) pointer->destroy(); }
 	};
@@ -168,7 +192,7 @@ public:
 	{
 		// Comprobamos en depuración que no se insertan valores nulos
 		assert(value != nullptr);
-		value->setListAnchor(anchor(new Node(value, &ghostNode)));
+		value->setListAnchor(anchor(new Node(&ghostNode, value)));
 	}
 
 	/// Añade un nuevo objeto al final de la lista y fija su iterador
@@ -192,8 +216,8 @@ public:
 		iterator(Node* node)
 		  : node(node)
 		{
-			node->addref();
 			skip();
+			node->addref();
 		}
 
 		void
@@ -223,12 +247,12 @@ public:
 		{
 			Node* prev = node;
 			node = node->*pivot;
+			// Salta los nodos pendientes de eliminación
+			skip();
 			// Añade una referencia al nodo al que llegamos
 			node->addref();
 			// Elimina una referencia al nodo del que nos vamos
 			prev->unref();
-			// Salta los nodos pendientes de eliminación
-			skip();
 
 			return *this;
 		}
