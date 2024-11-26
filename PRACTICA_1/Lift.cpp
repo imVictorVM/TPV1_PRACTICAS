@@ -1,8 +1,7 @@
 #include "checkML.h"
 #include "Lift.h"
 #include "Game.h"
-#include <fstream>
-#include <vector>
+
 
 using namespace std;
 
@@ -14,13 +13,8 @@ Lift::Lift(Game* game, istream& atributes) : SceneObject(game, atributes) {
 
 	stringstream lineStream(line);
 
-	/*int posX, posY;
-	lineStream >> posX;
-	lineStream >> posY;*/
 	lineStream >> velocity;
 
-	//position = Vector2D<int>((posX)*Game::TILE_SIDE, (posY) * Game::TILE_SIDE);
-	direction = Vector2D<int>(0, velocity);
 	width = Game::TILE_SIDE * 3;
 	height = Game::TILE_SIDE / 2;
 	texture = gamePointer->getTexture(Game::LIFT);
@@ -32,18 +26,7 @@ Lift::~Lift()
 {
 }
 
-//void
-//Lift::render() const {
-//
-//	if (!frozen) {
-//		//posición del koopa
-//		SDL_Rect LPosition;
-//		LPosition = getRect();
-//
-//		//Renderizamos con los parametros actualizados
-//		texture->renderFrame(LPosition, 0, 0);
-//	}
-//}
+
 
 void
 Lift::update() {
@@ -105,13 +88,4 @@ Lift::hit(const SDL_Rect& rect, bool fromPlayer) {
 
 }
 
-//SDL_Rect
-//Lift::getRect() const {
-//	SDL_Rect LPosition;
-//	LPosition.x = position.getX();
-//	LPosition.y = position.getY();
-//	LPosition.w = Game::TILE_SIDE * 3;
-//	LPosition.h = Game::TILE_SIDE / 2;
-//	return LPosition;
-//}
 

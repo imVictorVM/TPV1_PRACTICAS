@@ -82,8 +82,8 @@ Game::loadNextLevel() {
 	static int currentLevel = 0;
 
 	vector<pair<string, string>> levels = {
-		{"../assets/maps/world2.csv","../assets/maps/world2.txt"},
 		{"../assets/maps/world1.csv","../assets/maps/world1.txt"},
+		{"../assets/maps/world2.csv","../assets/maps/world2.txt"},
 	};
 
 	if (currentLevel < levels.size()) {

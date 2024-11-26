@@ -7,32 +7,13 @@ class Game;
 
 class Goomba :public Enemy
 {
-protected:
-	//Vector2D<int> position; SceneObject position
-	//Vector2D<int> direction; SceneObject direction
-	//Texture* texture; SceneObject texture
-	//Game* game; GameObject gamePointer 
-	
-	// Atributos SceneObject
-	//int frame;
-	//int frameRunner;
-	//bool frozen;
-	//int previousOffset;
-	//int velocity;
-	//bool ended;
-	//int velocityGravity;
 
 public:
 
 	Goomba(Game* game, std::istream& atributos);
 
-	//void render() const;
+	~Goomba();
 
-	void update();
+	void update() override;
 
-	//Collision hit(const SDL_Rect& rect, bool fromPlayer);
-
-	//SDL_Rect getRect() const;
-
-	//bool isAlive() const;
 };

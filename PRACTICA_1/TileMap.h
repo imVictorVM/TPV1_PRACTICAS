@@ -2,10 +2,6 @@
 
 #include "SceneObject.h"
 
-#include <iostream>
-
-#include <vector>
-
 
 class Game;
 
@@ -19,8 +15,8 @@ public:
 
 	void render() const override;
 
-	void update();
+	void update() override;
 
-	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+	Collision hit(const SDL_Rect& rect, bool fromPlayer) override;
 };
 

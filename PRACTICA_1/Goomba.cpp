@@ -5,33 +5,13 @@
 using namespace std;
 
 Goomba::Goomba(Game* game, istream& atributes) : Enemy(game, atributes)
-	// position(), texture(game->getTexture(Game::GOOMBA)), gamePointer(game) , frame(0), frameRunner(0), previousOffset(0), frozen(true), velocity(2), ended(false), velocityGravity(8)
 {
-
 	texture = gamePointer->getTexture(Game::GOOMBA);
-
-	//position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1) * Game::TILE_SIDE);
-	//direction = Vector2D<int>(-velocity, 0);
 }
 
-//void
-//Goomba::render() const {
-//
-//	if (!frozen) {
-//		//posición del goomba
-//		SDL_Rect GPosition;
-//		GPosition.x = position.getX();
-//		GPosition.y = position.getY();
-//		GPosition.w = Game::TILE_SIDE;
-//		GPosition.h = Game::TILE_SIDE;
-//
-//		//Muerte del goomba en el hit con el frame 2
-//
-//		//Renderizamos con los parametros actualizados
-//		texture->renderFrame(GPosition, 0, frame);
-//	}
-//}
+Goomba::~Goomba() {
 
+}
 
 void
 Goomba::update() {
@@ -43,7 +23,7 @@ Goomba::update() {
 	}
 
 	if (!frozen && !ended) {
-		//REVISAR
+
 		Vector2D<int> newPosition = position + direction;
 
 		//FUNCIONAL: Animacion del goomba para moverse cuando no esta congelado
@@ -110,53 +90,3 @@ Goomba::update() {
 	}
 }
 
-//Collision
-//Goomba::hit(const SDL_Rect& rect, bool fromPlayer) {
-//
-//	if (fromPlayer) {
-//		Collision colisionPlayer = { false,false,{0,0,0,0} };
-//
-//		// Creamos un rect del bloque para compararlo con el del jugador
-//		SDL_Rect GoombaRect;
-//		GoombaRect = getRect();
-//
-//		// Creamos un rect del player tomando de valor el que le llega como argumento
-//		SDL_Rect playerRect;
-//		playerRect = rect;
-//
-//		SDL_Rect intersection;
-//		if (SDL_IntersectRect(&playerRect, &GoombaRect, &intersection)) {
-//			colisionPlayer.collides = false;
-//			colisionPlayer.intersection = intersection;
-//			if (intersection.w > intersection.h) {
-//				frame = 2; //Si da tiempo añadir un contador para que de tiempo a poner el frame de muerte un momento
-//				ended = true;
-//			}
-//			else {
-//				colisionPlayer.damages = true;
-//			}
-//
-//			return colisionPlayer;
-//		}
-//		return colisionPlayer;
-//	}
-//	else {
-//		return gamePointer->checkEnemyCollision(rect, fromPlayer);
-//	}
-// 
-//}
-
-//SDL_Rect
-//Goomba::getRect() const {
-//	SDL_Rect GoombaRect;
-//	GoombaRect.x = position.getX() + gamePointer->getMapOffset();
-//	GoombaRect.y = position.getY();
-//	GoombaRect.w = Game::TILE_SIDE;
-//	GoombaRect.h = Game::TILE_SIDE;
-//	return GoombaRect;
-//}
-
-//bool
-//Goomba::isAlive() const {
-//	return !ended;
-//}

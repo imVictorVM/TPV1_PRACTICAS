@@ -10,14 +10,7 @@ public:
 
 	~Coin();
 
-	//void render() const;
+	void update() override;
 
-	void update();
-
-	//Collision hit(const SDL_Rect& rect, bool fromPlayer);
-
-	//SDL_Rect getRect() const;
-
-	//bool isAlive() const;
 };
 

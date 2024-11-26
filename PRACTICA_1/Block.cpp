@@ -2,18 +2,14 @@
 #include "Block.h"
 #include "Game.h"
 
-#include "Mushroom.h"
-#include "Player.h"
-#include <fstream>
 
-#include <string>
 using namespace std;
 
 Block::Block(Game* game, istream& atributes) : SceneObject(game, atributes)
-	 //position(), TextureBlock(game->getTexture(Game::BLOCK)), action(), gamePointer(game), frameBlock(0), previousOffset(0), object(false), ended(false)
 	 {
 	texture = game->getTexture(Game::BLOCK); 
 	object = false;
+	frozen = false;
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -21,13 +17,6 @@ Block::Block(Game* game, istream& atributes) : SceneObject(game, atributes)
 
 	//Al estar atributes vacio necesitamos llamar a un nuevo stringstream que vaya leyendo los valores de uno en uno
 	stringstream lineStream(line);
-
-	//Aplicamos posicion en x con el primer parametro
-	//int positionx;
-	//lineStream >> positionx;
-	////Aplicamos posicion en y con el segundo parametro
-	//int positiony;
-	//lineStream >> positiony;
 	//Aplicamos tipo con el tercer parametro
 	char T;
 	lineStream >> T;
@@ -36,7 +25,7 @@ Block::Block(Game* game, istream& atributes) : SceneObject(game, atributes)
 	lineStream >> A;
 
 	//Pasamos los parametros al constructor del player despues de leerlos
-	//position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony-1) * Game::TILE_SIDE);
+	
 	switch (T) {
 		case '?': type = surprise;
 			break;
@@ -54,26 +43,11 @@ Block::Block(Game* game, istream& atributes) : SceneObject(game, atributes)
 		break;
 	}
 
-	frozen = false;
 }
 
-//Misma logica que el jugador pero adaptado para los bloques en cuanto a los frames dependiendo de su tipo tambien
-//void
-//Block::render() const {
-//	
-//	if (!ended) {
-//		SDL_Rect BPosition;
-//		BPosition.x = position.getX();
-//		BPosition.y = position.getY();
-//		BPosition.w = Game::TILE_SIDE;
-//		BPosition.h = Game::TILE_SIDE;
-//
-//		
-//
-//		texture->renderFrame(BPosition, 0, frame);
-//	}
-//
-//}
+Block::~Block() {
+
+}
 
 void
 Block::update() {
@@ -154,15 +128,6 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 	return colision;
 }
 
-//Obtenemos el bloque para que el jugador lo compare a la hora de posarse encima
-//SDL_Rect Block::getRect() const {
-//    SDL_Rect blockRect;
-//    blockRect.x = position.getX();
-//    blockRect.y = position.getY();
-//    blockRect.w = Game::TILE_SIDE;
-//    blockRect.h = Game::TILE_SIDE;
-//    return blockRect;
-//}
 
 bool Block::ObtainObject() {
 	return object;
@@ -171,7 +136,3 @@ bool Block::ObtainObject() {
 void Block::itemObtained() {
 	object = false;
 }
-
-//bool Block::isAlive() const {
-//	return !ended;
-//}

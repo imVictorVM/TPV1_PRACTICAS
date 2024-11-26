@@ -5,24 +5,15 @@
 using namespace std;
 
 Koopa::Koopa(Game* game, istream& atributes) :Enemy(game, atributes)
-//position(), texture(game->getTexture(Game::KOOPA)), gamePointer(game), frame(0), frameRunner(0), frozen(true), previousOffset(0), velocity(2), ended(false), velocityGravity(8)
 {
-	/*string line;
-
-	getline(atributes, line);
-
-	stringstream lineStream(line);
-
-	int posX, posY;
-	lineStream >> posX;
-	lineStream >> posY;*/
 
 	texture = gamePointer->getTexture(Game::KOOPA);
 	width = Game::TILE_SIDE * 2;
 	height = Game::TILE_SIDE * 4;
-	//position = Vector2D<int>((posX) * Game::TILE_SIDE, (posY-1)* Game::TILE_SIDE);
-	//direction = Vector2D<int>(-velocity, 0);
-	
+
+}
+
+Koopa::~Koopa() {
 
 }
 
@@ -114,7 +105,7 @@ Koopa::update() {
 
 		if (position.getX() < 0 - Game::TILE_SIDE || position.getY() >= 470) {
 			ended = true;
-			cout << "Koopa: Me he morido por limite de mapa" << endl;
+			cout << "Koopa: Me he muerto por limite de mapa" << endl;
 		}
 	}
 
@@ -126,54 +117,3 @@ Koopa::update() {
 		previousOffset = newOffset;
 	}
 }
-
-//Collision
-//Koopa::hit(const SDL_Rect& rect, bool fromPlayer) {
-//
-//	Collision colisionPlayer = { false,false,{0,0,0,0} };
-//
-//	if (fromPlayer) {
-//		// Creamos un rect del bloque para compararlo con el del jugador
-//		SDL_Rect KoopaRect;
-//		KoopaRect = getRect();
-//
-//		// Creamos un rect del player tomando de valor el que le llega como argumento
-//		SDL_Rect playerRect;
-//		playerRect = rect;
-//
-//		SDL_Rect intersection;
-//		if (SDL_IntersectRect(&playerRect, &KoopaRect, &intersection)) {
-//			colisionPlayer.collides = false;
-//			colisionPlayer.intersection = intersection;
-//			if (intersection.w > intersection.h) {
-//				//frame = 2; Si da tiempo cambiarlo a una imagen de shell
-//				ended = true;
-//			}
-//			else {
-//				colisionPlayer.damages = true;
-//			}
-//			return colisionPlayer;
-//		}
-//		return colisionPlayer;
-//	}
-//	//else {
-//	//	return game->checkPlayerCollision(rect, fromPlayer);
-//	//}
-//	return colisionPlayer;
-//
-//}
-
-//SDL_Rect
-//Koopa::getRect() const {
-//	SDL_Rect KoopaRect;
-//	KoopaRect.x = position.getX() + gamePointer->getMapOffset();
-//	KoopaRect.y = position.getY();
-//	KoopaRect.w = Game::TILE_SIDE;
-//	KoopaRect.h = Game::TILE_SIDE;
-//	return KoopaRect;
-//}
-
-//bool 
-//Koopa::isAlive() const {
-//	return !ended;
-//}

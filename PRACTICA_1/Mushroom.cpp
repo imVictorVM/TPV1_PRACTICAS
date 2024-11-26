@@ -17,18 +17,9 @@ Mushroom::Mushroom(Game* game, SDL_Rect rect) : Pickable(game)
 	
 }
 
-//void
-//Mushroom::render() const {
-//		//posición de la seta
-//		SDL_Rect MushPosition;
-//		MushPosition.x = position.getX();
-//		MushPosition.y = position.getY();
-//		MushPosition.w = Game::TILE_SIDE;
-//		MushPosition.h = Game::TILE_SIDE;
-//
-//		//Renderizamos con los parametros actualizados
-//		texture->renderFrame(MushPosition, 0, 0);
-//}
+Mushroom::~Mushroom() {
+
+}
 
 
 void
@@ -77,7 +68,7 @@ Mushroom::update() {
 
 		if (position.getX() < 0 - Game::TILE_SIDE || position.getY() >= 470) {
 			ended = true;
-			cout << "Seta: Me he morido por limite de mapa" << endl;
+			cout << "Seta: Me he muerto por limite de mapa" << endl;
 		}
 	}
 
@@ -90,44 +81,3 @@ Mushroom::update() {
 	}
 
 }
-
-
-//Collision
-//Mushroom::hit(const SDL_Rect& rect, bool fromPlayer) {
-//	Collision colision = { false,false,{0,0,0,0} };
-//
-//	if (fromPlayer) {
-//		// Creamos un rect del bloque para compararlo con el del jugador
-//		SDL_Rect MushRect;
-//		MushRect = getRect();
-//
-//		// Creamos un rect del player tomando de valor el que le llega como argumento
-//		SDL_Rect playerRect;
-//		playerRect = rect;
-//
-//		SDL_Rect intersection;
-//		if (SDL_IntersectRect(&playerRect, &MushRect, &intersection)) {
-//			colision.collides = true;
-//			colision.intersection = intersection;
-//			ended = true;
-//			return colision;
-//		}
-//		return colision;
-//	}
-//	return colision;
-//}
-
-//SDL_Rect
-//Mushroom::getRect() const {
-//	SDL_Rect MushRect;
-//	MushRect.x = position.getX() + mushroomGame->getMapOffset();
-//	MushRect.y = position.getY();
-//	MushRect.w = Game::TILE_SIDE;
-//	MushRect.h = Game::TILE_SIDE;
-//	return MushRect;
-//}
-//
-//bool 
-//Mushroom::isAlive() const {
-//	return !ended;
-//}

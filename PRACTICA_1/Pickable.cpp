@@ -11,6 +11,11 @@ Pickable::Pickable(Game* game) : SceneObject(game) {
 Pickable::Pickable(Game* game, istream& atributes) : SceneObject(game, atributes) {
 
 }
+
+Pickable::~Pickable() {
+
+}
+
 Collision
 Pickable::hit(const SDL_Rect& rect, bool fromPlayer) {
 
@@ -45,9 +50,4 @@ Pickable::getRect() const {
 	CPosition.w = Game::TILE_SIDE;
 	CPosition.h = Game::TILE_SIDE;
 	return CPosition;
-}
-
-bool
-Pickable::isAlive() const {
-	return !ended;
 }

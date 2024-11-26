@@ -1,12 +1,14 @@
 #pragma once
 
 #include <SDL.h>
+#include <vector>
 
 #include "GameObject.h"
 #include "Vector2D.h"
 #include "gameList.h"
 #include "Collision.h"
 #include "Texture.h"
+
 
 class Game;
 
