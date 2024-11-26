@@ -77,7 +77,7 @@ Goomba::update() {
 
 		if (position.getX() < 0 - Game::TILE_SIDE || position.getY() >= 470) {
 			ended = true;
-			cout << "Goomba: Me he morido por limite de mapa" << endl;
+			cout << "Goomba: Me he muerto por limite de mapa" << endl;
 		}
 	}
 

@@ -70,10 +70,6 @@ Game::Game()
 		                          textureSpec[i].numRows,
 					  textureSpec[i].numColumns);
 
-	// Crea los objetos del juego
-	//perro = new Dog(this, -textures[DOG]->getFrameWidth(), 390);
-	//stringstream ss;
-	//player = new Player(this,ss);
 	loadNextLevel();
 }
 
@@ -241,6 +237,11 @@ Game::clearActualLevel() {
 	}
 	mushrooms.clear();
 
+
+	/*for (const SceneObject* sceneObj : gameList) {
+		delete sceneObj;
+	}*/
+
 	// Actualiza el offset del mapa
 	ResetMapOffset();
 }
@@ -333,9 +334,6 @@ Game::update()
 	//	if (!block->isAlive()) delete block;
 	//}
 
-	/*for (SceneObject* sceneObj : gameList) {
-		sceneObj->update();
-	}*/
 
 	//Actualiza y elimina bloques
 	for (auto it = blocks.begin(); it != blocks.end();) {
@@ -391,6 +389,11 @@ Game::update()
 		}
 		else ++it;
 	}
+
+	/*for (SceneObject* sceneObj : gameList) {
+		sceneObj->update();
+	}*/
+
 }
 
 int Game::getMapOffset() {

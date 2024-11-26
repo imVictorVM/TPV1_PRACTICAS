@@ -9,12 +9,9 @@
 
 // Nuestras clases
 #include "Texture.h"
-//#include "Dog.h"
 #include "TileMap.h"
 #include "Player.h"
-//#include "Block.h"
 #include "Collision.h"
-
 
 #include "SceneObject.h"
 #include "gameList.h"
