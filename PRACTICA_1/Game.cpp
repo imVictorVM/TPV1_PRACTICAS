@@ -82,8 +82,8 @@ Game::loadNextLevel() {
 	static int currentLevel = 0;
 
 	vector<pair<string, string>> levels = {
-		{"../assets/maps/world1.csv","../assets/maps/world1.txt"},
 		{"../assets/maps/world2.csv","../assets/maps/world2.txt"},
+		{"../assets/maps/world1.csv","../assets/maps/world1.txt"},
 	};
 
 	if (currentLevel < levels.size()) {
@@ -166,40 +166,80 @@ Game::clearActualLevel() {
 	// OTRAS APLICACIONES DE BORRADO 
 	//for (Block* block : blocks) delete block;
 	//blocks.clear();
-	for (auto it = blocks.begin(); it != blocks.end(); ++it) {
-		delete* it;
-		it = blocks.erase(it);
+	//for (auto it = blocks.begin(); it != blocks.end(); ++it) {
+	//	delete* it;
+	//	it = blocks.erase(it);
+	//}
+	for (int i = 0; i < blocks.size(); i++) {
+		if (blocks[i] != nullptr) {
+			delete blocks[i];
+		}
+		blocks[i] = nullptr;
 	}
+	blocks.clear();
 	////for (Goomba* goomba : goombas) delete goomba;
 	////goombas.clear();
-	for (auto it = goombas.begin(); it != goombas.end(); ++it) {
-		delete* it;
-		it = goombas.erase(it);
+	//for (auto it = goombas.begin(); it != goombas.end(); ++it) {
+	//	delete* it;
+	//	it = goombas.erase(it);
+	//}
+	for (int i = 0; i < goombas.size(); i++) {
+		if (goombas[i] != nullptr) {
+			delete goombas[i];
+		}
+		goombas[i] = nullptr;
 	}
+	goombas.clear();
 	////for (Koopa* koopa : koopas) delete koopa;
 	////koopas.clear();
-	for (auto it = koopas.begin(); it != koopas.end(); ++it) {
-		delete* it;
-		it = koopas.erase(it);
+	//for (auto it = koopas.begin(); it != koopas.end(); ++it) {
+	//	delete* it;
+	//	it = koopas.erase(it);
+	//}
+	for (int i = 0; i < koopas.size(); i++) {
+		if (koopas[i] != nullptr) {
+			delete koopas[i];
+		}
+		koopas[i] = nullptr;
 	}
+	koopas.clear();
 	////for (Lift* lift : lifts) delete lift;
 	////lifts.clear();
-	for (auto it = lifts.begin(); it != lifts.end(); ++it) {
-		delete* it;
-		it = lifts.erase(it);
+	//for (auto it = lifts.begin(); it != lifts.end(); ++it) {
+	//	delete* it;
+	//	it = lifts.erase(it);
+	//}
+	for (int i = 0; i < lifts.size(); i++) {
+		if (lifts[i] != nullptr) {
+			delete lifts[i];
+		}
+		lifts[i] = nullptr;
 	}
+	lifts.clear();
 	////for (Coin* coin : coins) delete coin;
 	////coins.clear();
-	for (auto it = coins.begin(); it != coins.end(); ++it) {
-		delete* it;
-		it = coins.erase(it);
+	//for (auto it = coins.begin(); it != coins.end(); ++it) {
+	//	if (*it != nullptr) {
+	//		delete* it;
+	//	}
+	//	it = coins.erase(it);
+	//}
+	for (int i = 0; i < coins.size(); i++) {
+		if (coins[i] != nullptr) {
+			delete coins[i];
+		}
+		coins[i] = nullptr;
 	}
+	coins.clear();
 	////for (Mushroom* mushroom : mushrooms) delete mushroom;
 	////mushrooms.clear();
-	for (auto it = mushrooms.begin(); it != mushrooms.end(); ++it) {
-		delete* it;
-		it = mushrooms.erase(it);
+	for (int i = 0; i < mushrooms.size(); i++) {
+		if (mushrooms[i] != nullptr) {
+			delete mushrooms[i];
+		}
+		mushrooms[i] = nullptr;
 	}
+	mushrooms.clear();
 
 	// Actualiza el offset del mapa
 	ResetMapOffset();
@@ -441,7 +481,8 @@ Game::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
 	Collision colision = { false,false,{0,0,0,0} };
 
 	colision = tilemap->hit(rect, fromPlayer);
-	if (colision.collides) return colision;
+	if (colision.collides) 
+		return colision;
 
 	for (Block* block : blocks) {
 		colision = block->hit(rect, fromPlayer);

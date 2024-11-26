@@ -52,13 +52,16 @@ Goomba::update() {
 		if (frameRunner > 1) frameRunner = 0;
 		else frameRunner++;
 
+		//INTENTO DE TRYTOMOVE, EXPLICADO EN EL INFO.TXT
+		//Collision colision = tryToMove(direction,Collision::ENEMIES);
+
 		SDL_Rect GoombaRect = getRect();
 		GoombaRect.y += direction.getY();
 		GoombaRect.x += direction.getX();
-
+		
 		// CAMBIAR: Verifica colisión en todas las direcciones
 		Collision collision = gamePointer->checkEnemyCollision(GoombaRect, false);
-
+		
 		//COLISION VERTICAL
 		if (!collision.collides) {
 			direction.setY(velocityGravity);
@@ -72,13 +75,13 @@ Goomba::update() {
 				direction.setY(velocityGravity);
 			} //TECHO
 		}
-
+		
 		//RECALCULO DE LA COLISION
 		GoombaRect.x += direction.getX();
 		GoombaRect.y = position.getY();
-
+		
 		collision = gamePointer->checkEnemyCollision(GoombaRect, false);
-
+		
 		//COLISION HORIZONTAL
 		if (!collision.collides) {
 			position.setX(newPosition.getX());

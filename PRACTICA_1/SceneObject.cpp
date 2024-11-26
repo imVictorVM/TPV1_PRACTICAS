@@ -14,15 +14,15 @@ SceneObject::SceneObject(Game* g, istream& atributes) : GameObject(g) {
 	atributes >> posX;
 	atributes >> posY;
 	position =  Vector2D(posX * Game::TILE_SIDE ,(posY-1) * Game::TILE_SIDE);
-	direction = Vector2D(0,0);
+	velocity = 2;
+	velocityGravity = 4;
+	direction = Vector2D(-velocity,velocityGravity);
 	frame = 0;
 	frameRunner = 0;
 	previousOffset = 0;
-	velocity = 2;
-	velocityGravity = 8;
 	width = Game::TILE_SIDE;
 	height = Game::TILE_SIDE;
-	//rect = SDL_Rect(position.getX(), position.getY(), width, height);
+	rect = getRect();
 
 	frozen = true;
 	ended = false;
@@ -58,79 +58,70 @@ void
 SceneObject::render() const {
 
 	if (!ended && !frozen) {
-		SDL_Rect BPosition;
-		BPosition.x = position.getX();
-		BPosition.y = position.getY();
-		BPosition.w = width;
-		BPosition.h = height;
-
-		texture->renderFrame(BPosition, 0, frame);
+		texture->renderFrame(getRect(), 0, frame);
 	}
 
 }
 
+//LAS COLISIONES FUNCIONAN EN VERTICAL PERO NO EN HORIZONTAL
 Collision
 SceneObject::tryToMove(const Vector2D<int>& speed, Collision::Target attack) {
 
-	direction = speed;
-
-	// CALCULO DE LA NUEVA POSICION EN FUNCION DE LA DIRECCION PULSANDO TECLA
-	Vector2D<int> newPosition = position + direction;
-
 	Collision colision = { false, false, {0,0,0,0} };
 
-	if (attack == Collision::Target::PLAYER) colision = gamePointer->checkPlayerCollision(rect, true);
-	else if (attack == Collision::Target::ENEMIES) colision = gamePointer->checkEnemyCollision(rect, false);
+	if (attack == Collision::Target::ENEMIES) {
+		direction = speed;
+		rect = getRect();
 
-	rect.y += direction.getY();
-	rect.x += direction.getX();
+		// CALCULO DE LA NUEVA POSICION EN FUNCION DE LA DIRECCION PULSANDO TECLA
+		Vector2D<int> newPosition = position + direction;
 
-	//COLISION VERTICAL
-	if (!colision.collides) position.setY(newPosition.getY());
-	else {
-		//position.setY(colision.intersection.y - rect.h);
-		//Hacer una resta con la diferente entre la altura del rect del bloque y del jugador atravesado
-		colision.result == 2; //OBSTACLE
-		position.setY(position.getY());
-		cout << "COLISION" << endl;
-		//jump = false;
-		return colision;
+		if (attack == Collision::Target::PLAYER) colision = gamePointer->checkPlayerCollision(rect, true);
+		else if (attack == Collision::Target::ENEMIES) colision = gamePointer->checkEnemyCollision(rect, false);
 
-		//if (colision.intersection.y > position.getY()) {
-		//	//position.setY(colision.intersection.y - rect.h);
-		//	//Hacer una resta con la diferente entre la altura del rect del bloque y del jugador atravesado
-		//	colision.result == 2; //OBSTACLE
-		//	position.setY(position.getY());
-		//	cout << "COLISION" << endl;
-		//	//jump = false;
-		//	return colision;
-		//} //SUELO
-		//else if (colision.intersection.y < position.getY()) {
-		//	colision.result == 2; //OBSTACLE
-		//	direction.setY(velocity);
-		//	return colision;
-		//} //TECHO
-	}
+		//cout << "Collision status: " << colision.collides << ", Intersection: "
+		//	<< colision.intersection.x << ", " << colision.intersection.y << endl;
 
-	//RECALCULO DE LA COLISION
-	rect.y = position.getY();
-	rect.x += direction.getX();
+		rect.y += direction.getY();
+		rect.x += direction.getX();
 
-	if (attack == Collision::Target::PLAYER) colision = gamePointer->checkPlayerCollision(rect, true);
-	else if (attack == Collision::Target::ENEMIES) colision = gamePointer->checkEnemyCollision(rect, false);
+		//COLISION VERTICAL
+		if (!colision.collides) position.setY(newPosition.getY());
+		else {
+			if (colision.intersection.y < position.getY()) {
+				//position.setY(colision.intersection.y - rect.h);
+				colision.vertical = colision.intersection.y + colision.intersection.h - rect.h;
+				//Hacer una resta con la diferente entre la altura del rect del bloque y del jugador atravesado
+				colision.result == Collision::OBSTACLE; //OBSTACLE
+				position.setY(position.getY() - colision.vertical);
+			} //SUELO
+			else if (colision.intersection.y > position.getY()) {
+				colision.result == 2; //OBSTACLE
+				direction.setY(velocity);
+			} //TECHO
+		}
 
-	//COLISION HORIZONTAL
-	if (!colision.collides) position.setX(newPosition.getX());
-	else {
-		colision.result == 2; //OBSTACLE
-		if (colision.intersection.x > position.getX()) {
-			//direction.setY(velocity);
-			return colision;
-		} //MURO A LA IZQUIERDA
-		else if (colision.intersection.x < position.getX()) {
-			//direction.setY(velocity);
-			return colision;
-		} // MURO A LA DERECHA
+		//RECALCULO DE LA COLISION
+		rect.x += position.getX();
+		rect.y = direction.getY();
+
+		if (attack == Collision::Target::PLAYER) colision = gamePointer->checkPlayerCollision(rect, true);
+		else if (attack == Collision::Target::ENEMIES) colision = gamePointer->checkEnemyCollision(rect, false);
+
+		//COLISION HORIZONTAL
+		if (!colision.collides) position.setX(newPosition.getX());
+		else {
+			colision.result == Collision::OBSTACLE; //OBSTACLE
+			if (colision.intersection.x > position.getX()) {
+				direction.setX(-direction.getX());
+				cout << "COLISIONO" << endl;
+			} //MURO A LA IZQUIERDA
+			else if (colision.intersection.x < position.getX()) {
+				direction.setY(-direction.getX());
+				cout << "COLISIONO" << endl;
+			} // MURO A LA DERECHA
+		}
+
 	}
 	return colision;
 }
