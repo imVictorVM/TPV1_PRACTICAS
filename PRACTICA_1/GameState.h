@@ -6,12 +6,15 @@
 class Game;
 class GameObject;
 class EventHandler;
+class PlayState;
+//class PauseState;
+//class MainMenuState;
 
 class GameState
 {
 private: 
-	GameList<GameObject>gameObjects;
-	Game* game;
+	GameList<GameObject*>gameObjects;
+	PlayState* game;
 	std::list<EventHandler*> eventHandlers;
 public:
 	void update();

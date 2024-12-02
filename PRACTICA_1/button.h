@@ -30,7 +30,7 @@ public:
 	//void update(); HEREDADO EN GAMEOBJECT
 	//void render() const; HEREDADO EN GAMEOBJECT
 	//void handleEvent(const SDL_Event& event); HEREDADO COMO METODO VIRTUAL EN EventHandler
-
+	void callBack();
 	void addClickListener(ButtonListener* lis);
 };
 
