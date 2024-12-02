@@ -4,6 +4,7 @@
 
 
 class Game;
+class PlayState;
 
 class Block : public SceneObject
 {
@@ -26,7 +27,7 @@ private:
 
 public:
 
-	Block(Game* game, std::istream& atributos);
+	Block(PlayState* game, std::istream& atributos);
 
 	~Block();
 

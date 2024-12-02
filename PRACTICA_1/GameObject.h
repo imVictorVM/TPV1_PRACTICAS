@@ -1,13 +1,14 @@
 #pragma once
 
 class Game;
+class PlayState;
 
 class GameObject {
 protected:
-	Game* gamePointer;
+	PlayState* gamePointer;
 public:
 
-	GameObject(Game* g);
+	GameObject(PlayState* g);
 	virtual ~GameObject() = 0;
 	virtual void render() const = 0;
 	virtual void update() = 0;

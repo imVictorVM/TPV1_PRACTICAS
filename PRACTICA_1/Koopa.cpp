@@ -1,15 +1,16 @@
 #include "checkML.h"
 #include "Koopa.h"
 #include "Game.h"
+#include "PlayState.h"
 
 using namespace std;
 
-Koopa::Koopa(Game* game, istream& atributes) :Enemy(game, atributes)
+Koopa::Koopa(PlayState* game, istream& atributes) :Enemy(game, atributes)
 {
 
-	texture = gamePointer->getTexture(Game::KOOPA);
-	width = Game::TILE_SIDE * 2;
-	height = Game::TILE_SIDE * 4;
+	texture = gamePointer->getTexture(PlayState::KOOPA);
+	width = PlayState::TILE_SIDE * 2;
+	height = PlayState::TILE_SIDE * 4;
 
 }
 
@@ -24,9 +25,9 @@ Koopa::render() const {
 		//posición del koopa
 		SDL_Rect KPosition;
 		KPosition.x = position.getX();
-		KPosition.y = position.getY() - Game::TILE_SIDE;
-		KPosition.w = Game::TILE_SIDE;
-		KPosition.h = Game::TILE_SIDE * 2; //Tiene dos tiles de altura
+		KPosition.y = position.getY() - PlayState::TILE_SIDE;
+		KPosition.w = PlayState::TILE_SIDE;
+		KPosition.h = PlayState::TILE_SIDE * 2; //Tiene dos tiles de altura
 		//IMPORTANTE APLICAR ESTO A MARIO GRANDE CUANDO TENGAMOS LA SETA
 
 		int frame = 0;
@@ -48,7 +49,7 @@ Koopa::update() {
 
 	//FUNCIONAL: Los goombas spawnean en su sitio cuando el jugador alcanza a verlos en la pantalla
 	int mapOffset = gamePointer->getMapOffset();
-	if (position.getX() < mapOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE) {
+	if (position.getX() < mapOffset + PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE) {
 		frozen = false;
 	}
 
@@ -103,7 +104,7 @@ Koopa::update() {
 			}
 		}
 
-		if (position.getX() < 0 - Game::TILE_SIDE || position.getY() >= 470) {
+		if (position.getX() < 0 - PlayState::TILE_SIDE || position.getY() >= 470) {
 			ended = true;
 			cout << "Koopa: Me he muerto por limite de mapa" << endl;
 		}

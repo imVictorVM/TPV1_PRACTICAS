@@ -1,13 +1,13 @@
 #include "Coin.h"
 #include "checkML.h"
 #include "Game.h"
-
+#include "PlayState.h"
 
 using namespace std;
 
-Coin::Coin(Game* game, std::istream& atributes) : Pickable(game, atributes) {
+Coin::Coin(PlayState* game, std::istream& atributes) : Pickable(game, atributes) {
 
-	texture = gamePointer->getTexture(Game::COIN);
+	texture = gamePointer->getTexture(PlayState::COIN);
 
 }
 
@@ -20,7 +20,7 @@ Coin::update() {
 
 	int newOffset = gamePointer->getMapOffset();
 
-	if (position.getX() < newOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE) {
+	if (position.getX() < newOffset + PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE) {
 		frozen = false;
 	}
 

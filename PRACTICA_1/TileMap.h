@@ -2,7 +2,7 @@
 
 #include "SceneObject.h"
 
-
+class PlayState;
 class Game;
 
 class TileMap : public SceneObject
@@ -11,7 +11,7 @@ class TileMap : public SceneObject
 	std::vector<std::vector<int>> matriz;
 
 public:
-	TileMap(const std::string& mapa, Game* game);
+	TileMap(const std::string& mapa, PlayState* game);
 
 	void render() const override;
 

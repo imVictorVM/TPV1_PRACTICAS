@@ -6,7 +6,7 @@ class Coin : public Pickable
 {
 public:
 
-	Coin(Game* game, std::istream& atributos);
+	Coin(PlayState* game, std::istream& atributos);
 
 	~Coin();
 

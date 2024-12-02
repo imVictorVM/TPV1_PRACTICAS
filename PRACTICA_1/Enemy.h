@@ -3,10 +3,11 @@
 #include "SceneObject.h"
 
 class Game;
+class PlayState;
 
 class Enemy : public SceneObject {
 public:
-	Enemy(Game* game, std::istream& atributes);
+	Enemy(PlayState* game, std::istream& atributes);
 
 	~Enemy();
 

@@ -3,11 +3,12 @@
 #include "SceneObject.h"
 
 class Game;
+class PlayState;
 
 class Lift : public SceneObject
 {
 public:
-	Lift(Game* game, std::istream& atributos);
+	Lift(PlayState* game, std::istream& atributos);
 
 	~Lift();
 

@@ -1,12 +1,13 @@
 #include "checkML.h"
 #include "Goomba.h"
 #include "Game.h"
+#include "PlayState.h"
 
 using namespace std;
 
-Goomba::Goomba(Game* game, istream& atributes) : Enemy(game, atributes)
+Goomba::Goomba(PlayState* game, istream& atributes) : Enemy(game, atributes)
 {
-	texture = gamePointer->getTexture(Game::GOOMBA);
+	texture = gamePointer->getTexture(PlayState::GOOMBA);
 }
 
 Goomba::~Goomba() {
@@ -18,7 +19,7 @@ Goomba::update() {
 
 	//FUNCIONAL: Los goombas spawnean en su sitio cuando el jugador alcanza a verlos en la pantalla
 	int mapOffset = gamePointer->getMapOffset();
-	if (position.getX() < mapOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE) {
+	if (position.getX() < mapOffset + PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE) {
 		frozen = false;
 	}
 
@@ -75,7 +76,7 @@ Goomba::update() {
 			}
 		}
 
-		if (position.getX() < 0 - Game::TILE_SIDE || position.getY() >= 470) {
+		if (position.getX() < 0 - PlayState::TILE_SIDE || position.getY() >= 470) {
 			ended = true;
 			cout << "Goomba: Me he muerto por limite de mapa" << endl;
 		}

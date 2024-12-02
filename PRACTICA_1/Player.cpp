@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Collision.h"
 #include "SceneObject.h"
+#include "PlayState.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -13,8 +14,8 @@
 #include <string>
 using namespace std;
 
-Player::Player(Game* game, stringstream& atributes) : position(), 
-TextureMario(game->getTexture(Game::MARIANO)),TextureSuperMario(game->getTexture(Game::SUPERMARIANO)), GamePlayer(game), vidas(0),
+Player::Player(PlayState* game, stringstream& atributes) : position(), 
+TextureMario(game->getTexture(PlayState::MARIANO)),TextureSuperMario(game->getTexture(PlayState::SUPERMARIANO)), GamePlayer(game), vidas(0),
 jump(false), frameRunner(0), leftLimit(), damageCooldown(15), velocity(8), SuperMario(false){
 	string line;
 
@@ -35,13 +36,13 @@ jump(false), frameRunner(0), leftLimit(), damageCooldown(15), velocity(8), Super
 	lineStream >> nvidas;
 
 	//Pasamos los parametros al constructor del player despues de leerlos
-	position = Vector2D<int>((positionx) * Game::TILE_SIDE, (positiony - 1) * Game::TILE_SIDE);
+	position = Vector2D<int>((positionx) * PlayState::TILE_SIDE, (positiony - 1) * PlayState::TILE_SIDE);
 	direction = Vector2D<int>(0, velocity);
 	InitialPositionX = positionx;
 	InitialPositionY = positiony;
 	vidas = nvidas;
 	lookingLeft = false;
-	groundPositionY = (positiony - 1) * Game::TILE_SIDE;
+	groundPositionY = (positiony - 1) * PlayState::TILE_SIDE;
 	
 }
 
@@ -119,7 +120,7 @@ void Player::update() {
 	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
 	
 	//FUNCIONAL: CONTROL DE SALTO
-	int jumpMaxDistance = 4 * Game::TILE_SIDE;
+	int jumpMaxDistance = 4 * PlayState::TILE_SIDE;
 	if (jump && position.getY() <= groundPositionY - jumpMaxDistance) {
 		direction.setY(velocity);
 	}
@@ -161,7 +162,7 @@ void Player::update() {
 			if (!SuperMario) {
 				vidas--;
 				damageCooldown = 0;
-				position = Vector2D<int>(InitialPositionX * Game::TILE_SIDE, (InitialPositionY - 1) * Game::TILE_SIDE);
+				position = Vector2D<int>(InitialPositionX * PlayState::TILE_SIDE, (InitialPositionY - 1) * PlayState::TILE_SIDE);
 				GamePlayer->ResetMapOffset();
 				cout << "Vidas restantes: " << vidas << endl;
 				return;
@@ -184,7 +185,7 @@ void Player::update() {
 	else frameRunner++;
 
 	bool midMap = false;
-	int midMapPositionX = (Game::WINDOW_WIDTH * Game::TILE_SIDE / 2) + GamePlayer->getMapOffset();
+	int midMapPositionX = (PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE / 2) + GamePlayer->getMapOffset();
 
 	// FUNCIONAL: Condicional para mover el mapa a la derecha
 	if (position.getX() > midMapPositionX && direction.getX() > 0) midMap = true;
@@ -277,7 +278,7 @@ int Player::getVidas() const {
 }
 
 void Player::TransformacionSuperMario(){
-	position.setY(position.getY() - Game::TILE_SIDE);
+	position.setY(position.getY() - PlayState::TILE_SIDE);
 	SuperMario = true;
 }
 

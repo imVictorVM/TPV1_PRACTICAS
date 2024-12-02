@@ -3,13 +3,14 @@
 #include "Pickable.h"
 
 class Game;
+class PlayState;
 
 class Mushroom : public Pickable
 {
 
 public:
 
-	Mushroom(Game* game, SDL_Rect rect);
+	Mushroom(PlayState* game, SDL_Rect rect);
 
 	~Mushroom();
 

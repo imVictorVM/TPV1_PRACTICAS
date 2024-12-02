@@ -4,24 +4,26 @@
 
 #include "Game.h"
 
+#include "PlayState.h"
+
 using namespace std;
 
 
-SceneObject::SceneObject(Game* g, istream& atributes) : GameObject(g) {
+SceneObject::SceneObject(PlayState* g, istream& atributes) : GameObject(g) {
 	
 	 posX = 0;
 	 posY = 0;
 	atributes >> posX;
 	atributes >> posY;
-	position =  Vector2D(posX * Game::TILE_SIDE ,(posY-1) * Game::TILE_SIDE);
+	position =  Vector2D(posX * PlayState::TILE_SIDE ,(posY-1) * PlayState::TILE_SIDE);
 	velocity = 2;
 	velocityGravity = 4;
 	direction = Vector2D(-velocity,velocityGravity);
 	frame = 0;
 	frameRunner = 0;
 	previousOffset = 0;
-	width = Game::TILE_SIDE;
-	height = Game::TILE_SIDE;
+	width = PlayState::TILE_SIDE;
+	height = PlayState::TILE_SIDE;
 	rect = getRect();
 
 	frozen = true;
@@ -29,20 +31,20 @@ SceneObject::SceneObject(Game* g, istream& atributes) : GameObject(g) {
 	
 }
 
-SceneObject::SceneObject(Game* g) : GameObject(g) {
+SceneObject::SceneObject(PlayState* g) : GameObject(g) {
 
 	posX = 0;
 	posY = 0;
-	position = Vector2D(posX * Game::TILE_SIDE, (posY - 1) * Game::TILE_SIDE);
+	position = Vector2D(posX * PlayState::TILE_SIDE, (posY - 1) * PlayState::TILE_SIDE);
 	direction = Vector2D(0, 0);
 	frame = 0;
 	frameRunner = 0;
 	previousOffset = 0;
 	velocity = 2;
 	velocityGravity = 8;
-	width = Game::TILE_SIDE;
-	height = Game::TILE_SIDE;
-	//rect = SDL_Rect(position.getX(), position.getY(), width, height);
+	width = PlayState::TILE_SIDE;
+	height = PlayState::TILE_SIDE;
+	rect = getRect();
 
 	frozen = true;
 	ended = false;

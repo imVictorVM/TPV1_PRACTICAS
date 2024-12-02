@@ -9,6 +9,7 @@
 #include <sstream>
 
 class Game;
+class PlayState;
 
 class Player
 {
@@ -19,7 +20,7 @@ protected:
 	Vector2D<int> direction;
 	Texture* TextureMario;
 	Texture* TextureSuperMario;
-	Game* GamePlayer;
+	PlayState* GamePlayer;
 	int vidas;
 	bool jump; //Sirve para ver si podemos saltar o no
 	int frameRunner; //Sirve como contador para saltar entre los frames 0,2,3
@@ -32,7 +33,7 @@ protected:
 	bool SuperMario;
 public:
 
-	Player(Game* game,std::stringstream& atributos);
+	Player(PlayState* game,std::stringstream& atributos);
 
 	void render() const;
 

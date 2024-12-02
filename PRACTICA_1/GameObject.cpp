@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Game.h"
-GameObject::GameObject(Game* g) {
+#include "PlayState.h"
+GameObject::GameObject(PlayState* g) {
 	gamePointer = g;
 }
 

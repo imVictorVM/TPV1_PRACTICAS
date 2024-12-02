@@ -1,10 +1,11 @@
 #include "checkML.h"
 #include "Enemy.h"
 #include "Game.h"
+#include "PlayState.h"
 
 using namespace std;
 
-Enemy::Enemy(Game* game, istream& atributes) : SceneObject(game, atributes) {
+Enemy::Enemy(PlayState* game, istream& atributes) : SceneObject(game, atributes) {
 
 }
 
@@ -53,7 +54,7 @@ Enemy::getRect() const {
 	SDL_Rect EnemyRect;
 	EnemyRect.x = position.getX() + gamePointer->getMapOffset();
 	EnemyRect.y = position.getY();
-	EnemyRect.w = Game::TILE_SIDE;
-	EnemyRect.h = Game::TILE_SIDE;
+	EnemyRect.w = PlayState::TILE_SIDE;
+	EnemyRect.h = PlayState::TILE_SIDE;
 	return EnemyRect;
 }

@@ -1,14 +1,15 @@
 #include "checkML.h"
 #include "Pickable.h"
 #include "Game.h"
+#include "PlayState.h"
 
 using namespace std;
 
-Pickable::Pickable(Game* game) : SceneObject(game) {
+Pickable::Pickable(PlayState* game) : SceneObject(game) {
 
 }
 
-Pickable::Pickable(Game* game, istream& atributes) : SceneObject(game, atributes) {
+Pickable::Pickable(PlayState* game, istream& atributes) : SceneObject(game, atributes) {
 
 }
 
@@ -47,7 +48,7 @@ Pickable::getRect() const {
 	SDL_Rect CPosition;
 	CPosition.x = position.getX() + gamePointer->getMapOffset();
 	CPosition.y = position.getY();
-	CPosition.w = Game::TILE_SIDE;
-	CPosition.h = Game::TILE_SIDE;
+	CPosition.w = PlayState::TILE_SIDE;
+	CPosition.h = PlayState::TILE_SIDE;
 	return CPosition;
 }

@@ -11,6 +11,7 @@
 
 
 class Game;
+class PlayState;
 
 class SceneObject : public GameObject {
 protected:
@@ -36,8 +37,8 @@ protected:
 
 public:
 
-	SceneObject(Game* g, std::istream& atributes);
-	SceneObject(Game* g);
+	SceneObject(PlayState* g, std::istream& atributes);
+	SceneObject(PlayState* g);
 	~SceneObject();
 
 	void render() const override;

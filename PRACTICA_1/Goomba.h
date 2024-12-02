@@ -4,13 +4,14 @@
 
 
 class Game;
+class PlayState;
 
 class Goomba :public Enemy
 {
 
 public:
 
-	Goomba(Game* game, std::istream& atributos);
+	Goomba(PlayState* game, std::istream& atributos);
 
 	~Goomba();
 

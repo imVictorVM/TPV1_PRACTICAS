@@ -1,19 +1,20 @@
 #include "checkML.h"
 #include "Mushroom.h"
 #include "Game.h"
+#include "PlayState.h"
 
 using namespace std;
 
-Mushroom::Mushroom(Game* game, SDL_Rect rect) : Pickable(game)
+Mushroom::Mushroom(PlayState* game, SDL_Rect rect) : Pickable(game)
 	//position(), direction(), mushroomTexture(game->getTexture(Game::MUSHROOM)), mushroomGame(game), velocity(2), previousOffset(0), ended(false), velocityGravity(8)
 {
 	//posicion de la seta
 	int posX = rect.x + gamePointer->getMapOffset();
-	int posY = rect.y - Game::TILE_SIDE;
+	int posY = rect.y - PlayState::TILE_SIDE;
 	position = Vector2D<int>(posX, posY);
 	direction = Vector2D<int>(velocity, 0);
 	frozen = false;
-	texture = gamePointer->getTexture(Game::MUSHROOM);
+	texture = gamePointer->getTexture(PlayState::MUSHROOM);
 	
 }
 
@@ -66,7 +67,7 @@ Mushroom::update() {
 			}
 		}
 
-		if (position.getX() < 0 - Game::TILE_SIDE || position.getY() >= 470) {
+		if (position.getX() < 0 - PlayState::TILE_SIDE || position.getY() >= 470) {
 			ended = true;
 			cout << "Seta: Me he muerto por limite de mapa" << endl;
 		}

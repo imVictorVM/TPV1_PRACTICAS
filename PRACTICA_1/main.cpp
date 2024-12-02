@@ -1,13 +1,14 @@
 #include <iostream>
 #include "checkML.h"
 #include "Game.h"
+#include "PlayState.h"
 #include "TileMap.h"
 using namespace std;
 
 int main(int argc, char* argv[])
 {
 	try {
-		Game game;
+		PlayState game;
 		
 		game.run();
 	}

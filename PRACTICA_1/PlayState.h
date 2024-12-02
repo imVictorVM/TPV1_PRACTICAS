@@ -22,6 +22,7 @@ class Koopa;
 class Mushroom;
 class Lift;
 class Coin;
+class PlayState;
 
 using uint = unsigned int;
 
@@ -61,7 +62,7 @@ private:
 	std::vector<Coin*> coins;
 	std::vector<Mushroom*> mushrooms;
 
-	//GameList<SceneObject> gameList;
+	GameList<SceneObject> gameList;
 
 public:
 	void run();
@@ -90,4 +91,11 @@ public:
 	PlayState();
 	~PlayState();
 };
+
+inline Texture*
+PlayState::getTexture(TextureName name) const
+{
+	return textures[name];
+}
+
 

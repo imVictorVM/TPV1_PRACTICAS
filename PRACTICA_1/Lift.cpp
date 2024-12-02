@@ -1,11 +1,12 @@
 #include "checkML.h"
 #include "Lift.h"
 #include "Game.h"
+#include "PlayState.h"
 
 
 using namespace std;
 
-Lift::Lift(Game* game, istream& atributes) : SceneObject(game, atributes) {
+Lift::Lift(PlayState* game, istream& atributes) : SceneObject(game, atributes) {
 	
 	string line;
 
@@ -15,9 +16,9 @@ Lift::Lift(Game* game, istream& atributes) : SceneObject(game, atributes) {
 
 	lineStream >> velocity;
 
-	width = Game::TILE_SIDE * 3;
-	height = Game::TILE_SIDE / 2;
-	texture = gamePointer->getTexture(Game::LIFT);
+	width = PlayState::TILE_SIDE * 3;
+	height = PlayState::TILE_SIDE / 2;
+	texture = gamePointer->getTexture(PlayState::LIFT);
 	
 
 }
@@ -33,7 +34,7 @@ Lift::update() {
 
 	int newOffset = gamePointer->getMapOffset();
 
-	if (position.getX() < newOffset + Game::WINDOW_WIDTH * Game::TILE_SIDE) {
+	if (position.getX() < newOffset + PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE) {
 		frozen = false;
 	}
 	int offsetChange = newOffset - previousOffset;

@@ -3,12 +3,13 @@
 #include "SceneObject.h"
 
 class Game;
+class PlayState;
 
 class Pickable : public SceneObject {
 public:
-	Pickable(Game* game);
+	Pickable(PlayState* game);
 
-	Pickable(Game* game, std::istream& atributes);
+	Pickable(PlayState* game, std::istream& atributes);
 
 	~Pickable();
 

@@ -4,13 +4,14 @@
 
 
 class Game;
+class PlayState;
 
 class Koopa :public Enemy
 {
 
 public:
 
-	Koopa(Game* game, std::istream& atributos);
+	Koopa(PlayState* game, std::istream& atributos);
 
 	~Koopa();
 

@@ -1,13 +1,13 @@
 #include "checkML.h"
 #include "Block.h"
 #include "Game.h"
-
+#include "PlayState.h"
 
 using namespace std;
 
-Block::Block(Game* game, istream& atributes) : SceneObject(game, atributes)
+Block::Block(PlayState* game, istream& atributes) : SceneObject(game, atributes)
 	 {
-	texture = game->getTexture(Game::BLOCK); 
+	texture = game->getTexture(PlayState::BLOCK); 
 	object = false;
 	frozen = false;
 	string line;
@@ -91,8 +91,8 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 	SDL_Rect blockRect;
 	blockRect.x = position.getX() + gamePointer->getMapOffset();
 	blockRect.y = position.getY();
-	blockRect.w = Game::TILE_SIDE;
-	blockRect.h = Game::TILE_SIDE;
+	blockRect.w = PlayState::TILE_SIDE;
+	blockRect.h = PlayState::TILE_SIDE;
 
 	// Creamos un rect del player tomando de valor el que le llega como argumento
 	SDL_Rect playerRect;
@@ -103,10 +103,10 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 		colision.collides = true;
 		colision.intersection = intersection;
 		if (fromPlayer) {
-			if (colision.intersection.y > position.getY() + Game::TILE_SIDE / 2) {
+			if (colision.intersection.y > position.getY() + PlayState::TILE_SIDE / 2) {
 				
 				if (type != empty) {
-					if (type == normal && rect.h > Game::TILE_SIDE) ended = true; //MARIO GRANDE ROMPE BLOQUES
+					if (type == normal && rect.h > PlayState::TILE_SIDE) ended = true; //MARIO GRANDE ROMPE BLOQUES
 					else if (type == surprise || type == hidden) {
 						if (action == powerup && !ObtainObject()) {
 							//Logica de la aparición de la seta
