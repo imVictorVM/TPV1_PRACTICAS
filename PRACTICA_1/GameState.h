@@ -13,16 +13,16 @@ class PlayState;
 class GameState
 {
 private: 
-	GameList<GameObject*>gameObjects;
-	PlayState* game;
+	GameList<GameObject>gameObjects;
+	Game* game;
 	std::list<EventHandler*> eventHandlers;
 public:
-	void update();
-	void render() const;
-	void handleEvent();
+	virtual ~GameState();
+	virtual void update() = 0;
+	virtual void render() const = 0;
+	virtual void handleEvent(const SDL_Event& event);
 
-	void addEventListener();
-	void addObject();
-	void getGame() const;
+	void addEventListener(EventHandler* e);
+	void addObject(GameObject* g);
 };
 

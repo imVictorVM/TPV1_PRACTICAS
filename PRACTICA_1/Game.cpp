@@ -1,78 +1,99 @@
-//#include "checkML.h"
-//#include <string>
-//#include <fstream>
-//#include <sstream>
-//#include "Game.h"
-//#include "Player.h"
-//#include "Block.h"
-//#include "Goomba.h"
-//#include "Koopa.h"
-//#include "Lift.h"
-//#include "Coin.h"
-//#include "Mushroom.h"
-//#include "Collision.h"
-//#include "GameObject.h"
-//#include "SceneObject.h"
-//
-//
-//using namespace std;
-//class TileMap;
-//
-//// Formato de la especificación de una textura
-//struct TextureSpec
-//{
-//	const char* name;	// Ruta del archivo
-//	uint numColumns;	// Número de frames por fila
-//	uint numRows;		// Número de frames por columna
-//};
-//
-//// Directorio raíz de los archivos de textura
-//const string textureRoot = "../assets/images/";
-//
-//// Especificación de las texturas del juego
-//const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
-//	TextureSpec{"background.png", 9, 7},
-//	TextureSpec{"mario.png", 12, 1},
-//	TextureSpec{"blocks.png", 6, 1},
-//	TextureSpec{"goomba.png",3,1},
-//	TextureSpec{"koopa.png",4,1},
-//	TextureSpec{"mushroom.png",1,1},
-//	TextureSpec{"supermario.png",22,1},
-//	TextureSpec{"lift.png",1,1},
-//	TextureSpec{"coin.png",4,1},
-//};
-//
-//Game::Game()
-// : seguir(true)
-//{
-//	// Inicializa la SDL
-//	SDL_Init(SDL_INIT_EVERYTHING);
-//	window = SDL_CreateWindow("First test with SDL",
-//	                          SDL_WINDOWPOS_CENTERED,
-//	                          SDL_WINDOWPOS_CENTERED,
-//	                          WIN_WIDTH,
-//	                          WIN_HEIGHT,
-//	                          SDL_WINDOW_SHOWN);
-//
-//	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-//
-//	//SDL_RenderSetLogicalSize(renderer, WIN_WIDTH, WIN_HEIGHT);
-//
-//	if (window == nullptr || renderer == nullptr)
-//		throw "Error cargando SDL"s;
-//
-//	mapOffset = 0;
-//
-//	// Carga las texturas
-//	for (int i = 0; i < NUM_TEXTURES; ++i)
-//		textures[i] = new Texture(renderer,
-//		                          (textureRoot + textureSpec[i].name).c_str(),
-//		                          textureSpec[i].numRows,
-//					  textureSpec[i].numColumns);
-//
-//	loadNextLevel();
-//}
-//
+#include "checkML.h"
+#include <string>
+#include <fstream>
+#include <sstream>
+#include "Game.h"
+#include "Player.h"
+#include "Block.h"
+#include "Goomba.h"
+#include "Koopa.h"
+#include "Lift.h"
+#include "Coin.h"
+#include "Mushroom.h"
+#include "Collision.h"
+#include "GameObject.h"
+#include "SceneObject.h"
+
+
+using namespace std;
+class TileMap;
+
+// Formato de la especificación de una textura
+struct TextureSpec
+{
+	const char* name;	// Ruta del archivo
+	uint numColumns;	// Número de frames por fila
+	uint numRows;		// Número de frames por columna
+};
+
+// Directorio raíz de los archivos de textura
+const string textureRoot = "../assets/images/";
+
+// Especificación de las texturas del juego
+const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
+	TextureSpec{"background.png", 9, 7},
+	TextureSpec{"mario.png", 12, 1},
+	TextureSpec{"blocks.png", 6, 1},
+	TextureSpec{"goomba.png",3,1},
+	TextureSpec{"koopa.png",4,1},
+	TextureSpec{"mushroom.png",1,1},
+	TextureSpec{"supermario.png",22,1},
+	TextureSpec{"lift.png",1,1},
+	TextureSpec{"coin.png",4,1},
+};
+
+Game::Game()
+ : seguir(true)
+{
+	// Inicializa la SDL
+	SDL_Init(SDL_INIT_EVERYTHING);
+	window = SDL_CreateWindow("First test with SDL",
+	                          SDL_WINDOWPOS_CENTERED,
+	                          SDL_WINDOWPOS_CENTERED,
+	                          WIN_WIDTH,
+	                          WIN_HEIGHT,
+	                          SDL_WINDOW_SHOWN);
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	//SDL_RenderSetLogicalSize(renderer, WIN_WIDTH, WIN_HEIGHT);
+
+	if (window == nullptr || renderer == nullptr)
+		throw "Error cargando SDL"s;
+
+	//mapOffset = 0;
+
+	// Carga las texturas
+	for (int i = 0; i < NUM_TEXTURES; ++i)
+		textures[i] = new Texture(renderer,
+		                          (textureRoot + textureSpec[i].name).c_str(),
+		                          textureSpec[i].numRows,
+					  textureSpec[i].numColumns);
+
+	//loadNextLevel();
+}
+
+Game::~Game()
+{
+	//clearActualLevel();
+
+	// Elimina las texturas
+	for (Texture* texture : textures)
+		delete texture;
+
+	//if (tilemap != nullptr)
+	//{
+	//	delete tilemap;
+	//}
+	//if (player != nullptr) {
+	//	delete player;
+	//}
+	// Desactiva la SDL
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
 //void
 //Game::loadNextLevel() {
 //	static int currentLevel = 0;
@@ -246,26 +267,6 @@
 //	ResetMapOffset();
 //}
 //
-//Game::~Game()
-//{
-//	clearActualLevel();
-//
-//	// Elimina las texturas
-//	for (Texture* texture : textures)
-//		delete texture;
-//
-//	if (tilemap != nullptr)
-//	{
-//		delete tilemap;
-//	}
-//	if (player != nullptr) {
-//		delete player;
-//	}
-//	// Desactiva la SDL
-//	SDL_DestroyRenderer(renderer);
-//	SDL_DestroyWindow(window);
-//	SDL_Quit();
-//}
 //
 //void
 //Game::run()

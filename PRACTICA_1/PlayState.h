@@ -48,9 +48,9 @@ public:
 	};
 private:
 	int mapOffset = 0;
-	SDL_Window* window = nullptr;
-	SDL_Renderer* renderer = nullptr;
-	std::array<Texture*, NUM_TEXTURES> textures;
+	//SDL_Window* window = nullptr;
+	//SDL_Renderer* renderer = nullptr;
+	//std::array<Texture*, NUM_TEXTURES> textures;
 	bool seguir;
 
 	TileMap* tilemap = nullptr;
@@ -81,7 +81,7 @@ public:
 	void ResetMapOffset();
 	//Vector2D<int> getPlayerPosition() const;
 
-	Texture* getTexture(TextureName name) const;
+	//Texture* getTexture(TextureName name) const;
 
 	// Constante globales
 	static constexpr uint WIN_WIDTH = 600;
@@ -92,10 +92,10 @@ public:
 	~PlayState();
 };
 
-inline Texture*
-PlayState::getTexture(TextureName name) const
-{
-	return textures[name];
-}
+//inline Texture*
+//PlayState::getTexture(TextureName name) const
+//{
+//	return textures[name];
+//}
 
 

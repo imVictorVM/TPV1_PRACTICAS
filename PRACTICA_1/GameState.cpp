@@ -2,40 +2,27 @@
 #include "PlayState.h"
 #include "PauseState.h"
 #include "MainMenuState.h"
-#include "button.h"
+
+//VIRTUALES
+//GameState::~GameState() {
+//	gameObject.clear();
+//}
+
+//VIRTUALES
+//void
+//GameState::handleEvent(const SDL_Event& event) {
+//	for (EventHandler* handler : eventHandlers) {
+//		handler->handleEvent(event);
+//	}
+//}
 
 void
-GameState::update() {
-
+GameState::addEventListener(EventHandler* e) {
+	eventHandlers.push_back(e);
 }
 
 void
-GameState::render() const {
-	//for (GameObject* object : gameObjects) {
-	//	object->render();
-	//}
+GameState::addObject(GameObject* g) {
+	gameObjects.push_back(g);
 }
-
-void
-GameState::handleEvent() {
-	//for (EventHandler* handler : eventHandlers) {
-	//	handler->handleEvent(event);
-	//}
-}
-
-void
-GameState::addEventListener() {
-
-}
-
-void
-GameState::addObject() {
-
-}
-
-void
-GameState::getGame() const {
-
-}
-
 

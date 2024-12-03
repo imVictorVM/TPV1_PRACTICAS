@@ -3,9 +3,14 @@
 #include <SDL.h>
 #include "Texture.h"
 #include <vector>
+#include <functional>
 
+#include "Vector2D.h"
 #include "GameObject.h"
 #include "EventHandler.h"
+#include "checkML.h"
+
+using CallBack = std::function<void(void)>;
 
 //Oyente de eventos del botón (click).
 class ButtonListener {
@@ -17,20 +22,24 @@ public:
 class button : public GameObject, public EventHandler
 {
 private:
-	Game* game;
 	SDL_Rect boundingBox;
 	bool hover;
+	bool onPoint;
+	Vector2D<float> position;
+	Texture* buttonTexture;
+	Texture* mushroomTexture;
 
 	std::vector<ButtonListener*> clickListener; //lista de oyentes
+	std::list<CallBack> callbacks;
+
 	void emit() const; //transmite el evento de cick a todos los oyentes
 public:
-	button(/*Game* game*/); //HEREDADO EL PUNTERO EN GAMEOBJECT
-	~button(); 
+	button(PlayState* g, SDL_Rect box, Vector2D<float>position, Texture* buttonTexture, Texture* mushroomTexture);
+	//~button(); 
 
-	//void update(); HEREDADO EN GAMEOBJECT
-	//void render() const; HEREDADO EN GAMEOBJECT
-	//void handleEvent(const SDL_Event& event); HEREDADO COMO METODO VIRTUAL EN EventHandler
-	void callBack();
+	void connect(CallBack rCallback);
+	void render() const override;
+	void update() override;
 	void addClickListener(ButtonListener* lis);
 };
 
