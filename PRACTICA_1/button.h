@@ -10,7 +10,7 @@
 #include "EventHandler.h"
 #include "checkML.h"
 
-using CallBack = std::function<void(void)>;
+using SDLEventCallBack = std::function<void(void)>;
 
 //Oyente de eventos del botón (click).
 class ButtonListener {
@@ -22,6 +22,7 @@ public:
 class button : public GameObject, public EventHandler
 {
 private:
+	Game* game;
 	SDL_Rect boundingBox;
 	bool hover;
 	bool onPoint;
@@ -30,16 +31,17 @@ private:
 	Texture* mushroomTexture;
 
 	std::vector<ButtonListener*> clickListener; //lista de oyentes
-	std::list<CallBack> callbacks;
+	std::list<SDLEventCallBack> callbacks;
 
 	void emit() const; //transmite el evento de cick a todos los oyentes
 public:
-	button(PlayState* g, SDL_Rect box, Vector2D<float>position, Texture* buttonTexture, Texture* mushroomTexture);
+	button(Game* g);
 	//~button(); 
 
-	void connect(CallBack rCallback);
-	void render() const override;
-	void update() override;
+	void connect(SDLEventCallBack rCallback);
+	void render() const;
+	void update();
 	void addClickListener(ButtonListener* lis);
+	void handleEvent(const SDL_Event& event);
 };
 

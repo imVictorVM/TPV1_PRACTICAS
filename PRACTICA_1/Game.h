@@ -6,6 +6,7 @@
 
 // Biblioteca SDL
 #include <SDL.h>
+#include <functional>
 
 // Nuestras clases
 #include "Texture.h"
@@ -24,7 +25,10 @@ class Mushroom;
 class Lift;
 class Coin;
 
+class Button;
+
 using uint = unsigned int;
+using SDLEventCallback = std::function<void(const SDL_Event&)>;
 //
 // Clase que representa el juego y controla todos sus aspectos
 //
@@ -58,7 +62,7 @@ private:
 	// Array con todas las texturas del juego
 	std::array<Texture*, NUM_TEXTURES> textures;
 	// Interruptor para terminar el juego
-	bool seguir;
+	//bool seguir;
 
 	// Objetos del juego
 	//Dog* perro;
@@ -72,9 +76,12 @@ private:
 	//std::vector<Mushroom*> mushrooms;
 	//GameList<SceneObject> gameList;
 
+	Button* boton;
+	//std::vector<SDLEventCallback*> callbacks;
+	void emit(const SDL_Event& event) const;
 
 public:
-	//void run();
+	void run();
 	//
 	//void update();
 	//void render() const;
@@ -99,6 +106,8 @@ public:
 
 	Game();
 	~Game();
+	SDL_Renderer* getRenderer();
+	void connect(SDLEventCallback cb);
 };
 
 inline Texture*
@@ -106,5 +115,11 @@ Game::getTexture(TextureName name) const
 {
 	return textures[name];
 }
+
+inline SDL_Renderer*
+Game::getRenderer() {
+	return renderer;
+}
+//LO USARA PLAYSTATE
 
 

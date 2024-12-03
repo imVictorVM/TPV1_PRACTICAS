@@ -2,13 +2,14 @@
 
 #include "gameList.h"
 #include <list>
+#include <SDL.h>
 
 class Game;
 class GameObject;
 class EventHandler;
 class PlayState;
-//class PauseState;
-//class MainMenuState;
+class MainMenuState;
+class PauseState;
 
 class GameState
 {
@@ -17,10 +18,11 @@ private:
 	Game* game;
 	std::list<EventHandler*> eventHandlers;
 public:
-	virtual ~GameState();
-	virtual void update() = 0;
-	virtual void render() const = 0;
-	virtual void handleEvent(const SDL_Event& event);
+	GameState(Game* g);
+	~GameState();
+	void render() const;
+	void update();
+	void handleEvent(const SDL_Event& event);
 
 	void addEventListener(EventHandler* e);
 	void addObject(GameObject* g);

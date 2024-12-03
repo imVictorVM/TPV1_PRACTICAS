@@ -43,7 +43,7 @@ class TileMap;
 //	TextureSpec{"coin.png",4,1},
 //};
 
-PlayState::PlayState()
+PlayState::PlayState(Game* game) : GameState(game)
 	//: seguir(true)
 {
 	// Inicializa la SDL

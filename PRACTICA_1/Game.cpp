@@ -14,6 +14,8 @@
 #include "GameObject.h"
 #include "SceneObject.h"
 
+#include "button.h"
+
 
 using namespace std;
 class TileMap;
@@ -43,7 +45,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 };
 
 Game::Game()
- : seguir(true)
+ //: seguir(true)
 {
 	// Inicializa la SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -70,6 +72,8 @@ Game::Game()
 		                          textureSpec[i].numRows,
 					  textureSpec[i].numColumns);
 
+	//boton = new Button(this);
+
 	//loadNextLevel();
 }
 
@@ -78,8 +82,9 @@ Game::~Game()
 	//clearActualLevel();
 
 	// Elimina las texturas
-	for (Texture* texture : textures)
-		delete texture;
+	//for (Texture* texture : textures)
+	//	delete texture;
+	for (uint i = 0; i < NUM_TEXTURES; i++) delete textures[i];
 
 	//if (tilemap != nullptr)
 	//{

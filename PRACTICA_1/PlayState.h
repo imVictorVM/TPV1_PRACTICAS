@@ -23,6 +23,7 @@ class Mushroom;
 class Lift;
 class Coin;
 class PlayState;
+class Game;
 
 using uint = unsigned int;
 
@@ -49,10 +50,12 @@ public:
 private:
 	int mapOffset = 0;
 	//SDL_Window* window = nullptr;
-	//SDL_Renderer* renderer = nullptr;
+	SDL_Renderer* renderer; // = game->getRenderer();
 	//std::array<Texture*, NUM_TEXTURES> textures;
 	bool seguir;
 
+
+	Game* game;
 	TileMap* tilemap = nullptr;
 	Player* player = nullptr;
 	std::vector<Block*> blocks;
@@ -88,7 +91,7 @@ public:
 	static constexpr uint WIN_HEIGHT = 500;
 	static constexpr uint FRAME_RATE = 50;
 
-	PlayState();
+	PlayState(Game* game);
 	~PlayState();
 };
 

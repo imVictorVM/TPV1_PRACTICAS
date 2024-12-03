@@ -1,16 +1,17 @@
 #include "button.h"
 #include "PlayState.h"
+#include "checkML.h"
+#include "Game.h"
 
-button::button(PlayState* g, SDL_Rect boundingBox, Vector2D<float> position, Texture* buttonTexture, Texture* mushroomTexture) {
-	boundingBox.x = position.getX();
-	boundingBox.y = position.getY();
-	boundingBox.w = PlayState::TILE_SIDE;
-	boundingBox.h = PlayState::TILE_SIDE;
+button::button(Game* g) : GameObject(g), boundingBox{50,50,200,100}, hover(false), onPoint(false), buttonTexture(), mushroomTexture()
+{
+	game->connect([this](auto event) { handleEvent(event); });
 }
 
 void
-button::connect(CallBack rCallback) {
-	if(rCallback) callbacks.push_back(rCallback);
+button::connect(SDLEventCallBack rCallback) {
+	/*if (rCallback)*/ callbacks.push_back(rCallback);
+	//Si existe rCallback (usar en caso de errores)
 }
 
 void
@@ -22,7 +23,6 @@ button::render() const {
 		color.b = 0;
 		buttonTexture->render(boundingBox, color);
 		mushroomTexture->render(boundingBox, color);
-		emit();
 	}
 	else {
 		buttonTexture->render(boundingBox);
@@ -36,16 +36,19 @@ button::update() {
 	onPoint = SDL_PointInRect(&point, &boundingBox);
 }
 
-//void
-//button::handleEvent(const SDL_Event& event) {
-//	if (onPoint) {
-//		emit();
-//	}
-//}
+void
+button::handleEvent(const SDL_Event& event) {
+	if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+		if (onPoint) {
+			emit();
+		}
+	}
+}
 
 void
 button::addClickListener(ButtonListener* lis) {
-	if(lis) clickListener.push_back(lis);
+	/*if(lis)*/ clickListener.push_back(lis);
+	//Si existe lis (usar en caso de errores)
 }
 
 void button::emit() const {
