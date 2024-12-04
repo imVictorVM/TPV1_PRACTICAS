@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Lift::Lift(PlayState* game, istream& atributes) : SceneObject(game, atributes) {
+Lift::Lift(PlayState* gameState, istream& atributes) : SceneObject(gameState, atributes) {
 	
 	string line;
 
@@ -18,7 +18,7 @@ Lift::Lift(PlayState* game, istream& atributes) : SceneObject(game, atributes) {
 
 	width = PlayState::TILE_SIDE * 3;
 	height = PlayState::TILE_SIDE / 2;
-	texture = gamePointer->getTexture(PlayState::LIFT);
+	texture = gameState->getGame()->getTexture(Game::LIFT);
 	
 
 }
@@ -32,7 +32,7 @@ Lift::~Lift()
 void
 Lift::update() {
 
-	int newOffset = gamePointer->getMapOffset();
+	int newOffset = playState->getMapOffset();
 
 	if (position.getX() < newOffset + PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE) {
 		frozen = false;
@@ -63,7 +63,7 @@ Lift::hit(const SDL_Rect& rect, bool fromPlayer) {
 		// Creamos un rect del bloque para compararlo con el del jugador
 		SDL_Rect LiftRect;
 		LiftRect = getRect();
-		LiftRect.x += gamePointer->getMapOffset();
+		LiftRect.x += playState->getMapOffset();
 
 		// Creamos un rect del player tomando de valor el que le llega como argumento
 		SDL_Rect playerRect;

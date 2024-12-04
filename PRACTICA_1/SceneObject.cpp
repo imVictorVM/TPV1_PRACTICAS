@@ -10,9 +10,9 @@ using namespace std;
 
 
 SceneObject::SceneObject(PlayState* g, istream& atributes) : GameObject(g) {
-	
-	 posX = 0;
-	 posY = 0;
+	playState = g;
+	posX = 0;
+	posY = 0;
 	atributes >> posX;
 	atributes >> posY;
 	position =  Vector2D(posX * PlayState::TILE_SIDE ,(posY-1) * PlayState::TILE_SIDE);
@@ -78,8 +78,8 @@ SceneObject::tryToMove(const Vector2D<int>& speed, Collision::Target attack) {
 		// CALCULO DE LA NUEVA POSICION EN FUNCION DE LA DIRECCION PULSANDO TECLA
 		Vector2D<int> newPosition = position + direction;
 
-		if (attack == Collision::Target::PLAYER) colision = gamePointer->checkPlayerCollision(rect, true);
-		else if (attack == Collision::Target::ENEMIES) colision = gamePointer->checkEnemyCollision(rect, false);
+		if (attack == Collision::Target::PLAYER) colision = playState->checkPlayerCollision(rect, true);
+		else if (attack == Collision::Target::ENEMIES) colision = playState->checkEnemyCollision(rect, false);
 
 		//cout << "Collision status: " << colision.collides << ", Intersection: "
 		//	<< colision.intersection.x << ", " << colision.intersection.y << endl;
@@ -107,8 +107,8 @@ SceneObject::tryToMove(const Vector2D<int>& speed, Collision::Target attack) {
 		rect.x += position.getX();
 		rect.y = direction.getY();
 
-		if (attack == Collision::Target::PLAYER) colision = gamePointer->checkPlayerCollision(rect, true);
-		else if (attack == Collision::Target::ENEMIES) colision = gamePointer->checkEnemyCollision(rect, false);
+		if (attack == Collision::Target::PLAYER) colision = playState->checkPlayerCollision(rect, true);
+		else if (attack == Collision::Target::ENEMIES) colision = playState->checkEnemyCollision(rect, false);
 
 		//COLISION HORIZONTAL
 		if (!colision.collides) position.setX(newPosition.getX());

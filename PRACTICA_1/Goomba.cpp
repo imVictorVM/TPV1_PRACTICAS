@@ -5,9 +5,9 @@
 
 using namespace std;
 
-Goomba::Goomba(PlayState* game, istream& atributes) : Enemy(game, atributes)
+Goomba::Goomba(PlayState* gameState, istream& atributes) : Enemy(gameState, atributes)
 {
-	texture = gamePointer->getTexture(PlayState::GOOMBA);
+	texture = gameState->getGame()->getTexture(Game::GOOMBA);
 }
 
 Goomba::~Goomba() {
@@ -18,7 +18,7 @@ void
 Goomba::update() {
 
 	//FUNCIONAL: Los goombas spawnean en su sitio cuando el jugador alcanza a verlos en la pantalla
-	int mapOffset = gamePointer->getMapOffset();
+	int mapOffset = playState->getMapOffset();
 	if (position.getX() < mapOffset + PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE) {
 		frozen = false;
 	}
@@ -41,7 +41,7 @@ Goomba::update() {
 		GoombaRect.x += direction.getX();
 		
 		// CAMBIAR: Verifica colisión en todas las direcciones
-		Collision collision = gamePointer->checkEnemyCollision(GoombaRect, false);
+		Collision collision = playState->checkEnemyCollision(GoombaRect, false);
 		
 		//COLISION VERTICAL
 		if (!collision.collides) {
@@ -61,7 +61,7 @@ Goomba::update() {
 		GoombaRect.x += direction.getX();
 		GoombaRect.y = position.getY();
 		
-		collision = gamePointer->checkEnemyCollision(GoombaRect, false);
+		collision = playState->checkEnemyCollision(GoombaRect, false);
 		
 		//COLISION HORIZONTAL
 		if (!collision.collides) {
@@ -83,7 +83,7 @@ Goomba::update() {
 	}
 
 	//FUNCIONAL: Los goombas se mueven en funcion el offset del mapa y su posición
-	int newOffset = gamePointer->getMapOffset();
+	int newOffset = playState->getMapOffset();
 	int offsetChange = newOffset - previousOffset;
 	if (offsetChange != 0) {
 		position.setX(position.getX() - offsetChange);

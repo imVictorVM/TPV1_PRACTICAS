@@ -46,7 +46,7 @@ Pickable::hit(const SDL_Rect& rect, bool fromPlayer) {
 SDL_Rect
 Pickable::getRect() const {
 	SDL_Rect CPosition;
-	CPosition.x = position.getX() + gamePointer->getMapOffset();
+	CPosition.x = position.getX() + playState->getMapOffset();
 	CPosition.y = position.getY();
 	CPosition.w = PlayState::TILE_SIDE;
 	CPosition.h = PlayState::TILE_SIDE;

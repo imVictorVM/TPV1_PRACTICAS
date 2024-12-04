@@ -5,9 +5,9 @@
 
 using namespace std;
 
-TileMap::TileMap(const string& mapa, PlayState* game) : SceneObject(game) {
+TileMap::TileMap(const string& mapa, PlayState* gameState) : SceneObject(gameState) {
 
-	texture = gamePointer->getTexture(PlayState::BACKGROUND);
+	texture = gameState->getGame()->getTexture(Game::BACKGROUND);
 	ifstream entrada(mapa);
 	if (!entrada.is_open()) throw new exception("Error leyendo archivo");
 	while (entrada) {
@@ -28,7 +28,7 @@ void
 TileMap::render() const
 {
 	// atributo de Game
-	int mapOffset = gamePointer->getMapOffset();  
+	int mapOffset = playState->getMapOffset();  
 
 	// Primera columna de la matriz del mapa visible en la ventana
 	int x0 = mapOffset / PlayState::TILE_SIDE;
@@ -91,7 +91,7 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 				int indice = matrix[row][col];
 				if (indice == 34 || indice == 43) { //Si el jugador toca el mastil es victoria
 					cout << "VICTORIA" << endl;
-					gamePointer->loadNextLevel();
+					playState->loadNextLevel();
 				}
 				if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD) { //Si el jugador toca cualquier bloque de colision lo guardamos
 					SDL_Rect tileRect = {

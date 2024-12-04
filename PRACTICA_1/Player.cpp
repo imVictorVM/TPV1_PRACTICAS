@@ -14,8 +14,8 @@
 #include <string>
 using namespace std;
 
-Player::Player(PlayState* game, stringstream& atributes) : position(), 
-TextureMario(game->getTexture(PlayState::MARIANO)),TextureSuperMario(game->getTexture(PlayState::SUPERMARIANO)), GamePlayer(game), vidas(0),
+Player::Player(PlayState* gameState, stringstream& atributes) : position(), 
+TextureMario(gameState->getGame()->getTexture(Game::MARIANO)), TextureSuperMario(gameState->getGame()->getTexture(Game::SUPERMARIANO)), GamePlayer(gameState), vidas(0),
 jump(false), frameRunner(0), leftLimit(), damageCooldown(15), velocity(8), SuperMario(false){
 	string line;
 

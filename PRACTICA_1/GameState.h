@@ -7,9 +7,6 @@
 class Game;
 class GameObject;
 class EventHandler;
-class PlayState;
-class MainMenuState;
-class PauseState;
 
 class GameState
 {
@@ -26,5 +23,6 @@ public:
 
 	void addEventListener(EventHandler* e);
 	void addObject(GameObject* g);
+	Game* getGame() const;
 };
 

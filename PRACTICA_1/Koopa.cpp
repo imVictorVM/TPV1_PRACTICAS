@@ -5,10 +5,10 @@
 
 using namespace std;
 
-Koopa::Koopa(PlayState* game, istream& atributes) :Enemy(game, atributes)
+Koopa::Koopa(PlayState* gameState, istream& atributes) :Enemy(gameState, atributes)
 {
 
-	texture = gamePointer->getTexture(PlayState::KOOPA);
+	texture = gameState->getGame()->getTexture(Game::KOOPA);
 	width = PlayState::TILE_SIDE * 2;
 	height = PlayState::TILE_SIDE * 4;
 
@@ -48,7 +48,7 @@ void
 Koopa::update() {
 
 	//FUNCIONAL: Los goombas spawnean en su sitio cuando el jugador alcanza a verlos en la pantalla
-	int mapOffset = gamePointer->getMapOffset();
+	int mapOffset = playState->getMapOffset();
 	if (position.getX() < mapOffset + PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE) {
 		frozen = false;
 	}
@@ -69,7 +69,7 @@ Koopa::update() {
 		KoopaRect.x += direction.getX();
 
 		// CAMBIAR: Verifica colisión en todas las direcciones
-		Collision collision = gamePointer->checkEnemyCollision(KoopaRect, false);
+		Collision collision = playState->checkEnemyCollision(KoopaRect, false);
 
 		//COLISION VERTICAL
 		if (!collision.collides) {
@@ -89,7 +89,7 @@ Koopa::update() {
 		KoopaRect.x += direction.getX();
 		KoopaRect.y = position.getY();
 
-		collision = gamePointer->checkEnemyCollision(KoopaRect, false);
+		collision = playState->checkEnemyCollision(KoopaRect, false);
 
 		//COLISION HORIZONTAL
 		if (!collision.collides) {
@@ -111,7 +111,7 @@ Koopa::update() {
 	}
 
 	//FUNCIONAL: Los koopas se mueven en funcion el offset del mapa
-	int newOffset = gamePointer->getMapOffset();
+	int newOffset = playState->getMapOffset();
 	int offsetChange = newOffset - previousOffset;
 	if (offsetChange != 0) {
 		position = Vector2D<int>(position.getX() - offsetChange, position.getY());

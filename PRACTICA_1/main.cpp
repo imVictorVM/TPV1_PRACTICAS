@@ -8,7 +8,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	try {
-		PlayState game;
+		Game game;
 		
 		game.run();
 	}

@@ -34,7 +34,7 @@ protected:
 	SDL_Rect rect;
 	SDL_Renderer* renderer;
 	GameList<SceneObject>::anchor anchor;
-
+	PlayState* playState;
 public:
 
 	SceneObject(PlayState* g, std::istream& atributes);

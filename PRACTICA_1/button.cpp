@@ -2,8 +2,9 @@
 #include "PlayState.h"
 #include "checkML.h"
 #include "Game.h"
+#include "GameObject.h"
 
-button::button(Game* g) : GameObject(g), boundingBox{50,50,200,100}, hover(false), onPoint(false), buttonTexture(), mushroomTexture()
+button::button(Game* g) : GameObject(gamePointer), boundingBox{50,50,200,100}, hover(false), onPoint(false), buttonTexture(), mushroomTexture()
 {
 	game->connect([this](auto event) { handleEvent(event); });
 }

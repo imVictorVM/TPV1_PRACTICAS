@@ -5,16 +5,16 @@
 
 using namespace std;
 
-Mushroom::Mushroom(PlayState* game, SDL_Rect rect) : Pickable(game)
+Mushroom::Mushroom(PlayState* gameState, SDL_Rect rect) : Pickable(gameState)
 	//position(), direction(), mushroomTexture(game->getTexture(Game::MUSHROOM)), mushroomGame(game), velocity(2), previousOffset(0), ended(false), velocityGravity(8)
 {
 	//posicion de la seta
-	int posX = rect.x + gamePointer->getMapOffset();
+	int posX = rect.x + playState->getMapOffset();
 	int posY = rect.y - PlayState::TILE_SIDE;
 	position = Vector2D<int>(posX, posY);
 	direction = Vector2D<int>(velocity, 0);
 	frozen = false;
-	texture = gamePointer->getTexture(PlayState::MUSHROOM);
+	texture = gameState->getGame()->getTexture(Game::MUSHROOM);
 	
 }
 
@@ -33,7 +33,7 @@ Mushroom::update() {
 		MushRect.y += direction.getY();
 		MushRect.x += direction.getX();
 
-		Collision collision = gamePointer->checkEnemyCollision(MushRect, false);
+		Collision collision = playState->checkEnemyCollision(MushRect, false);
 
 		//COLISION VERTICAL
 		if (!collision.collides) {
@@ -52,7 +52,7 @@ Mushroom::update() {
 		MushRect.x += direction.getX();
 		MushRect.y = position.getY();
 
-		collision = gamePointer->checkEnemyCollision(MushRect, false);
+		collision = playState->checkEnemyCollision(MushRect, false);
 
 		//COLISION HORIZONTAL
 		if (!collision.collides) {
@@ -74,7 +74,7 @@ Mushroom::update() {
 	}
 
 	//Los bloques se mueven en funcion el offset del mapa
-	int newOffset = gamePointer->getMapOffset();
+	int newOffset = playState->getMapOffset();
 	int offsetChange = newOffset - previousOffset;
 	if (offsetChange != 0) {
 		position.setX(position.getX() - offsetChange);

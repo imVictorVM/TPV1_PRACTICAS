@@ -5,9 +5,9 @@
 
 using namespace std;
 
-Block::Block(PlayState* game, istream& atributes) : SceneObject(game, atributes)
+Block::Block(PlayState* gameState, istream& atributes) : SceneObject(gameState, atributes)
 	 {
-	texture = game->getTexture(PlayState::BLOCK); 
+	texture = gameState->getGame()->getTexture(Game::BLOCK); 
 	object = false;
 	frozen = false;
 	string line;
@@ -53,7 +53,7 @@ void
 Block::update() {
 	
 	//Los bloques se mueven en funcion el offset del mapa
-	int newOffset = gamePointer->getMapOffset();
+	int newOffset = playState->getMapOffset();
 	int offsetChange = newOffset - previousOffset;
 	if (offsetChange != 0) {
 		position.setX(position.getX() - offsetChange);
@@ -89,7 +89,7 @@ Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 	
 	// Creamos un rect del bloque para compararlo con el del jugador
 	SDL_Rect blockRect;
-	blockRect.x = position.getX() + gamePointer->getMapOffset();
+	blockRect.x = position.getX() + playState->getMapOffset();
 	blockRect.y = position.getY();
 	blockRect.w = PlayState::TILE_SIDE;
 	blockRect.h = PlayState::TILE_SIDE;

@@ -79,7 +79,6 @@ private:
 	Button* boton;
 	//std::vector<SDLEventCallback*> callbacks;
 	void emit(const SDL_Event& event) const;
-
 public:
 	void run();
 	//
@@ -107,7 +106,7 @@ public:
 	Game();
 	~Game();
 	SDL_Renderer* getRenderer();
-	void connect(SDLEventCallback cb);
+	//void connect(const SDLEventCallback& cb);
 };
 
 inline Texture*

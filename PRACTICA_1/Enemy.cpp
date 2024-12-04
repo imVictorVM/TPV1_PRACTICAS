@@ -44,7 +44,7 @@ Enemy::hit(const SDL_Rect& rect, bool fromPlayer) {
 		return colisionPlayer;
 	}
 	else {
-		return gamePointer->checkEnemyCollision(rect, fromPlayer);
+		return playState->checkEnemyCollision(rect, fromPlayer);
 	}
 
 }
@@ -52,7 +52,7 @@ Enemy::hit(const SDL_Rect& rect, bool fromPlayer) {
 SDL_Rect
 Enemy::getRect() const {
 	SDL_Rect EnemyRect;
-	EnemyRect.x = position.getX() + gamePointer->getMapOffset();
+	EnemyRect.x = position.getX() + playState->getMapOffset();
 	EnemyRect.y = position.getY();
 	EnemyRect.w = PlayState::TILE_SIDE;
 	EnemyRect.h = PlayState::TILE_SIDE;

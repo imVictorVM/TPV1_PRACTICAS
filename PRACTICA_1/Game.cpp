@@ -68,13 +68,10 @@ Game::Game()
 	// Carga las texturas
 	for (int i = 0; i < NUM_TEXTURES; ++i)
 		textures[i] = new Texture(renderer,
-		                          (textureRoot + textureSpec[i].name).c_str(),
-		                          textureSpec[i].numRows,
-					  textureSpec[i].numColumns);
+			(textureRoot + textureSpec[i].name).c_str(),
+			textureSpec[i].numRows,
+			textureSpec[i].numColumns);
 
-	//boton = new Button(this);
-
-	//loadNextLevel();
 }
 
 Game::~Game()
@@ -97,6 +94,34 @@ Game::~Game()
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+}
+
+void
+Game::emit(const SDL_Event& event) const {
+
+}
+
+void
+Game::run()
+{
+	// Bucle principal del juego
+	while (!empty()) {
+		// Marca de tiempo del inicio de la iteración
+		uint32_t inicio = SDL_GetTicks();
+
+		update();       // Actualiza el estado de los objetos del juego
+		render();       // Dibuja los objetos en la venta
+		handleEvent(SDL_PollEvent(&event)); // Maneja los eventos de la SDL
+		//NOTA: MIRAR DIAPOSITIVAS TEMA 5 GAME::HANDLEVENTS
+
+
+		// Tiempo que se ha tardado en ejecutar lo anterior
+		uint32_t elapsed = SDL_GetTicks() - inicio;
+
+		// Duerme el resto de la duración del frame
+		if (elapsed < FRAME_RATE)
+			SDL_Delay(FRAME_RATE - elapsed);
+	}
 }
 
 //void

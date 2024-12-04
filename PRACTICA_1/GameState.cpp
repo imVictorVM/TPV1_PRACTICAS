@@ -1,9 +1,9 @@
 #include "GameState.h"
 #include "PlayState.h"
 #include "PauseState.h"
-#include "MainMenuState.h"
 #include "EventHandler.h"
 #include "GameObject.h"
+#include "Game.h"
 
 GameState::GameState(Game* g) {
 	game = g;
@@ -42,5 +42,10 @@ GameState::addEventListener(EventHandler* e) {
 void
 GameState::addObject(GameObject* g) {
 	gameObjects.push_back(g);
+}
+
+Game*
+GameState::getGame() const {
+	return game;
 }
 

@@ -5,9 +5,9 @@
 
 using namespace std;
 
-Coin::Coin(PlayState* game, std::istream& atributes) : Pickable(game, atributes) {
+Coin::Coin(PlayState* gameState, std::istream& atributes) : Pickable(gameState, atributes) {
 
-	texture = gamePointer->getTexture(PlayState::COIN);
+	texture = gameState->getGame()->getTexture(Game::COIN);
 
 }
 
@@ -18,7 +18,7 @@ Coin::~Coin()
 void
 Coin::update() {
 
-	int newOffset = gamePointer->getMapOffset();
+	int newOffset = playState->getMapOffset();
 
 	if (position.getX() < newOffset + PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE) {
 		frozen = false;
