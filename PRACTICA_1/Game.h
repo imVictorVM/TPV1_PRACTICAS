@@ -15,7 +15,7 @@
 #include "Collision.h"
 
 #include "gameStateMachine.h"
-#include "SceneObject.h"
+//#include "SceneObject.h"
 #include "gameList.h"
 
 class Block;
@@ -24,6 +24,7 @@ class Koopa;
 class Mushroom;
 class Lift;
 class Coin;
+class GameStateMachine;
 
 class Button;
 
@@ -63,6 +64,7 @@ private:
 	std::array<Texture*, NUM_TEXTURES> textures;
 	// Interruptor para terminar el juego
 	//bool seguir;
+	std::list<SDLEventCallback> eventCallbacks;
 
 	// Objetos del juego
 	//Dog* perro;
@@ -76,7 +78,7 @@ private:
 	//std::vector<Mushroom*> mushrooms;
 	//GameList<SceneObject> gameList;
 
-	Button* boton;
+	//Button* boton;
 	//std::vector<SDLEventCallback*> callbacks;
 	void emit(const SDL_Event& event) const;
 public:
@@ -106,7 +108,11 @@ public:
 	Game();
 	~Game();
 	SDL_Renderer* getRenderer();
-	//void connect(const SDLEventCallback& cb);
+	void connect(const SDLEventCallback& cb);
+
+	void changeState(GameState* newState);
+	void pushNewState(GameState* newState);
+	void popCurrentState();
 };
 
 inline Texture*

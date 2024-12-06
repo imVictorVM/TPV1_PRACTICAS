@@ -10,7 +10,7 @@ GameState::GameState(Game* g) {
 }
 
 GameState::~GameState() {
-	delete game;
+	//delete game; NO NECESARIO
 }
 
 void

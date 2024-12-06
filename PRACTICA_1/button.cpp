@@ -6,7 +6,7 @@
 
 button::button(Game* g) : GameObject(gamePointer), boundingBox{50,50,200,100}, hover(false), onPoint(false), buttonTexture(), mushroomTexture()
 {
-	game->connect([this](auto event) { handleEvent(event); });
+	g->connect([this](auto event) { handleEvent(event); });
 }
 
 void

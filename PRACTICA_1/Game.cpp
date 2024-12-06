@@ -13,6 +13,8 @@
 #include "Collision.h"
 #include "GameObject.h"
 #include "SceneObject.h"
+#include "MainMenuState.h"
+//#include "gameStateMachine.h"
 
 #include "button.h"
 
@@ -72,6 +74,7 @@ Game::Game()
 			textureSpec[i].numRows,
 			textureSpec[i].numColumns);
 
+	pushState(new MainMenuState(this));
 }
 
 Game::~Game()
@@ -98,7 +101,9 @@ Game::~Game()
 
 void
 Game::emit(const SDL_Event& event) const {
-
+	for (const auto& callback : eventCallbacks) {
+		callback(event); // Llama a cada callback registrado
+	}
 }
 
 void
@@ -109,11 +114,14 @@ Game::run()
 		// Marca de tiempo del inicio de la iteración
 		uint32_t inicio = SDL_GetTicks();
 
-		update();       // Actualiza el estado de los objetos del juego
-		render();       // Dibuja los objetos en la venta
-		handleEvent(SDL_PollEvent(&event)); // Maneja los eventos de la SDL
-		//NOTA: MIRAR DIAPOSITIVAS TEMA 5 GAME::HANDLEVENTS
+		SDL_Event events;
+		while (SDL_PollEvent(&events)) { // Maneja los eventos de la SDL
+			emit(events);
+			handleEvent(events);
+		}
 
+		update();       // Actualiza el estado de los objetos del juego
+		render();       // Dibuja los objetos en la venta;
 
 		// Tiempo que se ha tardado en ejecutar lo anterior
 		uint32_t elapsed = SDL_GetTicks() - inicio;
@@ -122,6 +130,26 @@ Game::run()
 		if (elapsed < FRAME_RATE)
 			SDL_Delay(FRAME_RATE - elapsed);
 	}
+}
+
+void
+Game::connect(const SDLEventCallback& cb) {
+	eventCallbacks.push_back(cb);
+}
+
+void
+Game::changeState(GameState* newState) {
+	replaceState(std::shared_ptr<GameState>(newState)); //Accedemos al metodo privado 
+}
+
+void
+Game::pushNewState(GameState* newState) {
+	pushState(std::shared_ptr<GameState>(newState)); //Accedemos al metodo privado
+}
+
+void
+Game::popCurrentState() {
+	popState(); //Accedemos la metodo privado
 }
 
 //void
