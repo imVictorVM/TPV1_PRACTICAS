@@ -4,8 +4,13 @@
 #include "Game.h"
 #include "GameObject.h"
 
-button::button(Game* g) : GameObject(gamePointer), boundingBox{50,50,200,100}, hover(false), onPoint(false), buttonTexture(), mushroomTexture()
+button::button(Game* g, Texture* texture, Vector2D<int> pos, int tamX, int tamY) : GameObject(gamePointer), boundingBox(), hover(false), onPoint(false), buttonTexture(texture), mushroomTexture(g->getTexture(Game::MUSHROOM))
 {
+	boundingBox.x = pos.getX();
+	boundingBox.y = pos.getY();
+	boundingBox.w = tamX;
+	boundingBox.h = tamY;
+	std::cout << "Bounding box: (" << boundingBox.x << ", " << boundingBox.y << ", " << boundingBox.w << ", " << boundingBox.h << ")" << std::endl;
 	g->connect([this](auto event) { handleEvent(event); });
 }
 
@@ -20,10 +25,19 @@ button::render() const {
 	if (onPoint) {
 		SDL_Color color;
 		color.r = 0;
-		color.g = 0;
+		color.g = 255;
 		color.b = 0;
-		buttonTexture->render(boundingBox, color);
-		mushroomTexture->render(boundingBox, color);
+
+		int offsetX = 40;
+		int offsetY = 6;
+		SDL_Rect mushRect;
+		mushRect.x = boundingBox.x - offsetX;
+		mushRect.y = boundingBox.y - offsetY;
+		mushRect.w = game->TILE_SIDE;
+		mushRect.h = game->TILE_SIDE;
+
+		buttonTexture->render(boundingBox,color);
+		mushroomTexture->render(mushRect);
 	}
 	else {
 		buttonTexture->render(boundingBox);
@@ -34,6 +48,7 @@ void
 button::update() {
 	SDL_Point point;
 	SDL_GetMouseState(&point.x, &point.y);
+	std::cout << "Mouse position: (" << point.x << ", " << point.y << ")" << std::endl;
 	onPoint = SDL_PointInRect(&point, &boundingBox);
 }
 

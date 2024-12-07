@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimationState.cpp" />
+    <ClCompile Include="background.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="Coin.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationState.h" />
+    <ClInclude Include="background.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="checkML.h" />

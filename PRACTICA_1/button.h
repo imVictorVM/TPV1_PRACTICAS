@@ -35,7 +35,7 @@ private:
 
 	void emit() const; //transmite el evento de cick a todos los oyentes
 public:
-	button(Game* g);
+	button(Game* g,Texture* texture, Vector2D<int> pos, int tamX, int tamY);
 	//~button(); 
 
 	void connect(SDLEventCallBack rCallback);

@@ -19,59 +19,13 @@
 using namespace std;
 class TileMap;
 
-// Formato de la especificación de una textura
-//struct TextureSpec
-//{
-//	const char* name;	// Ruta del archivo
-//	uint numColumns;	// Número de frames por fila
-//	uint numRows;		// Número de frames por columna
-//};
-//
-//// Directorio raíz de los archivos de textura
-//const string textureRoot = "../assets/images/";
-//
-//// Especificación de las texturas del juego
-//const array<TextureSpec, PlayState::NUM_TEXTURES> textureSpec{
-//	TextureSpec{"background.png", 9, 7},
-//	TextureSpec{"mario.png", 12, 1},
-//	TextureSpec{"blocks.png", 6, 1},
-//	TextureSpec{"goomba.png",3,1},
-//	TextureSpec{"koopa.png",4,1},
-//	TextureSpec{"mushroom.png",1,1},
-//	TextureSpec{"supermario.png",22,1},
-//	TextureSpec{"lift.png",1,1},
-//	TextureSpec{"coin.png",4,1},
-//};
-
 PlayState::PlayState(Game* game) : GameState(game)
-	//: seguir(true)
 {
-	// Inicializa la SDL
-	//SDL_Init(SDL_INIT_EVERYTHING);
-	//window = SDL_CreateWindow("First test with SDL",
-	//	SDL_WINDOWPOS_CENTERED,
-	//	SDL_WINDOWPOS_CENTERED,
-	//	WIN_WIDTH,
-	//	WIN_HEIGHT,
-	//	SDL_WINDOW_SHOWN);
-	//
-	//renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	//
-	////SDL_RenderSetLogicalSize(renderer, WIN_WIDTH, WIN_HEIGHT);
-	//
-	//if (window == nullptr || renderer == nullptr)
-	//	throw "Error cargando SDL"s;
-	//
+	seguir = true;
 	mapOffset = 0;
-	//
-	//// Carga las texturas
-	//for (int i = 0; i < NUM_TEXTURES; ++i)
-	//	textures[i] = new Texture(renderer,
-	//		(textureRoot + textureSpec[i].name).c_str(),
-	//		textureSpec[i].numRows,
-	//		textureSpec[i].numColumns);
 
 	loadNextLevel();
+	run();
 }
 
 void
@@ -88,7 +42,7 @@ PlayState::loadNextLevel() {
 		loadObjectMap(levels[currentLevel].first, levels[currentLevel].second);
 		currentLevel++;
 	}
-	//else seguir = false;
+	else seguir = false;
 	//Llamar al menu principal
 }
 
@@ -159,14 +113,6 @@ PlayState::clearActualLevel() {
 		delete player;
 		player = nullptr;
 	}
-
-	// OTRAS APLICACIONES DE BORRADO 
-	//for (Block* block : blocks) delete block;
-	//blocks.clear();
-	//for (auto it = blocks.begin(); it != blocks.end(); ++it) {
-	//	delete* it;
-	//	it = blocks.erase(it);
-	//}
 	for (int i = 0; i < blocks.size(); i++) {
 		if (blocks[i] != nullptr) {
 			delete blocks[i];
@@ -174,12 +120,6 @@ PlayState::clearActualLevel() {
 		blocks[i] = nullptr;
 	}
 	blocks.clear();
-	////for (Goomba* goomba : goombas) delete goomba;
-	////goombas.clear();
-	//for (auto it = goombas.begin(); it != goombas.end(); ++it) {
-	//	delete* it;
-	//	it = goombas.erase(it);
-	//}
 	for (int i = 0; i < goombas.size(); i++) {
 		if (goombas[i] != nullptr) {
 			delete goombas[i];
@@ -187,12 +127,6 @@ PlayState::clearActualLevel() {
 		goombas[i] = nullptr;
 	}
 	goombas.clear();
-	////for (Koopa* koopa : koopas) delete koopa;
-	////koopas.clear();
-	//for (auto it = koopas.begin(); it != koopas.end(); ++it) {
-	//	delete* it;
-	//	it = koopas.erase(it);
-	//}
 	for (int i = 0; i < koopas.size(); i++) {
 		if (koopas[i] != nullptr) {
 			delete koopas[i];
@@ -200,12 +134,6 @@ PlayState::clearActualLevel() {
 		koopas[i] = nullptr;
 	}
 	koopas.clear();
-	////for (Lift* lift : lifts) delete lift;
-	////lifts.clear();
-	//for (auto it = lifts.begin(); it != lifts.end(); ++it) {
-	//	delete* it;
-	//	it = lifts.erase(it);
-	//}
 	for (int i = 0; i < lifts.size(); i++) {
 		if (lifts[i] != nullptr) {
 			delete lifts[i];
@@ -213,14 +141,6 @@ PlayState::clearActualLevel() {
 		lifts[i] = nullptr;
 	}
 	lifts.clear();
-	////for (Coin* coin : coins) delete coin;
-	////coins.clear();
-	//for (auto it = coins.begin(); it != coins.end(); ++it) {
-	//	if (*it != nullptr) {
-	//		delete* it;
-	//	}
-	//	it = coins.erase(it);
-	//}
 	for (int i = 0; i < coins.size(); i++) {
 		if (coins[i] != nullptr) {
 			delete coins[i];
@@ -228,8 +148,6 @@ PlayState::clearActualLevel() {
 		coins[i] = nullptr;
 	}
 	coins.clear();
-	////for (Mushroom* mushroom : mushrooms) delete mushroom;
-	////mushrooms.clear();
 	for (int i = 0; i < mushrooms.size(); i++) {
 		if (mushrooms[i] != nullptr) {
 			delete mushrooms[i];
@@ -296,24 +214,6 @@ PlayState::render() const
 	SDL_RenderClear(renderer);
 	tilemap->render();
 	player->render();
-	//for (const Block* block : blocks) {
-	//	block->render();
-	//}
-	//for (const Goomba* goomba : goombas) {
-	//	goomba->render();
-	//}
-	//for (const Koopa* koopa : koopas) {
-	//	koopa->render();
-	//}
-	//for (const Mushroom* mushroom : mushrooms) {
-	//	mushroom->render();
-	//}
-	//for (const Lift* lift : lifts) {
-	//	lift->render();
-	//}
-	//for (const Coin* coin : coins) {
-	//	coin->render();
-	//}
 
 	for (const SceneObject* sceneObj : gameList) {
 		sceneObj->render();
@@ -328,68 +228,6 @@ PlayState::update()
 	// Actualiza los objetos del juego
 	tilemap->update();
 	player->update();
-
-	//IMPORTANTE SI LO HACEMOS ASI SE PRODUCEN FUGAS DE MEMORIA MEJOR USAR EL OTRO
-	//for (Block* block : blocks) {
-	//	block->update();
-	//	if (!block->isAlive()) delete block;
-	//}
-
-
-	//Actualiza y elimina bloques
-	//for (auto it = blocks.begin(); it != blocks.end();) {
-	//	(*it)->update();
-	//	if (!(*it)->isAlive()) {
-	//		delete* it;
-	//		it = blocks.erase(it);
-	//	}
-	//	else ++it;
-	//}
-	//
-	//// Actualiza y elimina Goombas
-	//for (auto it = goombas.begin(); it != goombas.end();) {
-	//	(*it)->update();
-	//	if (!(*it)->isAlive()) {
-	//		delete* it;
-	//		it = goombas.erase(it);
-	//	}
-	//	else ++it;
-	//}
-	//
-	//// Actualiza y elimina Koopas
-	//for (auto it = koopas.begin(); it != koopas.end();) {
-	//	(*it)->update();
-	//	if (!(*it)->isAlive()) {
-	//		delete* it;
-	//		it = koopas.erase(it);
-	//	}
-	//	else ++it;
-	//}
-	//
-	//// Actualiza lifts
-	//for (auto it = lifts.begin(); it != lifts.end(); ++it) {
-	//	(*it)->update();
-	//}
-	//
-	//// Actualiza y elimina Mushrooms
-	//for (auto it = mushrooms.begin(); it != mushrooms.end();) {
-	//	(*it)->update();
-	//	if (!(*it)->isAlive()) {
-	//		delete* it;
-	//		it = mushrooms.erase(it);
-	//	}
-	//	else ++it;
-	//}
-	//
-	//// Actualiza y elimina Mushrooms
-	//for (auto it = coins.begin(); it != coins.end();) {
-	//	(*it)->update();
-	//	if (!(*it)->isAlive()) {
-	//		delete* it;
-	//		it = coins.erase(it);
-	//	}
-	//	else ++it;
-	//}
 
 	for (SceneObject* sceneObj : gameList) {
 		sceneObj->update();
@@ -428,48 +266,6 @@ PlayState::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 	colision = tilemap->hit(rect, fromPlayer);
 	if (colision.collides) return colision;
 
-
-	// Luego verificamos colisión con cada bloque
-	//for (Block* block : blocks) {
-	//	colision = block->hit(rect, fromPlayer);
-	//	if (block->ObtainObject()) {
-	//		mushrooms.push_back(new Mushroom(this, block->getRect()));
-	//		block->itemObtained();
-	//	}
-	//
-	//	if (colision.collides) return colision;
-	//}
-	//
-	//if (!mushrooms.empty()) {
-	//	for (Mushroom* mushroom : mushrooms) {
-	//		colision = mushroom->hit(rect, fromPlayer);
-	//		if (colision.collides) {
-	//			player->TransformacionSuperMario();
-	//			return colision;
-	//		}
-	//	}
-	//}
-	//
-	//for (Goomba* goomba : goombas) {
-	//	colision = goomba->hit(rect, fromPlayer);
-	//	if (colision.damages) return colision;
-	//}
-	//
-	//for (Koopa* koopa : koopas) {
-	//	colision = koopa->hit(rect, fromPlayer);
-	//	if (colision.damages) return colision;
-	//}
-	//
-	//for (Lift* lift : lifts) {
-	//	colision = lift->hit(rect, fromPlayer);
-	//	if (colision.collides) return colision;
-	//}
-	//
-	//for (Coin* coin : coins) {
-	//	colision = coin->hit(rect, fromPlayer);
-	//	if (colision.collides) return colision;
-	//}
-
 	for (SceneObject* sceneObj : gameList) {
 		colision = sceneObj->hit(rect, fromPlayer);
 		if (colision.collides) return colision;
@@ -491,10 +287,6 @@ PlayState::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
 		colision = block->hit(rect, fromPlayer);
 		if (colision.collides) return colision;
 	}
-	//for (SceneObject* sceneObj : gameList) {
-	//	colision = sceneObj->hit(rect, fromPlayer);
-	//	if (colision.collides) return colision;
-	//}
 
 	return colision;
 }

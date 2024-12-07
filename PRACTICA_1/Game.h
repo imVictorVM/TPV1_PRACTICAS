@@ -41,6 +41,12 @@ public:
 		SUPERMARIANO,
 		LIFT,
 		COIN,
+		NIVEL1,
+		NIVEL2,
+		SALIR,
+		CONTINUAR,
+		VOLVERALMENU,
+		PORTADA,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 

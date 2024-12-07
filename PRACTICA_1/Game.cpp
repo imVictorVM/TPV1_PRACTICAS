@@ -29,6 +29,12 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"supermario.png",22,1},
 	TextureSpec{"lift.png",1,1},
 	TextureSpec{"coin.png",4,1},
+	TextureSpec{"nivel1.png",1,1},
+	TextureSpec{"nivel2.png",1,1},
+	TextureSpec{"salir.png",1,1},
+	TextureSpec{"continuar.png",1,1},
+	TextureSpec{"volverAlMenu.png",1,1},
+	TextureSpec{"portada.png",1,1},
 };
 
 Game::Game() : GameStateMachine()
@@ -58,8 +64,8 @@ Game::Game() : GameStateMachine()
 			textureSpec[i].numRows,
 			textureSpec[i].numColumns);
 
-	pushState(new PlayState(this));
-	//pushState(new MainMenuState(this));
+	//pushState(new PlayState(this));
+	pushState(new MainMenuState(this));
 }
 
 Game::~Game()
@@ -85,6 +91,7 @@ Game::emit(const SDL_Event& event) const {
 void
 Game::run()
 {
+
 	// Bucle principal del juego
 	while (!empty()) {
 		// Marca de tiempo del inicio de la iteración
@@ -92,13 +99,13 @@ Game::run()
 
 		SDL_Event events;
 		while (SDL_PollEvent(&events)) { // Maneja los eventos de la SDL
-			emit(events);
 			handleEvent(events);
 		}
 
 		update();       // Actualiza el estado de los objetos del juego
+		SDL_RenderClear(renderer);
 		render();       // Dibuja los objetos en la venta;
-
+		SDL_RenderPresent(renderer);
 		// Tiempo que se ha tardado en ejecutar lo anterior
 		uint32_t elapsed = SDL_GetTicks() - inicio;
 
