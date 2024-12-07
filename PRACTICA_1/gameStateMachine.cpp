@@ -7,6 +7,7 @@
  */
 
 #include "gameStateMachine.h"
+class GameState;
 
 using namespace std;
 

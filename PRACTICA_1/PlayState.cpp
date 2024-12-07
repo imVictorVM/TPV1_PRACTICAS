@@ -109,7 +109,7 @@ PlayState::loadObjectMap(const string& mapFile, const string& objectFile) {
 	stringstream color(line);
 	int R = 0, G = 0, B = 0;
 	color >> R >> G >> B;
-	SDL_SetRenderDrawColor(renderer, R, G, B, 255); //Color de fondo leyendo la primera linea
+	SDL_SetRenderDrawColor(getGame()->getRenderer(), R, G, B, 255); //Color de fondo leyendo la primera linea
 
 	while (getline(file, line)) {
 

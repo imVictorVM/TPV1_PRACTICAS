@@ -3,30 +3,19 @@
 // Biblioteca estándar de C++
 #include <array>
 #include <vector>
+#include <string>
 
 // Biblioteca SDL
 #include <SDL.h>
 #include <functional>
+#include "checkML.h"
 
 // Nuestras clases
 #include "Texture.h"
 #include "TileMap.h"
-#include "Player.h"
 #include "Collision.h"
 
 #include "gameStateMachine.h"
-//#include "SceneObject.h"
-#include "gameList.h"
-
-class Block;
-class Goomba;
-class Koopa;
-class Mushroom;
-class Lift;
-class Coin;
-class GameStateMachine;
-
-class Button;
 
 using uint = unsigned int;
 using SDLEventCallback = std::function<void(const SDL_Event&)>;
@@ -66,39 +55,10 @@ private:
 	//bool seguir;
 	std::list<SDLEventCallback> eventCallbacks;
 
-	// Objetos del juego
-	//Dog* perro;
-	//TileMap* tilemap = nullptr;
-	//Player* player = nullptr;
-	//std::vector<Block*> blocks;
-	//std::vector<Goomba*> goombas;
-	//std::vector<Koopa*> koopas;
-	//std::vector<Lift*> lifts;
-	//std::vector<Coin*> coins;
-	//std::vector<Mushroom*> mushrooms;
-	//GameList<SceneObject> gameList;
-
-	//Button* boton;
-	//std::vector<SDLEventCallback*> callbacks;
 	void emit(const SDL_Event& event) const;
 public:
 	void run();
-	//
-	//void update();
-	//void render() const;
-	//void handleEvents();
-	//void clearActualLevel();
-	//void loadNextLevel();
-	//void loadObjectMap(const std::string& mapFile, const std::string& objectFile);
-	//int getMapOffset();
-	//Collision checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer);
-	//Collision checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer);
 
-	//AÑADIDOS PERO NO ESPECIFICAOS EN ENUNCIADO
-	//void setMapOffset(int playerOffset);
-	//void ResetMapOffset();
-	//Vector2D<int> getPlayerPosition() const;
-	// Constante globales
 	static constexpr uint WIN_WIDTH = 600;
 	static constexpr uint WIN_HEIGHT = 500;
 	static constexpr uint FRAME_RATE = 50;
