@@ -8,7 +8,8 @@
 #include "gameList.h"
 #include "Collision.h"
 #include "Texture.h"
-
+#include <sstream>
+#include <fstream>
 
 class Game;
 class PlayState;

@@ -1,22 +1,14 @@
 #include "checkML.h"
 #include "Player.h"
-#include "Block.h"
-#include "TileMap.h"
+
 #include "Game.h"
-#include "Collision.h"
-#include "SceneObject.h"
+
 #include "PlayState.h"
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <vector>
-#include <string>
+
 using namespace std;
 
-Player::Player(PlayState* gameState, stringstream& atributes) : position(), 
-TextureMario(gameState->getGame()->getTexture(Game::MARIANO)), TextureSuperMario(gameState->getGame()->getTexture(Game::SUPERMARIANO)), GamePlayer(gameState), vidas(0),
-jump(false), frameRunner(0), leftLimit(), damageCooldown(15), velocity(8), SuperMario(false){
+Player::Player(PlayState* gameState, stringstream& atributes) : SceneObject(gameState)
+{
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -25,24 +17,24 @@ jump(false), frameRunner(0), leftLimit(), damageCooldown(15), velocity(8), Super
 	//Al estar atributes vacio necesitamos llamar a un nuevo stringstream que vaya leyendo los valores de uno en uno
 	stringstream lineStream(line);
 
-	//Aplicamos posicion en x con el primer parametro
-	int positionx;
-	lineStream >> positionx;
-	//Aplicamos posicion en y con el segundo parametro
-	int positiony;
-	lineStream >> positiony;
 	//Aplicamos numero de vidas con el tercer parametro
-	int nvidas;
-	lineStream >> nvidas;
+	lineStream >> vidas;
+
+	texture = gameState->getGame()->getTexture(Game::MARIANO);
+	TextureSuperMario = gameState->getGame()->getTexture(Game::SUPERMARIANO);
+
 
 	//Pasamos los parametros al constructor del player despues de leerlos
-	position = Vector2D<int>((positionx) * PlayState::TILE_SIDE, (positiony - 1) * PlayState::TILE_SIDE);
-	direction = Vector2D<int>(0, velocity);
-	InitialPositionX = positionx;
-	InitialPositionY = positiony;
-	vidas = nvidas;
+	//position = Vector2D<int>((positionx) * PlayState::TILE_SIDE, (positiony - 1) * PlayState::TILE_SIDE);
+	
+	direction = Vector2D<int>(0, velocityGravity);
+	InitialPositionX = position.getX();
+	InitialPositionY = position.getY();
+	leftLimit = false;
 	lookingLeft = false;
-	groundPositionY = (positiony - 1) * PlayState::TILE_SIDE;
+	damageCooldown = 15;
+	SuperMario = false;
+	groundPositionY = (position.getY() - 1) * PlayState::TILE_SIDE;
 	
 }
 
@@ -76,7 +68,7 @@ Player::render() const {
 		}
 
 		//Renderizamos con los parametros actualizados
-		TextureMario->renderFrame(MPosition, 0, frame, flip);
+		texture->renderFrame(MPosition, 0, frame, flip);
 	}
 	else {
 		int frame = 0;
@@ -262,8 +254,8 @@ Player::getRect() const{
 	playerRect.x = position.getX();
 	playerRect.y = position.getY();
 	if (SuperMario) {
-		playerRect.w = TextureMario->getFrameWidth() * 2;
-		playerRect.h = TextureMario->getFrameHeight() * 4;
+		playerRect.w = texture->getFrameWidth() * 2;
+		playerRect.h = texture->getFrameHeight() * 4;
 	}
 	else {
 		playerRect.w = TextureSuperMario->getFrameWidth() * 2;
