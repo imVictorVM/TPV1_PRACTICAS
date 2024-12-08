@@ -14,7 +14,6 @@ protected:
 	//Vector2D<int> direction;
 	//Texture* TextureMario;
 	Texture* TextureSuperMario;
-	PlayState* GamePlayer;
 	int vidas;
 	bool jump; //Sirve para ver si podemos saltar o no
 	//int frameRunner; //Sirve como contador para saltar entre los frames 0,2,3

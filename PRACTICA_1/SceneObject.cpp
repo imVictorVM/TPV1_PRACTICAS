@@ -32,7 +32,7 @@ SceneObject::SceneObject(PlayState* g, istream& atributes) : GameObject(g) {
 }
 
 SceneObject::SceneObject(PlayState* g) : GameObject(g) {
-
+	playState = g;
 	posX = 0;
 	posY = 0;
 	position = Vector2D(posX * PlayState::TILE_SIDE, (posY - 1) * PlayState::TILE_SIDE);

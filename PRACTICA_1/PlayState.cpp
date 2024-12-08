@@ -33,8 +33,8 @@ PlayState::loadNextLevel() {
 	static int currentLevel = 0;
 
 	vector<pair<string, string>> levels = {
-		{"../assets/maps/world1.csv","../assets/maps/world1.txt"},
 		{"../assets/maps/world2.csv","../assets/maps/world2.txt"},
+		{"../assets/maps/world1.csv","../assets/maps/world1.txt"},
 	};
 
 	if (currentLevel < levels.size()) {
@@ -160,38 +160,36 @@ PlayState::~PlayState()
 //	}
 //}
 
-void
-PlayState::render() const
-
-{	// Pinta los objetos del juego
-	SDL_RenderClear(renderer);
-	tilemap->render();
-	player->render();
-
-	for (const SceneObject* sceneObj : gameList) {
-		sceneObj->render();
-	}
-
-	SDL_RenderPresent(renderer);
-}
-
-void
-PlayState::update()
-{
-	// Actualiza los objetos del juego
-	tilemap->update();
-	player->update();
-
-	for (SceneObject* sceneObj : gameList) {
-		sceneObj->update();
-	}
-}
+//void
+//PlayState::render() const
+//
+//{	// Pinta los objetos del juego
+//	SDL_RenderClear(renderer);
+//	tilemap->render();
+//	player->render();
+//
+//	for (const SceneObject* sceneObj : gameList) {
+//		sceneObj->render();
+//	}
+//
+//	SDL_RenderPresent(renderer);
+//}
+//
+//void
+//PlayState::update()
+//{
+//	// Actualiza los objetos del juego
+//	tilemap->update();
+//	player->update();
+//
+//	for (SceneObject* sceneObj : gameList) {
+//		sceneObj->update();
+//	}
+//}
 
 
 int PlayState::getMapOffset() const {
-	return 0;
-	//IMPORTANTE DESCOMENTAR ESTO CUANDO ESTE ARREGLADO
-	//return mapOffset;
+	return mapOffset;
 };
 
 void

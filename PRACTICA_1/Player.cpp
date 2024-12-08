@@ -9,8 +9,6 @@ using namespace std;
 
 Player::Player(PlayState* gameState, stringstream& atributes) : SceneObject(gameState)
 {
-	GamePlayer = gameState;
-
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -45,7 +43,7 @@ Player::render() const {
 
 	SDL_Rect MPosition;
 	MPosition = getRect();
-	MPosition.x -= GamePlayer->getMapOffset();
+	MPosition.x -= playState->getMapOffset();
 		
 	if (!SuperMario) {
 		int frame = 0;
@@ -111,7 +109,7 @@ void Player::update() {
 	MarioRect.x += direction.getX();
 
 	// CAMBIAR: Verifica colisión en todas las direcciones
-	Collision collision = GamePlayer->checkPlayerCollision(MarioRect, true);
+	Collision collision = playState->checkPlayerCollision(MarioRect, true);
 	
 	//FUNCIONAL: CONTROL DE SALTO
 	int jumpMaxDistance = 4 * PlayState::TILE_SIDE;
@@ -136,7 +134,7 @@ void Player::update() {
 	MarioRect.y = position.getY();
 	MarioRect.x += direction.getX();
 	
-	collision = GamePlayer->checkPlayerCollision(MarioRect, true);
+	collision = playState->checkPlayerCollision(MarioRect, true);
 	
 	//COLISION HORIZONTAL
 	if (!collision.collides) position.setX(newPosition.getX());
@@ -157,7 +155,7 @@ void Player::update() {
 				vidas--;
 				damageCooldown = 0;
 				position = Vector2D<int>(InitialPositionX * PlayState::TILE_SIDE, (InitialPositionY - 1) * PlayState::TILE_SIDE);
-				GamePlayer->ResetMapOffset();
+				playState->ResetMapOffset();
 				cout << "Vidas restantes: " << vidas << endl;
 				return;
 			}
@@ -170,8 +168,8 @@ void Player::update() {
 	damageCooldown++;
 
 	// FUNCIONAL: MARIO CRUZA EL LIMITE DEL MAPA IZQUIERDO
-	if (position.getX() < GamePlayer->getMapOffset()) {
-		position.setX(GamePlayer->getMapOffset());
+	if (position.getX() < playState->getMapOffset()) {
+		position.setX(playState->getMapOffset());
 	}
 
 	// FUNCIONAL: CAMBIO DE LA ANIMACION AL CORRER
@@ -179,7 +177,7 @@ void Player::update() {
 	else frameRunner++;
 
 	bool midMap = false;
-	int midMapPositionX = (PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE / 2) + GamePlayer->getMapOffset();
+	int midMapPositionX = (PlayState::WINDOW_WIDTH * PlayState::TILE_SIDE / 2) + playState->getMapOffset();
 
 	// FUNCIONAL: Condicional para mover el mapa a la derecha
 	if (position.getX() > midMapPositionX && direction.getX() > 0) midMap = true;
@@ -187,14 +185,14 @@ void Player::update() {
 
 	// FUNCIONAL: Desplazamiento del mapa cuando se mueve a la derecha
 	if (midMap) {
-		GamePlayer->setMapOffset(velocity);
+		playState->setMapOffset(velocity);
 	}
 
 }
 
 Collision 
 Player::hit(const SDL_Rect& rect, bool fromPlayer) {
-	return GamePlayer->checkPlayerCollision(rect, fromPlayer);
+	return playState->checkPlayerCollision(rect, fromPlayer);
 }
 
 void 

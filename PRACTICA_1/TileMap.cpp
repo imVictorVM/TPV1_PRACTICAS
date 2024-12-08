@@ -7,6 +7,8 @@ using namespace std;
 
 TileMap::TileMap(const string& mapa, PlayState* gameState) : SceneObject(gameState) {
 
+	playState = gameState;
+
 	texture = gameState->getGame()->getTexture(Game::BACKGROUND);
 	ifstream entrada(mapa);
 	if (!entrada.is_open()) throw new exception("Error leyendo archivo");
