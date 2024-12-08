@@ -1,6 +1,7 @@
+#include "checkML.h"
 #include "GameObject.h"
 #include "GameState.h"
-#include "checkML.h"
+
 GameObject::GameObject(GameState* g) {
 	gamePointer = g;
 }

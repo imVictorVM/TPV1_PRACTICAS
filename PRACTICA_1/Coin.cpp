@@ -1,5 +1,5 @@
-#include "Coin.h"
 #include "checkML.h"
+#include "Coin.h"
 #include "Game.h"
 #include "PlayState.h"
 
