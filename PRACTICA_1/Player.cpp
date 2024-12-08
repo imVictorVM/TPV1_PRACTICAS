@@ -112,7 +112,7 @@ void Player::update() {
 	
 	collision = playState->checkCollision(MarioRect, true);
 	if (collision.damages) {
-		cout << "prueba" << endl;
+
 	}
 	
 	//COLISION HORIZONTAL
