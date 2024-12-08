@@ -1,11 +1,12 @@
 #pragma once
 
 #include "SceneObject.h"
+#include "EventHandler.h"
 
 class Game;
 class PlayState;
 
-class Player : public SceneObject
+class Player : public SceneObject, public EventHandler
 {
 protected:
 	//Vector2D<int> position;
@@ -26,7 +27,7 @@ protected:
 	bool SuperMario;
 public:
 
-	Player(PlayState* game,std::stringstream& atributos);
+	Player(PlayState* game,std::istream& atributos);
 
 	void render() const override;
 
@@ -34,7 +35,7 @@ public:
 
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
 
-	void HandleEvent(SDL_Event event);
+	void handleEvent(const SDL_Event& event);
 
 	Vector2D<int> getPosition() const;
 	

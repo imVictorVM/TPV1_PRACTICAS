@@ -71,6 +71,7 @@ void PlayState::loadObjectMap(const string& mapFile, const string& objectFile) {
 		case 'M':
 			player = new Player(this, lineStream);
 			addObject(player);
+			addEventListener(player);
 			break;
 		case 'B':
 			obj = new Block(this, lineStream);
@@ -192,22 +193,22 @@ int PlayState::getMapOffset() const {
 	return mapOffset;
 };
 
-void
-PlayState::handleEvents()
-{
-	// Procesamiento de eventos
-	SDL_Event evento;
-
-	while (SDL_PollEvent(&evento)) {
-		if (evento.type == SDL_QUIT)
-			seguir = false;
-		else if (evento.type == SDL_KEYDOWN || evento.type == SDL_KEYUP) {
-			//perro->handleEvent(evento);
-			player->HandleEvent(evento);
-
-		}
-	}
-}
+//void
+//PlayState::handleEvents()
+//{
+//	// Procesamiento de eventos
+//	SDL_Event evento;
+//
+//	while (SDL_PollEvent(&evento)) {
+//		if (evento.type == SDL_QUIT)
+//			seguir = false;
+//		else if (evento.type == SDL_KEYDOWN || evento.type == SDL_KEYUP) {
+//			//perro->handleEvent(evento);
+//			player->handleEvent(evento);
+//
+//		}
+//	}
+//}
 
 Collision
 PlayState::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
@@ -218,13 +219,13 @@ PlayState::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 
 	//IMPORTANTE: DESCOMENTAR ESTO CUANDO ESTE ARREGLADO
 	// Primero verificamos colisión con el tilemap
-	//colision = tilemap->hit(rect, fromPlayer);
-	//if (colision.collides) return colision;
-	//
-	//for (SceneObject* sceneObj : gameList) {
-	//	colision = sceneObj->hit(rect, fromPlayer);
-	//	if (colision.collides) return colision;
-	//}
+	colision = tilemap->hit(rect, fromPlayer);
+	if (colision.collides) return colision;
+	
+	for (SceneObject* sceneObj : gameList) {
+		colision = sceneObj->hit(rect, fromPlayer);
+		if (colision.collides) return colision;
+	}
 
 	return colision;
 }

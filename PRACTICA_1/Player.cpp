@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Player::Player(PlayState* gameState, stringstream& atributes) : SceneObject(gameState)
+Player::Player(PlayState* gameState, istream& atributes) : SceneObject(gameState,atributes), EventHandler()
 {
 	string line;
 
@@ -36,6 +36,7 @@ Player::Player(PlayState* gameState, stringstream& atributes) : SceneObject(game
 	SuperMario = false;
 	groundPositionY = (position.getY() - 1) * PlayState::TILE_SIDE;
 	frameRunner = 0;
+	velocity = 8;
 }
 
 void
@@ -196,7 +197,7 @@ Player::hit(const SDL_Rect& rect, bool fromPlayer) {
 }
 
 void 
-Player::HandleEvent(SDL_Event event) {
+Player::handleEvent(const SDL_Event& event) {
 	//La direccion tambien cuenta como si fuese la velocidad, uso tileside por ser una variable global y accesible para todos
 	if (event.type == SDL_KEYDOWN) {
 		switch (event.key.keysym.sym) {

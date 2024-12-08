@@ -48,7 +48,6 @@ void
 button::update() {
 	SDL_Point point;
 	SDL_GetMouseState(&point.x, &point.y);
-	std::cout << "Mouse position: (" << point.x << ", " << point.y << ")" << std::endl;
 	onPoint = SDL_PointInRect(&point, &boundingBox);
 }
 
