@@ -2,10 +2,11 @@ IKER JULIAN MARTINEZ MANRIQUE
 VÍCTOR VALENZUELA MARTÍNEZ
 
 Información:
-Hemos implementado las clases GameObject y SceneObject, y todas las clases del juego a excepción de Player heredan de ellas.
+Hemos implementado la máquina de estados y sus diferentes estados. La animación de muerte se ejecuta al pulsar la tecla C al no funcionar las colisiones en la dirección de enemigos al jugador.
 
 Problemas:
--Al intentar usar herencia con el player, el juego no compila, por lo que no hemos podido hacer que Player sea un SceneObject.
--Al intentar hacer el cambio de mapa al terminar el nivel, el juego deja de funcionar, aunque si detecta la condición de victoria, así que tenemos un problema con el cambio de tilemap.
--El método trytomove solo funciona verticalmente, así que no lo hemos implementado y hemos dejado comentado el intento de aplicarlo en el goomba.
--La lista de objetos del game no funciona correctamente, no se llaman bien a los update ni a los render y tampoco destruye correctamente los objetos.
+-Solo hemos arrastrado problemas de anteriores prácticas, no ha surgido ninguno con los estados de juego:
+-No funciona el cambio de posición del jugador en el cambio de nivel (al estar implementado el estado de victoria, no implica problemas).
+-No funcionan las colisiones en dirección del enemigo al jugador.
+
+
