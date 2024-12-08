@@ -110,7 +110,7 @@ void Player::update() {
 	MarioRect.x += direction.getX();
 
 	// CAMBIAR: Verifica colisión en todas las direcciones
-	Collision collision = playState->checkPlayerCollision(MarioRect, true);
+	Collision collision = playState->checkCollision(MarioRect, true);
 	
 	//FUNCIONAL: CONTROL DE SALTO
 	int jumpMaxDistance = 4 * PlayState::TILE_SIDE;
@@ -135,7 +135,10 @@ void Player::update() {
 	MarioRect.y = position.getY();
 	MarioRect.x += direction.getX();
 	
-	collision = playState->checkPlayerCollision(MarioRect, true);
+	collision = playState->checkCollision(MarioRect, true);
+	if (collision.damages) {
+		cout << "prueba" << endl;
+	}
 	
 	//COLISION HORIZONTAL
 	if (!collision.collides) position.setX(newPosition.getX());
@@ -193,7 +196,7 @@ void Player::update() {
 
 Collision 
 Player::hit(const SDL_Rect& rect, bool fromPlayer) {
-	return playState->checkPlayerCollision(rect, fromPlayer);
+	return playState->checkCollision(rect, fromPlayer);
 }
 
 void 

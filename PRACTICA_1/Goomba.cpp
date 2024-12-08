@@ -41,7 +41,7 @@ Goomba::update() {
 		GoombaRect.x += direction.getX();
 		
 		// CAMBIAR: Verifica colisión en todas las direcciones
-		Collision collision = playState->checkEnemyCollision(GoombaRect, false);
+		Collision collision = playState->checkCollision(GoombaRect, false);
 		
 		//COLISION VERTICAL
 		if (!collision.collides) {
@@ -61,7 +61,7 @@ Goomba::update() {
 		GoombaRect.x += direction.getX();
 		GoombaRect.y = position.getY();
 		
-		collision = playState->checkEnemyCollision(GoombaRect, false);
+		collision = playState->checkCollision(GoombaRect, false);
 		
 		//COLISION HORIZONTAL
 		if (!collision.collides) {

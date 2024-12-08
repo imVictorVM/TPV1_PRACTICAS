@@ -33,7 +33,7 @@ Mushroom::update() {
 		MushRect.y += direction.getY();
 		MushRect.x += direction.getX();
 
-		Collision collision = playState->checkEnemyCollision(MushRect, false);
+		Collision collision = playState->checkCollision(MushRect, false);
 
 		//COLISION VERTICAL
 		if (!collision.collides) {
@@ -52,7 +52,7 @@ Mushroom::update() {
 		MushRect.x += direction.getX();
 		MushRect.y = position.getY();
 
-		collision = playState->checkEnemyCollision(MushRect, false);
+		collision = playState->checkCollision(MushRect, false);
 
 		//COLISION HORIZONTAL
 		if (!collision.collides) {

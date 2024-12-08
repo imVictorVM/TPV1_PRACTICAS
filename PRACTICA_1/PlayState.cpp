@@ -33,8 +33,8 @@ PlayState::loadNextLevel() {
 	static int currentLevel = 0;
 
 	vector<pair<string, string>> levels = {
-		{"../assets/maps/world2.csv","../assets/maps/world2.txt"},
 		{"../assets/maps/world1.csv","../assets/maps/world1.txt"},
+		{"../assets/maps/world2.csv","../assets/maps/world2.txt"},
 	};
 
 	if (currentLevel < levels.size()) {
@@ -210,40 +210,22 @@ int PlayState::getMapOffset() const {
 //	}
 //}
 
+
 Collision
-PlayState::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
+PlayState::checkCollision(const SDL_Rect& rect, bool fromPlayer) {
 	//fromPlayer se encargara de comprobar si viene de arriba o de abajo
 	//rect es el rectangulo de la interseccion provocada entre dos objetos
 
 	Collision colision = { true,false,{0,0,0,0} };
 
-	//IMPORTANTE: DESCOMENTAR ESTO CUANDO ESTE ARREGLADO
 	// Primero verificamos colisión con el tilemap
 	colision = tilemap->hit(rect, fromPlayer);
 	if (colision.collides) return colision;
-	
+
 	for (SceneObject* sceneObj : gameList) {
 		colision = sceneObj->hit(rect, fromPlayer);
 		if (colision.collides) return colision;
 	}
-
-	return colision;
-}
-
-Collision
-PlayState::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
-
-	Collision colision = { false,false,{0,0,0,0} };
-
-	colision = tilemap->hit(rect, fromPlayer);
-	if (colision.collides)
-		return colision;
-	                 
-	//IMPORTANTE: DESCOMENTAR ESTO CUANDO ESTE ARREGLADO
-	//for (SceneObject* sceneObj : gameList) {
-	//	colision = sceneObj->hit(rect, fromPlayer);
-	//	if (colision.collides) return colision;
-	//}
 
 	return colision;
 }

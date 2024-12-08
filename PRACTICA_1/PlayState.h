@@ -55,8 +55,7 @@ public:
 	void loadNextLevel();
 	void loadObjectMap(const std::string& mapFile, const std::string& objectFile);
 	int getMapOffset() const;
-	Collision checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer);
-	Collision checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer);
+	Collision checkCollision(const SDL_Rect& rect, bool fromPlayer);
 
 	//AÑADIDOS PERO NO ESPECIFICAOS EN ENUNCIADO
 	void setMapOffset(int playerOffset);

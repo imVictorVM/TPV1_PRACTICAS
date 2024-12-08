@@ -17,6 +17,7 @@ Collision
 Enemy::hit(const SDL_Rect& rect, bool fromPlayer) {
 
 	if (fromPlayer) {
+
 		Collision colisionPlayer = { false,false,{0,0,0,0} };
 
 		// Creamos un rect del bloque para compararlo con el del jugador
@@ -34,8 +35,10 @@ Enemy::hit(const SDL_Rect& rect, bool fromPlayer) {
 			if (intersection.w > intersection.h) {
 				frame = 2; //Si da tiempo añadir un contador para que de tiempo a poner el frame de muerte un momento
 				ended = true;
+				cout << "Me muero" << endl;
 			}
 			else {
+				cout << "He atacado al player" << endl;
 				colisionPlayer.damages = true;
 			}
 
@@ -44,7 +47,7 @@ Enemy::hit(const SDL_Rect& rect, bool fromPlayer) {
 		return colisionPlayer;
 	}
 	else {
-		return playState->checkEnemyCollision(rect, fromPlayer);
+		return Collision(false, false, { 0,0,0,0 });
 	}
 
 }

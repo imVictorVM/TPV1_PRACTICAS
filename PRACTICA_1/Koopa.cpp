@@ -69,7 +69,7 @@ Koopa::update() {
 		KoopaRect.x += direction.getX();
 
 		// CAMBIAR: Verifica colisión en todas las direcciones
-		Collision collision = playState->checkEnemyCollision(KoopaRect, false);
+		Collision collision = playState->checkCollision(KoopaRect, false);
 
 		//COLISION VERTICAL
 		if (!collision.collides) {
@@ -89,7 +89,7 @@ Koopa::update() {
 		KoopaRect.x += direction.getX();
 		KoopaRect.y = position.getY();
 
-		collision = playState->checkEnemyCollision(KoopaRect, false);
+		collision = playState->checkCollision(KoopaRect, false);
 
 		//COLISION HORIZONTAL
 		if (!collision.collides) {
