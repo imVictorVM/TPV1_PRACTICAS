@@ -40,25 +40,3 @@ MainMenuState::MainMenuState(Game* game) : GameState(game), gamePointer(game) {
 MainMenuState::~MainMenuState() {
     delete fondo;
 }
-
-void MainMenuState::update() {
-    //GameState::update();
-    std::cout << "UPDATE MAIN MENU" << std::endl;
-}
-
-void MainMenuState::render() const {
-
-    //GameState::render();
-    
-    //SDL_SetRenderDrawColor(gamePointer->getRenderer(), 0, 0, 0, 255);
-    //SDL_RenderClear(gamePointer->getRenderer());
-    //for (const auto& button : MenuButtons) {
-    //    button->render();
-    //}
-    //SDL_RenderPresent(gamePointer->getRenderer());
-    std::cout << "RENDER MAIN MENU" << std::endl;
-}
-
-void MainMenuState::handleEvent(const SDL_Event& event) {
-   // GameState::handleEvent(event);
-}
