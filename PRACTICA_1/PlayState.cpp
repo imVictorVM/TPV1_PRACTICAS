@@ -30,7 +30,6 @@ PlayState::PlayState(Game* game) : GameState(game)
 
 void
 PlayState::loadNextLevel() {
-	static int currentLevel = 0;
 
 	vector<pair<string, string>> levels = {
 		{"../assets/maps/world1.csv","../assets/maps/world1.txt"},
@@ -40,7 +39,6 @@ PlayState::loadNextLevel() {
 	if (currentLevel < levels.size()) {
 		clearActualLevel();
 		loadObjectMap(levels[currentLevel].first, levels[currentLevel].second);
-		currentLevel++;
 	}
 	else seguir = false;
 	//Llamar al menu principal
@@ -69,7 +67,17 @@ void PlayState::loadObjectMap(const string& mapFile, const string& objectFile) {
 
 		switch (type) {
 		case 'M':
-			player = new Player(this, lineStream);
+			if (player == nullptr) player = new Player(this, lineStream);
+			else {
+				int posX;
+				int posY;
+				int numVidas;
+				mapOffset = 0;
+				lineStream >> posX;
+				lineStream >> posY;
+				lineStream >> numVidas;
+				player->setLugar(posX, posY, numVidas);
+			}
 			addObject(player);
 			addEventListener(player);
 			break;
@@ -111,6 +119,10 @@ PlayState::clearActualLevel() {
 		tilemap = nullptr;
 	}
 
+	if (player != nullptr) {
+		
+	}
+
 	for (const SceneObject* sceneObj : gameList) {
 		delete sceneObj;
 	}
@@ -140,75 +152,10 @@ PlayState::~PlayState()
 	//SDL_Quit();
 }
 
-//void
-//PlayState::run()
-//{
-//	// Bucle principal del juego
-//	while (seguir) {
-//		// Marca de tiempo del inicio de la iteración
-//		uint32_t inicio = SDL_GetTicks();
-//
-//		update();       // Actualiza el estado de los objetos del juego
-//		render();       // Dibuja los objetos en la venta
-//		handleEvents(); // Maneja los eventos de la SDL
-//
-//		// Tiempo que se ha tardado en ejecutar lo anterior
-//		uint32_t elapsed = SDL_GetTicks() - inicio;
-//
-//		// Duerme el resto de la duración del frame
-//		if (elapsed < FRAME_RATE)
-//			SDL_Delay(FRAME_RATE - elapsed);
-//	}
-//}
-
-//void
-//PlayState::render() const
-//
-//{	// Pinta los objetos del juego
-//	SDL_RenderClear(renderer);
-//	tilemap->render();
-//	player->render();
-//
-//	for (const SceneObject* sceneObj : gameList) {
-//		sceneObj->render();
-//	}
-//
-//	SDL_RenderPresent(renderer);
-//}
-//
-//void
-//PlayState::update()
-//{
-//	// Actualiza los objetos del juego
-//	tilemap->update();
-//	player->update();
-//
-//	for (SceneObject* sceneObj : gameList) {
-//		sceneObj->update();
-//	}
-//}
-
 
 int PlayState::getMapOffset() const {
 	return mapOffset;
 };
-
-//void
-//PlayState::handleEvents()
-//{
-//	// Procesamiento de eventos
-//	SDL_Event evento;
-//
-//	while (SDL_PollEvent(&evento)) {
-//		if (evento.type == SDL_QUIT)
-//			seguir = false;
-//		else if (evento.type == SDL_KEYDOWN || evento.type == SDL_KEYUP) {
-//			//perro->handleEvent(evento);
-//			player->handleEvent(evento);
-//
-//		}
-//	}
-//}
 
 
 Collision
@@ -239,4 +186,8 @@ void PlayState::setMapOffset(int playerOffset) {
 
 void PlayState::ResetMapOffset() {
 	mapOffset = 0;
+}
+
+void PlayState::setCurrentLevel() {
+	currentLevel++;
 }

@@ -134,3 +134,8 @@ void
 Game::popCurrentState() {
 	popState(); //Accedemos la metodo privado
 }
+
+void
+Game::exitStates() {
+	exit();
+}

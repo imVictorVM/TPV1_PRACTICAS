@@ -49,6 +49,7 @@ public:
 	void update();
 	void render() const;
 	void handleEvent(const SDL_Event& event);
+	void exit();
 };
 
 inline void

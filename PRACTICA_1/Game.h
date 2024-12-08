@@ -79,6 +79,7 @@ public:
 	void changeState(GameState* newState);
 	void pushNewState(GameState* newState);
 	void popCurrentState();
+	void exitStates();
 };
 
 inline Texture*

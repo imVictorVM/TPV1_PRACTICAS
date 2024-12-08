@@ -79,3 +79,10 @@ GameStateMachine::handleEvent(const SDL_Event& event)
 		current->handleEvent(event);
 	}
 }
+
+void
+GameStateMachine::exit() {
+	while (!gameStates.empty()) {
+		gameStates.pop();
+	}
+}

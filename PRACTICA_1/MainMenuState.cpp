@@ -24,7 +24,8 @@ MainMenuState::MainMenuState(Game* game) : GameState(game), gamePointer(game) {
     button* startButton = new button(game,game->getTexture(Game::NIVEL1),startPos,hTam + vTam,vTam);
     addObject(startButton);
     startButton->connect([game]() {
-        game->changeState(new PlayState(game)); // Cambia al estado PlayState
+        game->popCurrentState();
+        game->pushNewState(new PlayState(game)); // Cambia al estado PlayState
     });
     addEventListener(startButton);
 
