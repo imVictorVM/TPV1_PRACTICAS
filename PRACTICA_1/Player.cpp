@@ -129,7 +129,7 @@ void Player::update() {
 	// FUNCIONAL: CONTROL EN CASO DE DAÑO Y DE DERROTA
 	if (position.getY() >= 470 || damageCooldown >= 15 && collision.damages) {
 		if (vidas == 0) {
-			//gamePointer->getGame()->pushNewState(new EndState()
+			gamePointer->getGame()->pushNewState(new EndState(gamePointer->getGame()));
 		}
 		else {
 			if (!SuperMario) {

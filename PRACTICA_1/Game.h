@@ -47,6 +47,7 @@ public:
 		CONTINUAR,
 		VOLVERALMENU,
 		PORTADA,
+		ENDFONDO,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
