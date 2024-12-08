@@ -35,6 +35,7 @@ public:
 	static constexpr int WINDOW_HEIGHT = 16;
 
 private:
+	int currentLevel = 0;
 	int mapOffset = 0;
 	//SDL_Window* window = nullptr;
 	SDL_Renderer* renderer; // = game->getRenderer();

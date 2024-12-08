@@ -12,7 +12,7 @@ MainMenuState::MainMenuState(Game* game) : GameState(game), gamePointer(game) {
     int vTam = 35;
 
     Texture* titulo = game->getTexture(Game::PORTADA);
-    fondo = new background(this, titulo);
+    fondo = new background(this, titulo,0,0, game->WIN_WIDTH, game->WIN_HEIGHT);
     fondo->setTexture(game->getTexture(Game::PORTADA));
     addObject(fondo);
 
@@ -32,7 +32,7 @@ MainMenuState::MainMenuState(Game* game) : GameState(game), gamePointer(game) {
     button* exitButton = new button(game,game->getTexture(Game::SALIR),exitPos,hTam,vTam);
     addObject(exitButton);
     exitButton->connect([game]() {
-        game->popCurrentState(); // Sale del juego
+        game->exitStates(); // Sale del juego
     });
     addEventListener(exitButton);
 }

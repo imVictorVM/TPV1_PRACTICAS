@@ -2,8 +2,13 @@
 #include "Game.h"
 #include <SDL.h>
 
-background::background(GameState* gameState, Texture* texture) : GameObject(gameState), texture(texture)
-{ }
+background::background(GameState* gameState, Texture* texture,int x, int y, int width, int height) : GameObject(gameState), texture(texture)
+{
+	xPos = x;
+	yPos = y;
+	w = width;
+	h = height;
+}
 
 background::~background()
 { }
@@ -20,7 +25,7 @@ void background::update()
 void background::render() const
 {
 	if (texture) {
-		SDL_Rect rect = { 0,0,Game::WIN_WIDTH,Game::WIN_HEIGHT};
+		SDL_Rect rect = { xPos,yPos,w,h};
 		texture->render(rect);
 	}
 }

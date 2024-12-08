@@ -48,6 +48,7 @@ public:
 		VOLVERALMENU,
 		PORTADA,
 		ENDFONDO,
+		GAMEOVERTEXT,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
