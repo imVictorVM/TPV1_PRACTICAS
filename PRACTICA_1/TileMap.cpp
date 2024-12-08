@@ -2,6 +2,7 @@
 #include "TileMap.h"
 #include "Game.h"
 #include "PlayState.h"
+#include "EndState.h"
 
 using namespace std;
 
@@ -93,8 +94,10 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer)
 				int indice = matrix[row][col];
 				if (indice == 34 || indice == 43) { //Si el jugador toca el mastil es victoria
 					cout << "VICTORIA" << endl;
-					playState->setCurrentLevel();
-					playState->loadNextLevel();
+					//playState->setCurrentLevel();
+					//playState->loadNextLevel();
+					playState->getGame()->pushNewState(new EndState(playState->getGame(), true));
+
 					return colision;
 				}
 				if (indice != -1 && indice % texture->getNumColumns() < OBSTACLE_THRESHOLD) { //Si el jugador toca cualquier bloque de colision lo guardamos

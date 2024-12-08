@@ -6,13 +6,17 @@
 #include <vector>
 #include <memory>
 
+class PlayState;
+
 class PauseState : public GameState
 {
 private:
 	Game* gamePointer;
-	//background* fondo;
+	PlayState* playState;
 public:
-	PauseState(Game* game);
+	PauseState(Game* game, PlayState* pS);
 	~PauseState();
+	void render() const override;
+	void update() override;
 };
 

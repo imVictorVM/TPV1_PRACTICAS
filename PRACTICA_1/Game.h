@@ -49,6 +49,7 @@ public:
 		PORTADA,
 		ENDFONDO,
 		GAMEOVERTEXT,
+		GAMEWINTEXT,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 

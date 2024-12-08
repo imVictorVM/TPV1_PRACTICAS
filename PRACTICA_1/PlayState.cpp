@@ -24,6 +24,10 @@ PlayState::PlayState(Game* game, int lvl) : GameState(game)
 	currentLevel = lvl;
 	seguir = true;
 	mapOffset = 0;
+	//BACKGROUND
+	R = 0;
+	G = 0;
+	B = 0;
 	renderer = game->getRenderer();
 	loadNextLevel();
 	//run();
@@ -55,7 +59,6 @@ void PlayState::loadObjectMap(const string& mapFile, const string& objectFile) {
 	string line;
 	getline(file, line); // Leer color de fondo
 	stringstream color(line);
-	int R = 0, G = 0, B = 0;
 	color >> R >> G >> B;
 	SDL_SetRenderDrawColor(renderer, R, G, B, 255);
 
@@ -191,4 +194,18 @@ void PlayState::ResetMapOffset() {
 
 void PlayState::setCurrentLevel() {
 	currentLevel++;
+}
+
+int
+PlayState::getBackgroundColor(int pos) {
+	switch (pos) {
+	case 0: return R;
+		break;
+	case 1: return G;
+		break;
+	case 2: return B;
+		break;
+	default: return 0;
+		break;
+	}
 }

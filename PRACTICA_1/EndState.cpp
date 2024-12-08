@@ -6,7 +6,7 @@
 
 using namespace std;
 
-EndState::EndState(Game* game) : GameState(game) {
+EndState::EndState(Game* game, bool WinLose) : GameState(game), condition(WinLose){
 	gamePointer = game;
 
     int hTam = 160;
@@ -23,10 +23,19 @@ EndState::EndState(Game* game) : GameState(game) {
 
 
     //TEXTO DE GAME OVER
-    Texture* gameOver = game->getTexture(Game::GAMEOVERTEXT);
-    fondo = new background(this, gameOver, game->WIN_WIDTH / 2 - hTam, game->WIN_HEIGHT / 4, hTam * 2, vTam);
-    fondo->setTexture(game->getTexture(Game::GAMEOVERTEXT));
-    addObject(fondo);
+    if (condition) {
+        Texture* gameWin = game->getTexture(Game::GAMEWINTEXT);
+        winLose = new background(this, gameWin, game->WIN_WIDTH / 2 - hTam, game->WIN_HEIGHT / 4, hTam * 2, vTam);
+        winLose->setTexture(game->getTexture(Game::GAMEWINTEXT));
+        addObject(winLose);
+    }
+    else {
+        Texture* gameOver = game->getTexture(Game::GAMEOVERTEXT);
+        winLose = new background(this, gameOver, game->WIN_WIDTH / 2 - hTam, game->WIN_HEIGHT / 4, hTam * 2, vTam);
+        winLose->setTexture(game->getTexture(Game::GAMEOVERTEXT));
+        addObject(winLose);
+    }
+
 
 
     // Botón para volver al menu

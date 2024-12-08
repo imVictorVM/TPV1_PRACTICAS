@@ -10,10 +10,11 @@ class EndState : public GameState
 private:
 	Game* gamePointer;
 	background* fondo;
-	background* gameOver;
+	background* winLose;
+	bool condition;
 	
 public:
-	EndState(Game* game);
+	EndState(Game* game, bool WinLose);
 	~EndState();
 	void render();
 };

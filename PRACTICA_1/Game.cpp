@@ -38,6 +38,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec{"portada.png",1,1},
 	TextureSpec{"endFondo.jpg",1,1},
 	TextureSpec{"gameOver.png",1,1},
+	TextureSpec{"hasGanado.png",1,1},
 };
 
 Game::Game() : GameStateMachine()

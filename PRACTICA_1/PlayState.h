@@ -48,6 +48,10 @@ private:
 	Player* player = nullptr;
 	GameList<SceneObject> gameList;
 
+	int R;
+	int G;
+	int B;
+
 public:
 	//void run();
 	//void update();
@@ -63,6 +67,7 @@ public:
 	void setMapOffset(int playerOffset);
 	void ResetMapOffset();
 	void setCurrentLevel();
+	int getBackgroundColor(int pos);
 
 	// Constante globales
 	static constexpr uint WIN_WIDTH = 600;

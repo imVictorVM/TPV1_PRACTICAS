@@ -129,7 +129,7 @@ void Player::update() {
 	// FUNCIONAL: CONTROL EN CASO DE DAÑO Y DE DERROTA
 	if (position.getY() >= 470 || damageCooldown >= 15 && collision.damages) {
 		if (vidas == 1) {
-			gamePointer->getGame()->pushNewState(new EndState(gamePointer->getGame()));
+			gamePointer->getGame()->pushNewState(new EndState(gamePointer->getGame(), false));
 		}
 		else {
 			if (!SuperMario) {
@@ -245,7 +245,7 @@ Player::handleEvent(const SDL_Event& event) {
 			gamePointer->getGame()->pushNewState(new AnimationState(playState, [this]() {return marioDeathAnimation();}, gamePointer->getGame()));
 			break; 
 		case SDLK_ESCAPE:
-			gamePointer->getGame()->pushNewState(new PauseState(gamePointer->getGame()));
+			gamePointer->getGame()->pushNewState(new PauseState(gamePointer->getGame(),playState));
 			break;
 		}
 	}
