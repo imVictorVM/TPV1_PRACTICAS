@@ -27,8 +27,10 @@ void
 GameStateMachine::popState()
 {
 	// Si el estado final existe y se deja eliminar
-	if (!gameStates.empty())
+	if (!gameStates.empty()) {
+		
 		gameStates.pop();
+	}
 }
 
 bool

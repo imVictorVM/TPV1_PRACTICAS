@@ -11,6 +11,9 @@ GameState::GameState(Game* g) {
 
 GameState::~GameState() {
 	//delete game; NO NECESARIO
+	for (const GameObject* gameObject : gameObjects) {
+		delete gameObject;
+	}
 }
 
 void
