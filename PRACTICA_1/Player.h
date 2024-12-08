@@ -55,7 +55,5 @@ public:
 	bool IsSuperMario() const;
 
 	bool marioDeathAnimation();
-
-	void setLugar(int posX, int posY, int vidas);
 };
 

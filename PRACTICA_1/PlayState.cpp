@@ -72,16 +72,6 @@ void PlayState::loadObjectMap(const string& mapFile, const string& objectFile) {
 		switch (type) {
 		case 'M':
 			if (player == nullptr) player = new Player(this, lineStream);
-			else {
-				int posX;
-				int posY;
-				int numVidas;
-				mapOffset = 0;
-				lineStream >> posX;
-				lineStream >> posY;
-				lineStream >> numVidas;
-				player->setLugar(posX, posY, numVidas);
-			}
 			addObject(player);
 			addEventListener(player);
 			break;

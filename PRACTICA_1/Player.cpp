@@ -337,9 +337,3 @@ bool Player::marioDeathAnimation() {
 		}
 	}
 }
-
-void Player::setLugar(int posX, int posY, int numVidas) {
-	position.setX(posX);
-	position.setY(posY);
-	vidas = numVidas;
-}
