@@ -1,4 +1,5 @@
 #include "AnimationState.h"
+#include "Game.h"
 
 AnimationState::AnimationState(GameState* gameState, std::function<bool()> cb, Game* g) : GameState(g){
 	currentGameState = gameState;
@@ -14,5 +15,7 @@ void AnimationState::render() const {
 }
 
 void AnimationState::update() {
-	callback;
+	if (!callback()) {
+		currentGameState->getGame()->popCurrentState();
+	}
 }

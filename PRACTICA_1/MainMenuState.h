@@ -16,8 +16,8 @@ private:
 public:
 	MainMenuState(Game* game);
 	~MainMenuState();
-	void update();
-	void render() const;
-	void handleEvent(const SDL_Event& event);
+	//void update();
+	//void render() const;
+	//void handleEvent(const SDL_Event& event);
 };
 

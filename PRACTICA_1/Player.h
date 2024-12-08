@@ -25,6 +25,7 @@ protected:
 	int InitialPositionY; 
 	//int velocity;
 	bool SuperMario;
+	int cont;
 public:
 
 	Player(PlayState* game,std::istream& atributos);
@@ -52,5 +53,7 @@ public:
 	void TransformacionMario();
 
 	bool IsSuperMario() const;
+
+	bool marioDeathAnimation();
 };
 
