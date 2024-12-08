@@ -60,6 +60,7 @@ public:
 	//AÑADIDOS PERO NO ESPECIFICAOS EN ENUNCIADO
 	void setMapOffset(int playerOffset);
 	void ResetMapOffset();
+	void setCurrentLevel();
 
 	// Constante globales
 	static constexpr uint WIN_WIDTH = 600;

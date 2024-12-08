@@ -6,6 +6,7 @@
 #include "PlayState.h"
 
 #include "AnimationState.h"
+#include "PauseState.h"
 #include "EndState.h"
 
 using namespace std;
@@ -239,12 +240,13 @@ Player::handleEvent(const SDL_Event& event) {
 				direction.setY(-velocity);
 			}
 			break;
-
 		case SDLK_c:
-		
 			frame = 1;
 			gamePointer->getGame()->pushNewState(new AnimationState(playState, [this]() {return marioDeathAnimation();}, gamePointer->getGame()));
 			break; 
+		case SDLK_ESCAPE:
+			gamePointer->getGame()->pushNewState(new PauseState(gamePointer->getGame()));
+			break;
 		}
 	}
 	else if (event.type == SDL_KEYUP) {
@@ -334,4 +336,10 @@ bool Player::marioDeathAnimation() {
 			return true;
 		}
 	}
+}
+
+void Player::setLugar(int posX, int posY, int numVidas) {
+	position.setX(posX);
+	position.setY(posY);
+	vidas = numVidas;
 }
