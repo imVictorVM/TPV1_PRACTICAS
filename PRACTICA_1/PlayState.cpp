@@ -19,8 +19,9 @@
 using namespace std;
 class TileMap;
 
-PlayState::PlayState(Game* game) : GameState(game)
+PlayState::PlayState(Game* game, int lvl) : GameState(game)
 {
+	currentLevel = lvl;
 	seguir = true;
 	mapOffset = 0;
 	renderer = game->getRenderer();

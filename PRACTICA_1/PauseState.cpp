@@ -17,9 +17,9 @@ PauseState::PauseState(Game* game) : GameState(game), gamePointer(game) {
 	//fondo->setTexture(titulo);
 	//addObject(fondo);
 
-	Vector2D<int> ContinuePos = Vector2D<int>(game->WIN_WIDTH / 2 - hTam / 2, game->WIN_HEIGHT / 2 + vTam);
-	Vector2D<int> BackToMenuPos = Vector2D<int>(game->WIN_WIDTH / 2 - hTam / 2, game->WIN_HEIGHT / 2 + vTam * 3);
-	Vector2D<int> ExitPos = Vector2D<int>(game->WIN_WIDTH / 2 - hTam / 2, game->WIN_HEIGHT / 2 + vTam * 5);
+	Vector2D<int> ContinuePos = Vector2D<int>(game->WIN_WIDTH / 2 - hTam / 2, game->WIN_HEIGHT / 3);
+	Vector2D<int> BackToMenuPos = Vector2D<int>(game->WIN_WIDTH / 2 - hTam / 2, game->WIN_HEIGHT / 2);
+	Vector2D<int> ExitPos = Vector2D<int>(game->WIN_WIDTH / 2 - hTam / 2, game->WIN_HEIGHT / 2 + vTam * 3);
 	
 	button* ContinueButton = new button(game, game->getTexture(Game::CONTINUAR), ContinuePos, hTam + vTam, vTam);
 	addObject(ContinueButton);

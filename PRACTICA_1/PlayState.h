@@ -35,6 +35,7 @@ public:
 	static constexpr int WINDOW_HEIGHT = 16;
 
 private:
+
 	int currentLevel = 0;
 	int mapOffset = 0;
 	//SDL_Window* window = nullptr;
@@ -68,7 +69,7 @@ public:
 	static constexpr uint WIN_HEIGHT = 500;
 	static constexpr uint FRAME_RATE = 50;
 
-	PlayState(Game* game);
+	PlayState(Game* game, int lvl);
 	~PlayState();
 };
 
