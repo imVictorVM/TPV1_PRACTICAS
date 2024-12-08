@@ -9,6 +9,8 @@ using namespace std;
 
 Player::Player(PlayState* gameState, stringstream& atributes) : SceneObject(gameState)
 {
+	GamePlayer = gameState;
+
 	string line;
 
 	//Leemos la linea y pasamos los valores de atributos al string line, atributes se desecha
@@ -35,7 +37,7 @@ Player::Player(PlayState* gameState, stringstream& atributes) : SceneObject(game
 	damageCooldown = 15;
 	SuperMario = false;
 	groundPositionY = (position.getY() - 1) * PlayState::TILE_SIDE;
-	
+	frameRunner = 0;
 }
 
 void

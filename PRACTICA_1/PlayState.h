@@ -34,57 +34,33 @@ public:
 	static constexpr int WINDOW_WIDTH = 18;
 	static constexpr int WINDOW_HEIGHT = 16;
 
-	// Identificadores de las texturas
-	enum TextureName {
-		BACKGROUND,
-		MARIANO,
-		BLOCK,
-		GOOMBA,
-		KOOPA,
-		MUSHROOM,
-		SUPERMARIANO,
-		LIFT,
-		COIN,
-		NUM_TEXTURES,  // Truco C++: número de texturas definidas
-	};
 private:
 	int mapOffset = 0;
 	//SDL_Window* window = nullptr;
 	SDL_Renderer* renderer; // = game->getRenderer();
-	//std::array<Texture*, NUM_TEXTURES> textures;
 	bool seguir;
 
 
 	Game* game;
 	TileMap* tilemap = nullptr;
 	Player* player = nullptr;
-	std::vector<Block*> blocks;
-	std::vector<Goomba*> goombas;
-	std::vector<Koopa*> koopas;
-	std::vector<Lift*> lifts;
-	std::vector<Coin*> coins;
-	std::vector<Mushroom*> mushrooms;
-
 	GameList<SceneObject> gameList;
 
 public:
-	void run();
+	//void run();
 	void update();
 	void render() const;
 	void handleEvents();
 	void clearActualLevel();
 	void loadNextLevel();
 	void loadObjectMap(const std::string& mapFile, const std::string& objectFile);
-	int getMapOffset();
+	int getMapOffset() const;
 	Collision checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer);
 	Collision checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer);
 
 	//AÑADIDOS PERO NO ESPECIFICAOS EN ENUNCIADO
 	void setMapOffset(int playerOffset);
 	void ResetMapOffset();
-	//Vector2D<int> getPlayerPosition() const;
-
-	//Texture* getTexture(TextureName name) const;
 
 	// Constante globales
 	static constexpr uint WIN_WIDTH = 600;
@@ -94,11 +70,5 @@ public:
 	PlayState(Game* game);
 	~PlayState();
 };
-
-//inline Texture*
-//PlayState::getTexture(TextureName name) const
-//{
-//	return textures[name];
-//}
 
 

@@ -23,9 +23,9 @@ PlayState::PlayState(Game* game) : GameState(game)
 {
 	seguir = true;
 	mapOffset = 0;
-
+	renderer = game->getRenderer();
 	loadNextLevel();
-	run();
+	//run();
 }
 
 void
@@ -46,57 +46,58 @@ PlayState::loadNextLevel() {
 	//Llamar al menu principal
 }
 
-void
-PlayState::loadObjectMap(const string& mapFile, const string& objectFile) {
-
+void PlayState::loadObjectMap(const string& mapFile, const string& objectFile) {
 	tilemap = new TileMap(mapFile, this);
-	const string DEFAULT_MAP = objectFile;
+	addObject(tilemap); // Añade a la lista principal de objetos
 
-	// Carga el mapa
-	ifstream file(DEFAULT_MAP);
-
-	if (!file.is_open()) return; //false
+	ifstream file(objectFile);
+	if (!file.is_open()) return;
 
 	string line;
-
-	getline(file, line);
+	getline(file, line); // Leer color de fondo
 	stringstream color(line);
 	int R = 0, G = 0, B = 0;
 	color >> R >> G >> B;
-	SDL_SetRenderDrawColor(getGame()->getRenderer(), R, G, B, 255); //Color de fondo leyendo la primera linea
+	SDL_SetRenderDrawColor(renderer, R, G, B, 255);
+
+	GameObject* obj = nullptr;
 
 	while (getline(file, line)) {
-
 		stringstream lineStream(line);
-		char let;
-		lineStream >> let;
+		char type;
+		lineStream >> type;
 
-		switch (let) {
+		switch (type) {
 		case 'M':
-			if (player == nullptr) player = new Player(this, lineStream);
+			player = new Player(this, lineStream);
+			addObject(player);
 			break;
 		case 'B':
-			gameList.push_back(new Block(this, lineStream));
-			//blocks.push_back(new Block(this, lineStream));
+			obj = new Block(this, lineStream);
 			break;
 		case 'G':
-			gameList.push_back(new Goomba(this, lineStream));
-			//goombas.push_back(new Goomba(this, lineStream));
+			obj = new Goomba(this, lineStream);
 			break;
 		case 'K':
-			gameList.push_back(new Koopa(this, lineStream));
-			//koopas.push_back(new Koopa(this, lineStream));
+			obj = new Koopa(this, lineStream);
 			break;
 		case 'L':
-			gameList.push_back(new Lift(this, lineStream));
-			//lifts.push_back(new Lift(this, lineStream));
+			obj = new Lift(this, lineStream);
 			break;
 		case 'C':
-			gameList.push_back(new Coin(this, lineStream));
-			//coins.push_back(new Coin(this, lineStream));
+			obj = new Coin(this, lineStream);
 			break;
 		}
 
+		if (obj) {
+			addObject(obj);
+			// Verifica si obj es un SceneObject y lo añade a gameList
+			SceneObject* sceneObj = static_cast<SceneObject*>(obj);
+			if (sceneObj) {
+				gameList.push_back(sceneObj);
+			}
+			obj = nullptr;
+		}
 	}
 	file.close();
 }
@@ -109,57 +110,9 @@ PlayState::clearActualLevel() {
 		tilemap = nullptr;
 	}
 
-	if (player != nullptr) {
-		delete player;
-		player = nullptr;
-	}
-	for (int i = 0; i < blocks.size(); i++) {
-		if (blocks[i] != nullptr) {
-			delete blocks[i];
-		}
-		blocks[i] = nullptr;
-	}
-	blocks.clear();
-	for (int i = 0; i < goombas.size(); i++) {
-		if (goombas[i] != nullptr) {
-			delete goombas[i];
-		}
-		goombas[i] = nullptr;
-	}
-	goombas.clear();
-	for (int i = 0; i < koopas.size(); i++) {
-		if (koopas[i] != nullptr) {
-			delete koopas[i];
-		}
-		koopas[i] = nullptr;
-	}
-	koopas.clear();
-	for (int i = 0; i < lifts.size(); i++) {
-		if (lifts[i] != nullptr) {
-			delete lifts[i];
-		}
-		lifts[i] = nullptr;
-	}
-	lifts.clear();
-	for (int i = 0; i < coins.size(); i++) {
-		if (coins[i] != nullptr) {
-			delete coins[i];
-		}
-		coins[i] = nullptr;
-	}
-	coins.clear();
-	for (int i = 0; i < mushrooms.size(); i++) {
-		if (mushrooms[i] != nullptr) {
-			delete mushrooms[i];
-		}
-		mushrooms[i] = nullptr;
-	}
-	mushrooms.clear();
-
-
-	/*for (const SceneObject* sceneObj : gameList) {
+	for (const SceneObject* sceneObj : gameList) {
 		delete sceneObj;
-	}*/
+	}
 
 	// Actualiza el offset del mapa
 	ResetMapOffset();
@@ -186,26 +139,26 @@ PlayState::~PlayState()
 	//SDL_Quit();
 }
 
-void
-PlayState::run()
-{
-	// Bucle principal del juego
-	while (seguir) {
-		// Marca de tiempo del inicio de la iteración
-		uint32_t inicio = SDL_GetTicks();
-
-		update();       // Actualiza el estado de los objetos del juego
-		render();       // Dibuja los objetos en la venta
-		handleEvents(); // Maneja los eventos de la SDL
-
-		// Tiempo que se ha tardado en ejecutar lo anterior
-		uint32_t elapsed = SDL_GetTicks() - inicio;
-
-		// Duerme el resto de la duración del frame
-		if (elapsed < FRAME_RATE)
-			SDL_Delay(FRAME_RATE - elapsed);
-	}
-}
+//void
+//PlayState::run()
+//{
+//	// Bucle principal del juego
+//	while (seguir) {
+//		// Marca de tiempo del inicio de la iteración
+//		uint32_t inicio = SDL_GetTicks();
+//
+//		update();       // Actualiza el estado de los objetos del juego
+//		render();       // Dibuja los objetos en la venta
+//		handleEvents(); // Maneja los eventos de la SDL
+//
+//		// Tiempo que se ha tardado en ejecutar lo anterior
+//		uint32_t elapsed = SDL_GetTicks() - inicio;
+//
+//		// Duerme el resto de la duración del frame
+//		if (elapsed < FRAME_RATE)
+//			SDL_Delay(FRAME_RATE - elapsed);
+//	}
+//}
 
 void
 PlayState::render() const
@@ -234,8 +187,11 @@ PlayState::update()
 	}
 }
 
-int PlayState::getMapOffset() {
-	return mapOffset;
+
+int PlayState::getMapOffset() const {
+	return 0;
+	//IMPORTANTE DESCOMENTAR ESTO CUANDO ESTE ARREGLADO
+	//return mapOffset;
 };
 
 void
@@ -260,16 +216,17 @@ PlayState::checkPlayerCollision(const SDL_Rect& rect, bool fromPlayer) {
 	//fromPlayer se encargara de comprobar si viene de arriba o de abajo
 	//rect es el rectangulo de la interseccion provocada entre dos objetos
 
-	Collision colision = { false,false,{0,0,0,0} };
+	Collision colision = { true,false,{0,0,0,0} };
 
+	//IMPORTANTE: DESCOMENTAR ESTO CUANDO ESTE ARREGLADO
 	// Primero verificamos colisión con el tilemap
-	colision = tilemap->hit(rect, fromPlayer);
-	if (colision.collides) return colision;
-
-	for (SceneObject* sceneObj : gameList) {
-		colision = sceneObj->hit(rect, fromPlayer);
-		if (colision.collides) return colision;
-	}
+	//colision = tilemap->hit(rect, fromPlayer);
+	//if (colision.collides) return colision;
+	//
+	//for (SceneObject* sceneObj : gameList) {
+	//	colision = sceneObj->hit(rect, fromPlayer);
+	//	if (colision.collides) return colision;
+	//}
 
 	return colision;
 }
@@ -282,11 +239,12 @@ PlayState::checkEnemyCollision(const SDL_Rect& rect, bool fromPlayer) {
 	colision = tilemap->hit(rect, fromPlayer);
 	if (colision.collides)
 		return colision;
-
-	for (Block* block : blocks) {
-		colision = block->hit(rect, fromPlayer);
-		if (colision.collides) return colision;
-	}
+	                 
+	//IMPORTANTE: DESCOMENTAR ESTO CUANDO ESTE ARREGLADO
+	//for (SceneObject* sceneObj : gameList) {
+	//	colision = sceneObj->hit(rect, fromPlayer);
+	//	if (colision.collides) return colision;
+	//}
 
 	return colision;
 }
@@ -301,7 +259,3 @@ void PlayState::setMapOffset(int playerOffset) {
 void PlayState::ResetMapOffset() {
 	mapOffset = 0;
 }
-
-//Vector2D<int> Game::getPlayerPosition() const {
-//	return player->getPosition();
-//}
