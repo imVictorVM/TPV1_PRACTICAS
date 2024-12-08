@@ -22,6 +22,7 @@ public:
 class button : public GameObject, public EventHandler
 {
 private:
+	
 	Game* game;
 	SDL_Rect boundingBox;
 	bool hover;
@@ -36,7 +37,7 @@ private:
 	void emit() const; //transmite el evento de cick a todos los oyentes
 public:
 	button(Game* g,Texture* texture, Vector2D<int> pos, int tamX, int tamY);
-	//~button(); 
+	~button(); 
 
 	void connect(SDLEventCallBack rCallback);
 	void render() const;

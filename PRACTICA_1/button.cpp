@@ -14,6 +14,12 @@ button::button(Game* g, Texture* texture, Vector2D<int> pos, int tamX, int tamY)
 	g->connect([this](auto event) { handleEvent(event); });
 }
 
+button::~button() {
+	for ( ButtonListener* cl : clickListener) {
+		delete cl;
+	}
+}
+
 void
 button::connect(SDLEventCallBack rCallback) {
 	/*if (rCallback)*/ callbacks.push_back(rCallback);
