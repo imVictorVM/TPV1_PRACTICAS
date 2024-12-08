@@ -17,8 +17,8 @@ private:
 public:
 	GameState(Game* g);
 	~GameState();
-	void render() const;
-	void update();
+	virtual void render() const;
+	virtual void update();
 	void handleEvent(const SDL_Event& event);
 
 	void addEventListener(EventHandler* e);

@@ -48,9 +48,9 @@ private:
 
 public:
 	//void run();
-	void update();
-	void render() const;
-	void handleEvents();
+	//void update();
+	//void render() const;
+	//void handleEvents();
 	void clearActualLevel();
 	void loadNextLevel();
 	void loadObjectMap(const std::string& mapFile, const std::string& objectFile);
